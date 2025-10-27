@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GoTrip</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, Arial; margin: 2rem; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 1rem; max-width: 600px; }
+    h1 { margin: 0 0 0.5rem; }
+    .muted { color: #666; }
+    button { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid #999; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>GoTrip</h1>
+    <p class="muted">Flights · Bus Trips · Hotels</p>
+    <p>If you see this page, Express is serving your frontend correctly 🎉</p>
+    <button id="ping">Test API call</button>
+    <pre id="out"></pre>
+  </div>
+
+  <script>
+    // Later we’ll call /api routes. For now, just wire the button.
+    document.getElementById('ping').addEventListener('click', async () => {
+      const res = await fetch('/api/ping');
+      document.getElementById('out').textContent = await res.text();
+    });
+  </script>
+</body>
+</html>
