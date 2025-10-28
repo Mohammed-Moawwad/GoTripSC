@@ -1,34 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>GoTrip</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body { font-family: system-ui, Arial; margin: 2rem; }
-    .card { border: 1px solid #ddd; border-radius: 10px; padding: 1rem; max-width: 600px; }
-    h1 { margin: 0 0 0.5rem; }
-    .muted { color: #666; }
-    button { padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid #999; cursor: pointer; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>GoTrip</h1>
-    <p class="muted">Flights · Bus Trips · Hotels</p>
-    <p>If you see this page, Express is serving your frontend correctly 🎉</p>
-    <button id="ping">Test API call</button>
-    <pre id="out"></pre>
-  </div>
-    <p>Good</p>
-   <P>HELLO I AM IBRAHIM</P>
-  
-  <script>
-    // Later we’ll call /api routes. For now, just wire the button.
-    document.getElementById('ping').addEventListener('click', async () => {
-      const res = await fetch('/api/ping');
-      document.getElementById('out').textContent = await res.text();
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>GoTrip — Book a Trip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <h1 class="brand">GoTrip</h1>
+        <p class="tag">Find flights, buses & hotels</p>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <h2>Plan your next trip</h2>
+        <p class="lead">
+          Search destinations, pick dates, and book in seconds.
+        </p>
+      </section>
+
+      <section class="booking card">
+        <form id="bookingForm">
+          <div class="row">
+            <label for="destination">Destination</label>
+            <input
+              id="destination"
+              name="destination"
+              type="text"
+              placeholder="City or airport"
+              required
+            />
+          </div>
+
+          <div class="row two-up">
+            <div>
+              <label for="checkin">Check-in</label>
+              <input id="checkin" name="checkin" type="date" required />
+            </div>
+            <div>
+              <label for="checkout">Check-out</label>
+              <input id="checkout" name="checkout" type="date" required />
+            </div>
+          </div>
+
+          <div class="row two-up">
+            <div>
+              <label for="guests">Guests</label>
+              <input
+                id="guests"
+                name="guests"
+                type="number"
+                min="1"
+                value="1"
+                required
+              />
+            </div>
+            <div>
+              <label for="tripType">Trip type</label>
+              <select id="tripType" name="tripType">
+                <option>Hotel</option>
+                <option>Flight</option>
+                <option>Bus</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <button type="submit" class="btn-primary">Search</button>
+          </div>
+        </form>
+
+        <div id="results" class="results" aria-live="polite">
+          <p class="muted">
+            No results yet — use the form above to start a search.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">© GoTrip — Demo booking homepage</div>
+    </footer>
+
+    <script src="/booking.js"></script>
+  </body>
 </html>

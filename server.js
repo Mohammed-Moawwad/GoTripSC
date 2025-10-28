@@ -2,7 +2,7 @@
 const express = require('express');
 
 
-// Create an Express application
+// Create an Express application  
 const app = express();
 
 app.use(express.json());        // (optional for later JSON bodies)
