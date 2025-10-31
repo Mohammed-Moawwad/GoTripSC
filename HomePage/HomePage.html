@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GoTrip — Flights, Buses & Hotels</title>
+    <link rel="stylesheet" href="HomePage.css" />
+  </head>
+  <body>
+    <!-- ====== Header ====== -->
+    <header class="site-header" role="banner">
+      <div class="container nav">
+        <a href="HomePage.html" class="brand" aria-label="GoTrip Home">
+          <span class="logo">
+            <img src="Photos/logo.jpg" alt="GoTrip Logo" class="logo-img" />
+          </span>
+          <span class="brand-name">GoTrip</span>
+        </a>
+
+        <nav class="primary-nav" aria-label="Primary">
+          <a class="nav-link active" href="HomePage.html">Flights</a>
+          <a class="nav-link" href="HomePageHotels.html">Hotels</a>
+          <a class="nav-link" href="HomePageBuses.html">Buses</a>
+        </nav>
+
+        <div class="actions">
+          <div class="lang">
+            <button
+              class="lang-btn"
+              id="langBtn"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16">
+                <path
+                  fill="currentColor"
+                  d="M12 2a10 10 0 100 20A10 10 0 0012 2Zm0 2c1.5 0 3.6 2.7 4 6H8c.4-3.3 2.5-6 4-6Zm-4 8h8c-.4 3.3-2.5 6-4 6s-3.6-2.7-4-6Z"
+                />
+              </svg>
+              <span id="langLabel">English</span>
+              <svg viewBox="0 0 24 24" width="14" height="14">
+                <path fill="currentColor" d="M7 10l5 5 5-5z" />
+              </svg>
+            </button>
+            <ul class="lang-menu" id="langMenu" role="listbox" tabindex="-1">
+              <li role="option" data-lang="English" aria-selected="true">
+                English
+              </li>
+              <li role="option" data-lang="العربية">العربية</li>
+              <li role="option" data-lang="Français">Français</li>
+              <li role="option" data-lang="Deutsch">Deutsch</li>
+              <li role="option" data-lang="Español">Español</li>
+              <li role="option" data-lang="Türkçe">Türkçe</li>
+              <li role="option" data-lang="Русский">Русский</li>
+              <li role="option" data-lang="中文">中文</li>
+              <li role="option" data-lang="हिन्दी">हिन्दी</li>
+              <li role="option" data-lang="Português">Português</li>
+            </ul>
+          </div>
+
+          <button class="icon-btn" id="cartBtn" aria-label="Cart">
+            <svg viewBox="0 0 24 24" width="18" height="18">
+              <path
+                fill="currentColor"
+                d="M7 18a2 2 0 104 0 2 2 0 00-4 0zm8 0a2 2 0 104 0 2 2 0 00-4 0zM7.2 6h12.3l-1.5 7.5a2 2 0 01-2 1.5H9a2 2 0 01-2-1.5L5.3 4H3V3h3a1 1 0 01.98.8L7.2 6z"
+              />
+            </svg>
+            <span class="badge" id="cartCount">0</span>
+          </button>
+
+          <a href="../Login/signin.html" class="btn sign-in-btn">Sign in</a>
+          <a href="../Login/login.html" class="btn login-btn">Login</a>
+
+          <button
+            class="menu-toggle"
+            id="menuToggle"
+            aria-expanded="false"
+            aria-controls="mobilePanel"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-panel" id="mobilePanel" hidden>
+        <nav class="mobile-nav" aria-label="Mobile">
+          <a class="nav-link active" href="HomePage.html">Flights</a>
+          <a class="nav-link" href="HomePageHotels.html">Hotels</a>
+          <a class="nav-link" href="HomePageBuses.html">Buses</a>
+          <hr />
+          <button class="btn lang-inline" id="langBtnMobile">
+            🌐 <span id="langLabelMobile">English</span>
+          </button>
+          <a class="btn sign-in-inline" href="../Login/signin.html">Sign in</a>
+          <a class="btn login-inline" href="../Login/login.html">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ====== Hero (Flights) ====== -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Your Journey Begins Here</h1>
+        <p>Discover, Book, and Go Anywhere</p>
+      </div>
+
+      <!-- Booking Card -->
+      <div class="booking-card" id="flights">
+        <div class="booking-head">
+          <span class="head-icon" aria-hidden="true">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="currentColor"
+                d="M21 16v-2l-8-5V3.5c0-.7-.8-1.1-1.4-.7L9 6 3.5 7.5A1 1 0 003 8.5v2l8 5v4l2-.5V20l3 .5 3-.5v-3l2-.5z"
+              />
+            </svg>
+          </span>
+          <span class="head-title">Flights</span>
+        </div>
+
+        <div class="tab-buttons" role="tablist">
+          <button role="tab" aria-selected="true" id="tab-round" class="active">
+            Round Trip
+          </button>
+          <button role="tab" aria-selected="false" id="tab-one">One Way</button>
+          <button role="tab" aria-selected="false" id="tab-multi">
+            Multi City
+          </button>
+        </div>
+
+        <form
+          id="flightForm"
+          class="grid-form"
+          autocomplete="off"
+          action="../Services/FlightsPage.html"
+          method="get"
+        >
+          <div class="field">
+            <label for="from">From</label>
+            <input
+              id="from"
+              name="from"
+              placeholder="City or Airport"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="to">To</label>
+            <input id="to" name="to" placeholder="City or Airport" required />
+          </div>
+          <div class="field">
+            <label for="depart">Departure</label>
+            <input id="depart" name="depart" type="date" required />
+          </div>
+          <div class="field" id="returnField">
+            <label for="ret">Return</label>
+            <input id="ret" name="return" type="date" />
+          </div>
+          <div class="field">
+            <label for="pax">Passengers</label>
+            <select id="pax" name="passengers">
+              <option>1 Adult</option>
+              <option>2 Adults</option>
+              <option>3 Adults</option>
+              <option>Family</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cabin">Class</label>
+            <select id="cabin" name="class">
+              <option>Economy</option>
+              <option>Premium Economy</option>
+              <option>Business</option>
+              <option>First Class</option>
+            </select>
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" id="directOnly" name="direct" value="true" />
+            <span>Direct flights only</span>
+          </label>
+          <button class="search-btn" type="submit">Search</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ====== Trip Ideas ====== -->
+    <section class="ideas-section">
+      <div class="container">
+        <div class="ideas-head">
+          <h2>Trip Ideas from Saudi Arabia</h2>
+          <div class="chips" id="chips">
+            <button class="chip" data-tag="Nature">Nature</button>
+            <button class="chip" data-tag="Family">Family</button>
+            <button class="chip" data-tag="Beach">Beach</button>
+            <button class="chip" data-tag="Halal-friendly">
+              Halal-friendly
+            </button>
+            <button class="chip" data-tag="Romantic">Romantic</button>
+          </div>
+        </div>
+
+        <div class="ideas-grid" id="ideasGrid">
+          <article class="idea-card" data-tags="Nature,Family,Halal-friendly">
+            <img
+              src="Photos/abha.jpg"
+              alt="Abha, Saudi Arabia"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Abha</h3>
+              <p class="country">Saudi Arabia</p>
+              <p class="price">Round-trip from <strong>SAR 135</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Beach,Family,Halal-friendly">
+            <img
+              src="Photos/jazan.jpeg"
+              alt="Jazan, Saudi Arabia"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Jazan</h3>
+              <p class="country">Saudi Arabia</p>
+              <p class="price">Round-trip from <strong>SAR 199</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Nature,Romantic,Halal-friendly">
+            <img
+              src="Photos/taif.jpg"
+              alt="Taif, Saudi Arabia"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Taif</h3>
+              <p class="country">Saudi Arabia</p>
+              <p class="price">Round-trip from <strong>SAR 175</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Beach,Family">
+            <img
+              src="Photos/Hurghada.webp"
+              alt="Hurghada, Egypt"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Hurghada</h3>
+              <p class="country">Egypt</p>
+              <p class="price">Round-trip from <strong>SAR 899</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Romantic,Nature">
+            <img
+              src="Photos/Geneva.jpg"
+              alt="Geneva, Switzerland"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Geneva</h3>
+              <p class="country">Switzerland</p>
+              <p class="price">Round-trip from <strong>SAR 1,299</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Beach,Romantic">
+            <img src="Photos/Bali.jpg" alt="Bali, Indonesia" loading="lazy" />
+            <div class="idea-info">
+              <h3>Bali</h3>
+              <p class="country">Indonesia</p>
+              <p class="price">Round-trip from <strong>SAR 1,599</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Nature,Halal-friendly">
+            <img
+              src="Photos/aaa.jpg"
+              alt="Al-Ula, Saudi Arabia"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Al-Ula</h3>
+              <p class="country">Saudi Arabia</p>
+              <p class="price">Round-trip from <strong>SAR 225</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Beach,Romantic,Halal-friendly">
+            <img
+              src="Photos/mm.jpg"
+              alt="Jeddah, Saudi Arabia"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Jeddah</h3>
+              <p class="country">Saudi Arabia</p>
+              <p class="price">Round-trip from <strong>SAR 165</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Nature,Family,Halal-friendly">
+            <img
+              src="Photos/rr.jpg"
+              alt="Riyadh, Saudi Arabia"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Riyadh</h3>
+              <p class="country">Saudi Arabia</p>
+              <p class="price">Round-trip from <strong>SAR 145</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Beach,Family">
+            <img
+              src="Photos/dd.webp"
+              alt="Dammam, Saudi Arabia"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Dammam</h3>
+              <p class="country">Saudi Arabia</p>
+              <p class="price">Round-trip from <strong>SAR 155</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Nature,Romantic">
+            <img
+              src="Photos/roro.jpg"
+              alt="Tabuk, Saudi Arabia"
+              loading="lazy"
+            />
+            <div class="idea-info">
+              <h3>Tabuk</h3>
+              <p class="country">Saudi Arabia</p>
+              <p class="price">Round-trip from <strong>SAR 185</strong></p>
+            </div>
+          </article>
+          <article class="idea-card" data-tags="Beach,Romantic,Family">
+            <img src="Photos/ححح.jpg" alt="Dubai, UAE" loading="lazy" />
+            <div class="idea-info">
+              <h3>Dubai</h3>
+              <p class="country">UAE</p>
+              <p class="price">Round-trip from <strong>SAR 499</strong></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Popular Destinations ====== -->
+    <section class="popular-section">
+      <div class="container">
+        <h2 class="section-title">Popular Destinations</h2>
+        <div class="popular-grid">
+          <a class="popular-card" href="#">
+            <img
+              src="https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?q=80&w=1600&auto=format&fit=crop"
+              alt="Paris"
+            />
+            <div class="popular-info">
+              <strong>Paris</strong><span>from $299</span>
+            </div>
+          </a>
+          <a class="popular-card" href="#">
+            <img src="Photos/طوكيو.webp" alt="Tokyo" />
+            <div class="popular-info">
+              <strong>Tokyo</strong><span>from $899</span>
+            </div>
+          </a>
+          <a class="popular-card" href="#">
+            <img src="Photos/نيةيةرك.jpg" alt="New York" />
+            <div class="popular-info">
+              <strong>New York</strong><span>from $499</span>
+            </div>
+          </a>
+          <a class="popular-card" href="#">
+            <img src="Photos/بالي.jpg" alt="Bali" />
+            <div class="popular-info">
+              <strong>Bali</strong><span>from $599</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Why Choose ====== -->
+    <section class="why-section">
+      <div class="container">
+        <h2 class="section-title center">Why Choose GoTrip</h2>
+        <div class="why-grid">
+          <div class="why-card">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24">
+                <path
+                  fill="currentColor"
+                  d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7Zm0 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"
+                />
+              </svg>
+            </div>
+            <h3>Best Price Guarantee</h3>
+            <p>We ensure the best prices for flights, hotels, and buses.</p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24">
+                <path
+                  fill="currentColor"
+                  d="M12 3a8 8 0 0 0-8 8v5a3 3 0 0 0 3 3h2v-6H7v-2a5 5 0 0 1 10 0v2h-2v6h2a3 3 0 0 0 3-3v-5a8 8 0 0 0-8-8Z"
+                />
+              </svg>
+            </div>
+            <h3>24/7 Customer Support</h3>
+            <p>
+              Travel experts available anytime via chat, WhatsApp, or email.
+            </p>
+          </div>
+          <div class="why-card">
+            <div class="why-icon">
+              <svg viewBox="0 0 24 24">
+                <path
+                  fill="currentColor"
+                  d="M12 1a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2V6a5 5 0 0 0-5-5Zm0 2a3 3 0 0 1 3 3v3H9V6a3 3 0 0 1 3-3Z"
+                />
+              </svg>
+            </div>
+            <h3>Secure Booking</h3>
+            <p>All payments are encrypted and protected.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Sponsors (before testimonials) ====== -->
+    <section class="sponsors-section">
+      <div class="container sponsors-grid">
+        <!-- Left column titles -->
+        <div class="sponsors-col">
+          <h3>Popular Airlines in<br />Saudi Arabia</h3>
+          <p class="muted">
+            Book cheap flights on your<br />favourite airlines
+          </p>
+        </div>
+        <div class="logos-grid">
+          <img src="https://logo.clearbit.com/saudia.com" alt="Saudia" />
+          <img src="https://logo.clearbit.com/flynas.com" alt="flynas" />
+          <img src="https://logo.clearbit.com/flyadeal.com" alt="flyadeal" />
+          <img src="https://logo.clearbit.com/egyptair.com" alt="EgyptAir" />
+          <img src="https://logo.clearbit.com/nileair.com" alt="Nile Air" />
+          <img src="https://logo.clearbit.com/airarabia.com" alt="Air Arabia" />
+          <img src="https://logo.clearbit.com/aircairo.com" alt="Air Cairo" />
+          <img
+            src="https://logo.clearbit.com/airarabia.com"
+            alt="Air Arabia (Alt)"
+          />
+        </div>
+
+        <div class="sponsors-col">
+          <h3>Our Travel Partners</h3>
+          <p class="muted">
+            Wego searches for the best deals<br />on these sites in Saudi Arabia
+          </p>
+        </div>
+        <div class="logos-grid">
+          <img src="https://logo.clearbit.com/trip.com" alt="Trip.com" />
+          <img
+            src="https://logo.clearbit.com/flightnetwork.com"
+            alt="Flight Network"
+          />
+          <img src="https://logo.clearbit.com/booking.com" alt="Booking.com" />
+          <img src="https://logo.clearbit.com/rehlat.com" alt="Rehlat" />
+          <img src="https://logo.clearbit.com/almosafer.com" alt="Almosafer" />
+          <img src="https://logo.clearbit.com/gotogate.com" alt="GoToGate" />
+          <img src="https://logo.clearbit.com/enuygun.com" alt="Enuygun" />
+          <img
+            src="https://logo.clearbit.com/myholidays.com"
+            alt="myholidays"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Testimonials ====== -->
+    <section class="testimonials-section">
+      <div class="container">
+        <h2 class="section-title center">What Our Travelers Say</h2>
+        <div class="testimonials-wrapper">
+          <div class="testimonials-track">
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+                  alt="Sarah Johnson"
+                />
+                <div>
+                  <strong>Sarah Johnson</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                Booking our honeymoon through GoTrip was seamless! Great service
+                and unbeatable prices.
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=400&auto=format&fit=crop"
+                  alt="Michael Chen"
+                />
+                <div>
+                  <strong>Michael Chen</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                I always find the best flight deals here. The interface is
+                intuitive and the customer support is excellent.
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=400&auto=format&fit=crop"
+                  alt="Fatima Al-Said"
+                />
+                <div>
+                  <strong>Fatima Al-Said</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                Used GoTrip to book my family vacation. Everything was perfect
+                from start to finish. Highly recommended!
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop"
+                  alt="Abdullah Rahman"
+                />
+                <div>
+                  <strong>Abdullah Rahman</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                Found the best flight deals to Europe! The booking process was
+                quick and I received instant confirmation. Excellent service!
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400&auto=format&fit=crop"
+                  alt="Emma Williams"
+                />
+                <div>
+                  <strong>Emma Williams</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                GoTrip saved me hundreds on my business trip! Easy comparison
+                tool and secure payment. Will definitely use again for all my
+                flights.
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&auto=format&fit=crop"
+                  alt="Omar Hassan"
+                />
+                <div>
+                  <strong>Omar Hassan</strong>
+                  <div class="stars">★★★★☆</div>
+                </div>
+              </div>
+              <p>
+                Great selection of airlines and routes. The mobile app is very
+                convenient and the prices are competitive. Highly recommend!
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop"
+                  alt="Aisha Mohammed"
+                />
+                <div>
+                  <strong>Aisha Mohammed</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                Best flight booking platform! Clear pricing, no hidden fees, and
+                amazing customer support. Booked my entire family trip
+                hassle-free!
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=400&auto=format&fit=crop"
+                  alt="David Lee"
+                />
+                <div>
+                  <strong>David Lee</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                I travel frequently for work and GoTrip is my go-to platform.
+                Fast booking, great deals, and reliable service every single
+                time!
+              </p>
+            </article>
+
+            <!-- Duplicate for seamless loop -->
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
+                  alt="Sarah Johnson"
+                />
+                <div>
+                  <strong>Sarah Johnson</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                Booking our honeymoon through GoTrip was seamless! Great service
+                and unbeatable prices.
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=400&auto=format&fit=crop"
+                  alt="Michael Chen"
+                />
+                <div>
+                  <strong>Michael Chen</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                I always find the best flight deals here. The interface is
+                intuitive and the customer support is excellent.
+              </p>
+            </article>
+
+            <article class="t-card">
+              <div class="t-head">
+                <img
+                  src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=400&auto=format&fit=crop"
+                  alt="Fatima Al-Said"
+                />
+                <div>
+                  <strong>Fatima Al-Said</strong>
+                  <div class="stars">★★★★★</div>
+                </div>
+              </div>
+              <p>
+                Used GoTrip to book my family vacation. Everything was perfect
+                from start to finish. Highly recommended!
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== App Download (LAST) ====== -->
+    <section class="app-cta">
+      <div class="container app-wrap">
+        <div class="app-illustration" aria-hidden="true">
+          <div class="device">
+            <div class="dot"></div>
+          </div>
+        </div>
+        <div class="app-copy">
+          <h2>Unlock the Best Travel Deals</h2>
+          <p style="color: black">Download the GoTrip App</p>
+          <ul class="checks">
+            <li>
+              Search, compare &amp; book flights, hotels, and buses all in one
+              app
+            </li>
+            <li>Save more with in-app promo codes and smart fare calendar</li>
+            <li>24/7 support through chat, WhatsApp, and phone</li>
+          </ul>
+          <div class="stores">
+            <a class="store" href="#" aria-label="Get it on Google Play">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                alt="Google Play"
+              />
+            </a>
+            <a class="store" href="#" aria-label="Download on the App Store">
+              <img src="Photos/ableeeeeeeeeeeeee.png" alt="App Store" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== Footer ====== -->
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="f-col">
+          <div class="f-brand">GoTrip</div>
+          <p class="muted">
+            Your trusted travel partner for flights, hotels, and buses
+            worldwide.
+          </p>
+        </div>
+
+        <div class="f-col">
+          <h4>About GoTrip</h4>
+          <ul class="f-links">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Partnerships</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col">
+          <h4>Support</h4>
+          <ul class="f-links">
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col">
+          <h4>Connect</h4>
+          <ul class="f-links">
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Newsletter</a></li>
+            <li><a href="#">Travel Guides</a></li>
+            <li><a href="#">Help Center</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <div class="copy">© 2025 GoTrip. All rights reserved.</div>
+        <div class="social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">◎</a>
+          <a href="#" aria-label="X">𝕏</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="HomePage.js"></script>
+  </body>
+</html>
