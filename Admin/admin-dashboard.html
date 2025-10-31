@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administrator Main Page - GoTrip</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="admin-dashboard.css" />
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="header-container">
+        <div class="logo-container">
+          <div class="logo">
+            <!-- Replace font icon with actual logo image from Login/Photos -->
+            <img
+              src="../Login/Photos/WhatsApp%20Image%202025-10-29%20at%2010.56.29_2b0de414.jpg"
+              alt="GoTrip Logo"
+              class="admin-logo"
+            />
+          </div>
+          <div class="logo-text">GoTrip</div>
+        </div>
+        <h3 class="page-title">Administrator Main Page</h3>
+        <div class="admin-controls">
+          <div class="admin-profile">
+            <div class="admin-avatar">AJ</div>
+            <span>Admin User</span>
+          </div>
+          <button class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb"><a href="/">Home</a> &gt; Administrator</div>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+      <h2 class="section-title">Choose a service to manage</h2>
+
+      <div class="services-grid">
+        <!-- Bus Trips Card -->
+        <a
+          href="AdminBus/bus-management.html"
+          class="service-card"
+          data-service="bus-trips"
+        >
+          <div class="service-overlay">
+            <div class="service-icon">
+              <i class="fas fa-bus"></i>
+            </div>
+            <h3 class="service-title">Manage Bus Trips</h3>
+            <p class="service-description">
+              Add, edit, delete, and view statistics.
+            </p>
+          </div>
+        </a>
+
+        <!-- Flights Card -->
+        <a
+          href="AdminFlights/flight-management.html"
+          class="service-card"
+          data-service="flights"
+        >
+          <div class="service-overlay">
+            <div class="service-icon">
+              <i class="fas fa-plane"></i>
+            </div>
+            <h3 class="service-title">Manage Flights</h3>
+            <p class="service-description">
+              Add, edit, delete, and view statistics.
+            </p>
+          </div>
+        </a>
+
+        <!-- Hotels Card -->
+        <a
+          href="AdminHotels/hotel-management.html"
+          class="service-card"
+          data-service="hotels"
+        >
+          <div class="service-overlay">
+            <div class="service-icon">
+              <i class="fas fa-hotel"></i>
+            </div>
+            <h3 class="service-title">Manage Hotels</h3>
+            <p class="service-description">
+              Add, edit, delete, and view statistics.
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-links">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/contact">Contact Us</a>
+        </div>
+        <div class="copyright">© 2025 GoTrip Company. All rights reserved.</div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="admin-dashboard.js"></script>
+  </body>
+</html>
