@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Monthly Reports - GoTrip Admin</title>
+    <link rel="stylesheet" href="../../Admin/admin-dashboard.css" />
+    <link rel="stylesheet" href="hotel-reports.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="header-container">
+        <div class="logo-container">
+          <div class="logo">
+            <img
+              src="../../Login/Photos/WhatsApp Image 2025-10-29 at 10.56.29_2b0de414.jpg"
+              alt="GoTrip Logo"
+            />
+          </div>
+          <span class="logo-text">GoTrip</span>
+        </div>
+        <h1 class="page-title">Hotel Monthly Reports</h1>
+        <div class="admin-controls">
+          <div class="admin-profile">
+            <div class="admin-avatar">A</div>
+            <span>Admin</span>
+          </div>
+          <button class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="../admin-dashboard.html">Dashboard</a> /
+      <a href="hotel-management.html">Hotel Management</a> /
+      <span>Monthly Reports</span>
+    </div>
+
+    <div class="container">
+      <!-- Month Selector -->
+      <div class="report-controls">
+        <div class="month-selector">
+          <label for="report-month"
+            ><i class="fas fa-calendar-alt"></i> Select Month:</label
+          >
+          <select id="report-month" class="month-input">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        <div class="report-actions">
+          <button class="report-btn export-pdf">
+            <i class="fas fa-file-pdf"></i> Export PDF
+          </button>
+          <button class="report-btn export-excel">
+            <i class="fas fa-file-excel"></i> Export Excel
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="report-summary">
+        <div class="summary-card">
+          <div class="summary-icon bookings">
+            <i class="fas fa-hotel"></i>
+          </div>
+          <div class="summary-content">
+            <h3 id="total-bookings">0</h3>
+            <p>Total Bookings</p>
+            <span class="trend positive" id="bookings-trend"
+              >+0% vs last month</span
+            >
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon guests">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="summary-content">
+            <h3 id="guests-served">0</h3>
+            <p>Guests Served</p>
+            <span class="trend positive" id="guests-trend"
+              >+0% vs last month</span
+            >
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon revenue">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="summary-content">
+            <h3 id="total-revenue">$0</h3>
+            <p>Total Revenue</p>
+            <span class="trend positive" id="revenue-trend"
+              >+0% vs last month</span
+            >
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon occupancy">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="summary-content">
+            <h3 id="avg-occupancy">0%</h3>
+            <p>Avg Occupancy</p>
+            <span class="trend neutral" id="occupancy-trend"
+              >0% vs last month</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Breakdown Table -->
+      <div class="report-details">
+        <h2><i class="fas fa-building"></i> Hotel Property Breakdown</h2>
+        <div class="table-container">
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Hotel Property</th>
+                <th>Total Bookings</th>
+                <th>Guests</th>
+                <th>Revenue</th>
+                <th>Avg Occupancy</th>
+                <th>Canceled</th>
+              </tr>
+            </thead>
+            <tbody id="property-breakdown-body">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Additional Stats -->
+      <div class="additional-stats">
+        <div class="stat-box">
+          <h3>Top Performing Property</h3>
+          <p id="top-property">Nile Ritz-Carlton Cairo</p>
+          <span id="top-property-revenue">$1,425,000</span>
+        </div>
+        <div class="stat-box">
+          <h3>Total Cancellations</h3>
+          <p id="total-canceled">32</p>
+          <span id="cancel-rate">5.8% of bookings</span>
+        </div>
+        <div class="stat-box">
+          <h3>Average Stay Duration</h3>
+          <p id="avg-stay">3.2</p>
+          <span id="stay-info">nights per booking</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-links">
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+        <p class="copyright">&copy; 2025 GoTrip. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="hotel-reports.js"></script>
+  </body>
+</html>

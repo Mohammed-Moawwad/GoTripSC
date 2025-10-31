@@ -1,0 +1,389 @@
+/* Flight Monthly Reports Styles for GoTrip Admin */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Report Controls */
+.report-controls {
+  max-width: 1200px;
+  margin: 20px auto 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.month-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.month-selector label {
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.month-input {
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  min-width: 220px;
+  cursor: pointer;
+  background: white;
+  transition: all 0.2s;
+}
+
+.month-input:hover {
+  border-color: #1a73e8;
+}
+
+.month-input:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.report-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.report-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.export-pdf {
+  background: #d93025;
+  color: white;
+  box-shadow: 0 2px 4px rgba(217, 48, 37, 0.2);
+}
+
+.export-pdf:hover {
+  background: #b31412;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(217, 48, 37, 0.3);
+}
+
+.export-excel {
+  background: #1e8e3e;
+  color: white;
+  box-shadow: 0 2px 4px rgba(30, 142, 62, 0.2);
+}
+
+.export-excel:hover {
+  background: #137333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(30, 142, 62, 0.3);
+}
+
+/* Summary Cards */
+.report-summary {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.summary-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.summary-icon.flights {
+  background: linear-gradient(135deg, #1a73e8, #4285f4);
+}
+
+.summary-icon.passengers {
+  background: linear-gradient(135deg, #34a853, #5bb974);
+}
+
+.summary-icon.revenue {
+  background: linear-gradient(135deg, #fbbc05, #fdd663);
+}
+
+.summary-icon.occupancy {
+  background: linear-gradient(135deg, #ea4335, #f06a5e);
+}
+
+.summary-content {
+  flex: 1;
+}
+
+.summary-content h3 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 4px;
+}
+
+.summary-content p {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0 0 8px;
+}
+
+.trend {
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trend.positive {
+  color: #1e8e3e;
+}
+
+.trend.positive::before {
+  content: "↑";
+  font-size: 16px;
+}
+
+.trend.negative {
+  color: #d93025;
+}
+
+.trend.negative::before {
+  content: "↓";
+  font-size: 16px;
+}
+
+.trend.neutral {
+  color: #5f6368;
+}
+
+.trend.neutral::before {
+  content: "→";
+  font-size: 16px;
+}
+
+/* Report Details Table */
+.report-details {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+}
+
+.report-details h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.report-table thead {
+  background: #f8f9fa;
+}
+
+.report-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.report-table tbody tr {
+  border-top: 1px solid #e0e0e0;
+  transition: background-color 0.2s;
+  animation: fadeSlideIn 400ms ease both;
+}
+
+.report-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.report-table td {
+  padding: 16px;
+  color: #333;
+}
+
+.report-table td:first-child {
+  font-weight: 500;
+}
+
+.canceled-badge {
+  background: #fce8e6;
+  color: #d93025;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Additional Stats */
+.additional-stats {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.stat-box {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.stat-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.stat-box h3 {
+  font-size: 14px;
+  color: #5f6368;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px;
+}
+
+.stat-box p {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a73e8;
+  margin: 0 0 8px;
+}
+
+.stat-box span {
+  font-size: 14px;
+  color: #5f6368;
+}
+
+/* Animations */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .report-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .month-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .month-input {
+    width: 100%;
+  }
+
+  .report-actions {
+    flex-direction: column;
+  }
+
+  .report-btn {
+    justify-content: center;
+  }
+
+  .report-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-card {
+    flex-direction: row;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .report-table {
+    min-width: 600px;
+  }
+
+  .additional-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-content h3 {
+    font-size: 24px;
+  }
+
+  .report-table th,
+  .report-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bus Management - GoTrip</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="bus-management.css" />
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="header-container">
+        <div class="logo-container">
+          <div class="logo">
+            <img
+              src="../../Login/Photos/WhatsApp Image 2025-10-29 at 10.56.29_2b0de414.jpg"
+              alt="GoTrip Logo"
+            />
+          </div>
+          <div class="logo-text">GoTrip</div>
+        </div>
+        <h3 class="page-title">Administrator Main Page</h3>
+        <div class="admin-controls">
+          <div class="admin-profile">
+            <div class="admin-avatar">AJ</div>
+            <span>Admin User</span>
+          </div>
+          <button class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb">
+      <a href="/">Home</a> &gt;
+      <a href="../admin-dashboard.html">Administrator</a> &gt; Bus Management
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Bus Management Page</h1>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-number">4</div>
+        <div class="stat-title">Total Bus Trips</div>
+        <div class="stat-subtitle">Active Routes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4</div>
+        <div class="stat-title">Total Bookings</div>
+        <div class="stat-subtitle">&nbsp;</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$8040.00</div>
+        <div class="stat-title">Total Revenue</div>
+        <div class="stat-subtitle">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="search-container">
+      <div class="search-box">
+        <div class="search-wrapper">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search by route or status..."
+          />
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-status="all">
+            <i class="fas fa-list"></i> All
+          </button>
+          <button class="filter-btn" data-status="active">
+            <i class="fas fa-check-circle"></i> Active
+          </button>
+          <button class="filter-btn" data-status="en-route">
+            <i class="fas fa-route"></i> En Route
+          </button>
+          <button class="filter-btn" data-status="canceled">
+            <i class="fas fa-times-circle"></i> Canceled
+          </button>
+        </div>
+        <button class="add-bus-btn">
+          <i class="fas fa-plus"></i> Add New Bus
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Actions Bar -->
+    <div class="quick-actions-bar">
+      <div class="date-filter">
+        <label for="date-select">Filter by Date</label>
+        <div class="date-picker">
+          <i class="fas fa-calendar-alt date-icon" aria-hidden="true"></i>
+          <input
+            type="date"
+            id="date-select"
+            class="date-input"
+            aria-label="Filter by date"
+          />
+          <button type="button" class="clear-date-btn" aria-label="Clear date">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="date-quick-pills">
+          <button type="button" class="date-pill" data-preset="today">
+            Today
+          </button>
+          <button type="button" class="date-pill" data-preset="tomorrow">
+            Tomorrow
+          </button>
+        </div>
+      </div>
+      <div class="actions-meta">
+        <i class="fas fa-info-circle"></i>
+        <span id="last-updated">Updated just now</span>
+      </div>
+      <div class="bulk-actions">
+        <button class="bulk-action-btn">
+          <i class="fas fa-download"></i> Export Data
+        </button>
+        <button class="bulk-action-btn">
+          <i class="fas fa-print"></i> Print Schedule
+        </button>
+        <a href="bus-reports.html" class="bulk-action-btn reports-link">
+          <i class="fas fa-chart-bar"></i> Monthly Reports
+        </a>
+      </div>
+    </div>
+
+    <!-- Status Legend -->
+    <div class="status-legend">
+      <span><i class="legend-dot active"></i> Active</span>
+      <span><i class="legend-dot canceled"></i> Canceled</span>
+    </div>
+
+    <!-- Bus Table -->
+    <div class="table-container" id="bus-table-container">
+      <table class="bus-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="id">
+              Bus ID <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="route">
+              Route <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="departure">
+              Departure <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="arrival">
+              Arrival <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="price">
+              Price <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="seats">
+              Seats <i class="fas fa-sort"></i>
+            </th>
+            <th class="sortable" data-sort="status">
+              Status <i class="fas fa-sort"></i>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="bus-table-body">
+          <!-- Bus data will be populated by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+      <div class="footer-container">
+        <div class="footer-links">
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/contact">Contact Us</a>
+        </div>
+        <div class="copyright">© 2025 GoTrip Company. All rights reserved.</div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="bus-management.js"></script>
+  </body>
+</html>
