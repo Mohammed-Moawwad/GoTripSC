@@ -119,6 +119,14 @@
               >
             </div>
 
+            <!-- Login Error Message -->
+            <div
+              id="loginError"
+              class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+            >
+              <strong>Error:</strong> Password or Email is incorrect
+            </div>
+
             <button
               type="submit"
               class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm transition duration-200"
@@ -166,6 +174,34 @@
             icon.setAttribute("data-feather", "eye");
           }
           feather.replace();
+        });
+
+      // Handle form submission with admin check
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const loginError = document.getElementById("loginError");
+
+          // Hide error message initially
+          loginError.classList.add("hidden");
+
+          // Check if admin credentials
+          if (email === "Admin@gmail.com" && password === "Admin!123") {
+            // Redirect to admin dashboard
+            window.location.href = "../Admin/admin-dashboard.html";
+          } else {
+            // Show error message for incorrect credentials
+            loginError.classList.remove("hidden");
+
+            // Optional: Auto-hide error after 5 seconds
+            setTimeout(function () {
+              loginError.classList.add("hidden");
+            }, 5000);
+          }
         });
     </script>
 
