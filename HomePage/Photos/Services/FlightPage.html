@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Flight Results - GoTrip</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    /* Basic reset & layout + refined palette & typography */
+    :root{
+      --accent:#1ea1ff;      /* primary action blue */
+      --accent-600:#1098f0;
+       --muted:#6b7280;
+       --card:#fbfdff;        /* very light off-white for cards */
+       --bg:#f4f7fa;
+       --surface:#ffffff;
+     }
+    *{box-sizing:border-box}
+    body{
+      font-family:Inter,system-ui,'Segoe UI',Roboto,Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      margin:0; background:var(--bg); color:#0f1720;
+    }
+    .wrap{max-width:1200px;margin:22px auto;padding:12px}
+    /* header with subtle brand gradient (blue tint) */
+    header.summary{background:linear-gradient(180deg, rgba(30,161,255,0.06), rgba(250,251,fe,0.02)) , var(--surface);border-radius:12px;padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;box-shadow:0 8px 28px rgba(15,23,42,.06)}
+    .route{font-weight:700;font-size:18px}
+    .route .hdr-city{display:inline-block;vertical-align:middle}
+    .route .route-arrow{display:inline-flex;align-items:center;justify-content:center;margin:0 10px;vertical-align:middle;color:var(--muted)}
+    .dates{color:var(--muted);margin-left:auto}
+    .cols{display:flex;gap:16px;margin-top:16px}
+    nav.filters{
+      width:300px;background:var(--surface);border-radius:12px;padding:16px;box-shadow:0 8px 24px rgba(15,23,42,.04);
+      position:sticky; top:18px; align-self:flex-start; height:fit-content;
+    }
+    section.results{flex:1}
+    .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .tabs{display:flex;background:#fff;border-radius:8px;padding:6px;gap:8px}
+    .tab{padding:8px 12px;border-radius:6px;cursor:pointer;color:var(--muted);background:transparent}
+    .tab.active{background:linear-gradient(90deg,var(--accent),#3bb0ff);color:#fff;font-weight:700}
+    .stats{margin-left:auto;color:var(--muted)}
+    /* flight list */
+    .list{display:flex;flex-direction:column;gap:14px}
+    .card{display:flex;align-items:center;gap:16px;background:var(--card);border-radius:12px;padding:16px;border:1px solid rgba(14,20,24,.04)}
+    .card.recommended{box-shadow:0 10px 28px rgba(30,161,255,.06);border:1px solid rgba(30,161,255,.12);background:linear-gradient(180deg, rgba(30,161,255,0.02), var(--card))}
+    /* hover: make ticket slightly bigger without pushing layout (uses transform) */
+    .card{transition:transform .16s cubic-bezier(.2,.9,.2,1),box-shadow .18s;will-change:transform}
+    .card:hover{transform:scale(1.03);box-shadow:0 12px 30px rgba(17,24,39,.08);z-index:5}
+    /* avoid hover scaling on touch devices */
+    @media (hover: none), (max-width:940px){ .card:hover{transform:none;box-shadow:0 6px 18px rgba(17,24,39,.04);z-index:auto} }
+    .airline{width:110px;text-align:center;flex-shrink:0}
+    .airline img{width:64px;height:64px;object-fit:contain}
+    .times{display:flex;gap:18px;align-items:center;flex:1}
+    .time{min-width:120px}
+    .time .t{font-weight:800;font-size:20px}
+    .meta{color:var(--muted);font-size:13px;margin-top:6px}
+    .time-center{min-width:90px;text-align:center;color:var(--muted);font-size:13px;display:flex;flex-direction:column;align-items:center;gap:6px}
+    .route-line{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+    .stops{color:#334155;font-size:13px;margin-top:6px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;color:#b06a00;background:#fff;border:1px solid #ffe8bf;margin-left:8px}
+    .duration-pill{display:inline-block;padding:6px 8px;border-radius:8px;background:rgba(30,161,255,0.06);color:var(--accent);font-weight:700;font-size:13px}
+    .stops-pill{display:inline-block;padding:6px 8px;border-radius:8px;background:#f1f5f9;color:#0f1720;font-size:13px}
+    .priceCol{width:200px;text-align:right;flex-shrink:0}
+    .price{font-weight:900;font-size:22px;color:#071133}
+    .selectBtn{margin-top:8px;background:var(--accent);color:#fff;border:0;padding:8px 14px;border-radius:10px;cursor:pointer;box-shadow:0 8px 20px rgba(30,161,255,.08)}
+    /* small screens */
+    @media (max-width:940px){ .cols{flex-direction:column} nav.filters{width:100%} .priceCol{width:140px}}
+    .topbar{max-width:1200px;margin:18px auto 0;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    /* brand / logo (replaced top-left structure */
+    .brand-wrap{display:flex;align-items:center;gap:12px}
+    .brand-link{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-badge{width:56px;height:56px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(2,6,23,.06);flex-shrink:0}
+    .brand-badge img{width:40px;height:40px;object-fit:contain;display:block}
+    .brand-title{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;font-weight:800;font-size:20px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(30,161,255,.12)}
+    .brand-title small{font-weight:600;opacity:.95}
+    
+    /* site navigation */
+    .site-nav{display:flex;align-items:center;gap:18px}
+    .site-nav ul{display:flex;align-items:center;gap:12px;margin:0;padding:0;list-style:none}
+    .site-nav .nav-left .nav-link{padding:8px 6px;color:#333;text-decoration:none;border-radius:6px}
+    .site-nav .nav-left .nav-link.active{color:var(--accent);font-weight:800;border-bottom:3px solid var(--accent);padding-bottom:6px}
+    /* hover style (desktop) */
+    @media (hover: hover) and (pointer: fine) {
+      .site-nav .nav-left .nav-link:hover{
+        color:var(--accent);
+        font-weight:800;
+        border-bottom:3px solid var(--accent);
+        padding-bottom:6px;
+      }
+    }
+    .site-nav .muted{color:#6b7280;font-weight:700}
+    
+    /* right controls */
+    .nav-right .small{color:#333;text-decoration:none;padding:0 6px;font-size:14px}
+    .nav-right .flag{font-size:16px}
+    .login-btn{background:transparent;border:1px solid #333;padding:6px 12px;border-radius:20px;cursor:pointer}
+
+    /* hover / selected style for right-side items and login button */
+    .nav-right .small:hover,
+    .nav-right .flag:hover,
+    .nav-right .small.active,
+    .nav-right .flag.active {
+      color:var(--accent);
+      font-weight:800;
+      background:rgba(30,161,255,0.06);
+      padding:4px 8px;
+      border-radius:6px;
+    }
+    .login-btn:hover,
+    .login-btn.active{
+      border-color:var(--accent);
+      color:var(--accent);
+      background: rgba(30,161,255,0.04);
+      box-shadow:0 8px 20px rgba(30,161,255,0.06);
+    }
+    /* currency dropdown styling */
+    .cur-dropdown{position:relative}
+    .cur-dropdown .cur-btn{background:transparent;border:0;padding:0 6px;font-size:14px;cursor:pointer}
+    .cur-dropdown .cur-menu{position:absolute;right:0;top:calc(100% + 8px);min-width:180px;background:#fff;border-radius:8px;box-shadow:0 10px 30px rgba(17,24,39,.08);padding:6px 0;display:none;list-style:none;margin:0;border:1px solid #eef2f7;z-index:60}
+    .cur-dropdown .cur-menu .cur-item{padding:8px 12px;cursor:pointer;color:#222;font-size:14px}
+    .cur-dropdown .cur-menu .cur-item:hover{background:rgba(30,161,255,0.06);color:var(--accent);font-weight:700}
+    /* language dropdown styling (mirrors currency) */
+    .lang-dropdown{position:relative}
+    .lang-dropdown .lang-btn{background:transparent;border:0;padding:0 6px;font-size:14px;cursor:pointer}
+    .lang-dropdown .lang-menu{position:absolute;right:0;top:calc(100% + 8px);min-width:180px;background:#fff;border-radius:8px;box-shadow:0 10px 30px rgba(17,24,39,.08);padding:6px 0;display:none;list-style:none;margin:0;border:1px solid #eef2f7;z-index:70}
+    .lang-dropdown .lang-menu .lang-item{padding:8px 12px;cursor:pointer;color:#222;font-size:14px}
+    .lang-dropdown .lang-menu .lang-item:hover{background:rgba(30,161,255,0.06);color:var(--accent);font-weight:700}
+     /* show on hover for pointer devices */
+     @media (hover: hover) and (pointer: fine){
+       .cur-dropdown:hover .cur-menu{display:block}
+      .lang-dropdown:hover .lang-menu{display:block}
+     }
+     /* small screens / touch: toggle via .open */
+     .cur-dropdown.open .cur-menu{display:block}
+    .lang-dropdown.open .lang-menu{display:block}
+    /* filters small icons */
+    .filters svg{width:14px;height:14px;vertical-align:middle;margin-right:8px;opacity:.7}
+    /* price range track cosmetic */
+    .price-range{display:flex;gap:0px;align-items:center;margin-bottom:10px}
+    .price-range input[type=range]{flex:1}
+  </style>
+</head>
+<body>
+  <!-- topbar with Home and GoTrip logo -->
+  <div class="topbar">
+    <!-- Home button (click -> homepage) and logo placeholder -->
+    <div class="brand-wrap">
+      <a id="homeBtn" class="brand-link" href="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/Flights/index.html" title="GoTrip home" aria-label="GoTrip home">
+        <span class="brand-badge" aria-hidden="true">
+          <img id="siteLogoImg" src="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/assets/imges/GoTrip Logo.png" alt="GoTrip logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect rx=%229%22 width=%2248%22 height=%2248%22 fill=%22%23ffffff%22/><path d=%22M8 34v-6c0-5 6-9 14-9s14 4 14 9v6%22 stroke=%22%231ea1ff%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 fill=%22none%22/></svg>'">
+        </span>
+        <span class="brand-title">GoTrip</span>
+      </a>
+    </div>
+
+    <!-- main navigation -->
+    <nav class="site-nav" aria-label="main navigation">
+      <ul class="nav-left">
+        <li><a class="nav-link " href="#" data-href="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/Flights/index.html">Buses</a></li>
+        <li><a class="nav-link" href="#" data-href="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/Hotels/index.html">Hotels</a></li>
+        <li><a class="nav-link" href="#" data-href="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/Promo/index.html">Promo Code</a></li>
+      </ul>
+
+      <ul class="nav-right">
+        <!-- language dropdown: hover on desktop, click to toggle on touch -->
+        <li class="lang-dropdown" aria-haspopup="true">
+          <button class="small lang-btn" type="button" aria-expanded="false">EN ▾</button>
+          <ul class="lang-menu" role="menu" aria-label="Select language">
+            <li class="lang-item" role="menuitem" data-value="EN">EN — English</li>
+            <li class="lang-item" role="menuitem" data-value="AR">AR — العربية</li>
+            <li class="lang-item" role="menuitem" data-value="FR">FR — Français</li>
+            <li class="lang-item" role="menuitem" data-value="TR">TR — Türkçe</li>
+            <li class="lang-item" role="menuitem" data-value="RU">RU — Русский</li>
+          </ul>
+        </li>
+         <!-- currency dropdown: hover on desktop, click to toggle on touch -->
+         <li class="cur-dropdown" aria-haspopup="true">
+           <button class="small cur-btn" type="button" aria-expanded="false">SAR ▾</button>
+           <ul class="cur-menu" role="menu" aria-label="Select currency">
+             <li class="cur-item" role="menuitem" data-value="SAR">SAR — Saudi Riyal</li>
+             <li class="cur-item" role="menuitem" data-value="USD">USD — US Dollar</li>
+             <li class="cur-item" role="menuitem" data-value="EUR">EUR — Euro</li>
+             <li class="cur-item" role="menuitem" data-value="AED">AED — UAE Dirham</li>
+             <li class="cur-item" role="menuitem" data-value="GBP">GBP — British Pound</li>
+           </ul>
+         </li>
+         <li><a class="small" href="#" id="supportLink">Support</a></li>
+         <li><a class="small" href="#" id="myTripsLink">My Trips</a></li>
+         <li><button class="login-btn" id="loginBtn" aria-label="Login">Login</button></li>
+       </ul>
+    </nav>
+  </div>
+
+  <div class="wrap">
+    <header class="summary">
+      <div>
+        <div class="route" id="hdrRoute">Loading...</div>
+        <div class="meta" id="hdrMeta">Searching flights — results from multiple providers</div>
+      </div>
+      <div class="dates" id="hdrDates">—</div>
+    </header>
+
+    <!-- Gotrip search bar placed under the header -->
+    <section class="gotrip-search" aria-label="Quick flight search">
+      <div class="gotrip-inner">
+        <div class="gotrip-tabs">
+          <button class="gotrip-pill active" data-trip="oneway">One-way</button>
+          <button class="gotrip-pill" data-trip="round">Round-trip</button>
+          <button class="gotrip-pill" data-trip="multi">Multi-city</button>
+        </div>
+
+        <div class="gotrip-fields">
+          <div class="gotrip-field">
+            <label>From</label>
+            <input id="gotrip_from" type="text" placeholder="User Destination" value="">
+          </div>
+
+          <button class="gotrip-swap" id="gotripSwap" title="Swap">⟲</button>
+
+          <div class="gotrip-field">
+            <label>To</label>
+            <input id="gotrip_to" type="text" placeholder="Arrival destination" value="">
+          </div>
+
+          <div class="gotrip-field">
+            <label>Depart</label>
+            <input id="gotrip_depart" type="text" placeholder="Depart" value="">
+          </div>
+
+          <div class="gotrip-cta">
+            <button id="gotripSearchBtn" class="gotrip-search-btn" title="Search">Search</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      /* Gotrip search bar */
+      .gotrip-search{background:#fff;padding:14px 0;border-radius:10px;margin:14px 0;box-shadow:0 4px 18px rgba(15,23,42,0.04)}
+      .gotrip-inner{max-width:1200px;margin:0 auto;padding:0 12px;display:flex;flex-direction:column;gap:10px}
+      .gotrip-tabs{display:flex;gap:10px}
+      .gotrip-pill{background:#f6faf6;border:1px solid #eef7ee;padding:8px 14px;border-radius:20px;font-weight:700;color:#1ea1ff;cursor:pointer}
+      .gotrip-pill.active{background:#d6dde8;border-color:#ffffff;color:#1ea1ff}
+      .gotrip-fields{display:flex;align-items:center;gap:12px}
+      .gotrip-field{display:flex;flex-direction:column;min-width:160px;flex:1}
+      .gotrip-field label{font-size:12px;color:#6b7280;margin-bottom:6px}
+      .gotrip-field input{height:48px;padding:10px 12px;border-radius:10px;border:1px solid #e7edf3;background:#fff;font-size:14px}
+      .gotrip-swap{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;margin-top: 20px;justify-content:center;border:1px solid #e6eef9;background:#fff;color:#1ea1ff;font-weight:700;cursor:pointer}
+      .gotrip-cta{display:flex;align-items:center}
+      .gotrip-search-btn{background:#1ea1ff;color:#fff;border:0;padding:12px 22px;border-radius:10px;font-weight:800;cursor:pointer ;margin-top: 20px;}
+      @media (max-width:1000px){
+        .gotrip-fields{flex-direction:column;align-items:stretch}
+        .gotrip-swap{align-self:center}
+        .gotrip-cta{width:100%}
+        .gotrip-search-btn{width:100%}
+      }
+    </style>
+
+    <script>
+      // small interactions: pills, swap, search wiring for Gotrip bar
+      document.querySelectorAll('.gotrip-pill').forEach(p=>{
+        p.addEventListener('click', ()=>{ document.querySelectorAll('.gotrip-pill').forEach(x=>x.classList.remove('active')); p.classList.add('active'); });
+      });
+      document.getElementById('gotripSwap')?.addEventListener('click', ()=>{
+        const a = document.getElementById('gotrip_from'), b = document.getElementById('gotrip_to'); const t=a.value; a.value=b.value; b.value=t;
+      });
+      document.getElementById('gotripSearchBtn')?.addEventListener('click', ()=>{
+        const params = new URLSearchParams();
+        params.set('from', document.getElementById('gotrip_from').value||'');
+        params.set('to', document.getElementById('gotrip_to').value||'');
+        params.set('departure', document.getElementById('gotrip_depart').value||'');
+        // navigate to results with query params
+        window.location.search = params.toString();
+      });
+    </script>
+
+    <div class="cols">
+      <nav class="filters" aria-label="Filters">
+        <h4 style="margin:0 0 8px 0">Filters</h4>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Stops</div>
+        <label style="display:block;margin-bottom:6px"><input type="checkbox" data-filter="stops" value="0"> <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M3 12h18v2H3z"/></svg> Nonstop</label>
+        <label style="display:block;margin-bottom:6px"><input type="checkbox" data-filter="stops" value="1"> <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M4 6h16v2H4z"/></svg> 1 stop</label>
+        <label style="display:block;margin-bottom:12px"><input type="checkbox" data-filter="stops" value="2+"> <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M4 12h16v2H4z"/></svg> 2+ stops</label>
+
+        <div style="font-size:13px;color:var(--muted);margin:12px 0 6px">Price range</div>
+        <div class="price-range">
+          <input id="priceMin" type="number" placeholder="Min" style="width:80px;padding:8px;border-radius:6px;border:1px solid #e6eef9">
+          <input id="priceMax" type="number" placeholder="Max" style="width:80px;padding:8px;border-radius:6px;border:1px solid #e6eef9">
+          <input id="priceRange" type="range" min="0" max="2000" step="10" value="1000">
+        </div>
+        <div style="display:flex;gap:8px">
+          <button id="applyFilters" style="flex:1;padding:10px;border-radius:8px;border:0;background:var(--accent);color:#fff">Apply</button>
+          <button id="resetFilters" style="flex:1;padding:10px;border-radius:8px;border:1px solid #cfefff;background:#fff;color:var(--accent)">Reset</button>
+        </div>
+
+        <hr style="margin:14px 0;border:none;border-top:1px solid #eef2f7">
+
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Booking options</div>
+        <label style="display:block;margin-bottom:6px"><input type="checkbox" id="bookOnSite"> Book on GoTrip</label>
+        <label style="display:block;margin-bottom:6px"><input type="checkbox" id="noOvernight"> No overnight flights</label>
+      </nav>
+
+      <section class="results">
+        <div class="toolbar">
+          <div class="tabs" role="tablist">
+            <div class="tab active" data-sort="recommended">Recommended</div>
+            <div class="tab" data-sort="cheapest">Cheapest</div>
+            <div class="tab" data-sort="fastest">Fastest</div>
+          </div>
+          <div class="stats" id="resultsCount">— results</div>
+        </div>
+
+        <div class="list" id="resultsList">
+          <!-- cards injected here -->
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // parse search params
+    const params = new URLSearchParams(location.search);
+    const from = params.get('from') || params.get('origin') || 'Origin';
+    const to = params.get('to') || params.get('destination') || 'Destination';
+    const depart = params.get('departure') || params.get('depart') || 'Any date';
+    const ret = params.get('return') || '';
+    const pax = params.get('passengers') || '1 Adult';
+    const cls = params.get('class') || 'Economy';
+
+    // header
+    document.getElementById('hdrRoute').textContent = `${from} → ${to}`;
+    document.getElementById('hdrDates').textContent = `Depart: ${depart}` + (ret ? ` • Return: ${ret}` : '') + ` • ${pax} • ${cls}`;
+
+    // demo dataset (extend or replace with real API)
+    const sampleFlights = [
+      {id:1,airline:'Saudia',logo:'https://upload.wikimedia.org/wikipedia/en/thumb/4/48/Logo_of_Saudia.svg/1002px-Logo_of_Saudia.svg.png',dep:'15:40',arr:'01:10',duration:'8h 30m',stops:1,via:'RUH',price:509,offers:12},
+      {id:2,airline:'flyadeal',logo:'https://iconlogovector.com/uploads/images/2025/02/sm-67a940062feee-Flyadeal.webp',dep:'15:40',arr:'22:05',duration:'5h 25m',stops:1,via:'RUH',price:336,offers:5,cheapest:true},
+      {id:3,airline:'Saudia',logo:'https://upload.wikimedia.org/wikipedia/en/thumb/4/48/Logo_of_Saudia.svg/1002px-Logo_of_Saudia.svg.png',dep:'15:40',arr:'03:00',duration:'10h 20m',stops:1,via:'RUH',price:509},
+      {id:4,airline:'Saudia',logo:'https://upload.wikimedia.org/wikipedia/en/thumb/4/48/Logo_of_Saudia.svg/1002px-Logo_of_Saudia.svg.png',dep:'19:55',arr:'09:45',duration:'12h 50m',stops:2,via:'JED',price:775},
+      {id:5,airline:'Flynas',logo:'https://logowik.com/content/uploads/images/nas-air-flynas8667.jpg',dep:'08:00',arr:'11:10',duration:'3h 10m',stops:0,via:'Nonstop',price:599},
+      {id:6,airline:'BlueJet',logo:'https://logos-world.net/wp-content/uploads/2023/02/JetBlue-Emblem.png',dep:'21:15',arr:'00:05',duration:'2h 50m',stops:0,via:'Nonstop',price:359}
+    ];
+
+    let current = [...sampleFlights];
+
+    const resultsList = document.getElementById('resultsList');
+    const resultsCount = document.getElementById('resultsCount');
+
+    function renderList(list){
+      resultsList.innerHTML = '';
+      resultsCount.textContent = `${list.length} results`;
+      list.forEach(f => {
+        const card = document.createElement('div');
+        // add recommended highlight for first item or flagged cheapest
+        card.className = 'card' + ((f.recommended||f.cheapest||list.indexOf(f)===0)?' recommended':'')
+        card.innerHTML = `
+          <div class="airline">
+            <img src="${f.logo}" alt="${f.airline} logo" onerror="this.src='https://via.placeholder.com/80x80?text=✈'">
+            <div style="font-weight:700;margin-top:8px">${f.airline}</div>
+          </div>
+          <div class="times">
+            <div class="time">
+              <div class="t">${f.dep}</div>
+              <div class="meta">${from}</div>
+            </div>
+            <div class="time-center">
+              <div class="duration-pill">${f.duration}</div>
+              <div class="route-arrow" aria-hidden="true">➜</div>
+              <div class="stops-pill">${f.stops===0?'Direct': f.stops+' stop'+(f.stops>1?'s':'')}</div>
+            </div>
+            <div class="time">
+              <div class="t">${f.arr}</div>
+              <div class="meta">${to}</div>
+            </div>
+          </div>
+          <div class="priceCol">
+            <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px">
+              ${f.cheapest?'<div class="badge">Cheapest</div>': (f.offers?'<div class="badge">from '+f.offers+' sites</div>':'')}
+            </div>
+            <div class="price">SAR ${f.price}</div>
+            <button class="selectBtn" onclick="selectFlight(${f.id})">Select</button>
+          </div>
+        `;
+        resultsList.appendChild(card);
+      });
+    }
+
+    function selectFlight(id){
+      const f = sampleFlights.find(x=>x.id===id);
+      alert('Selected: ' + f.airline + ' • ' + from + ' → ' + to + ' • SAR ' + f.price);
+      // navigate to booking page when available
+    }
+
+    // sorting tabs
+    document.querySelectorAll('.tab').forEach(t=>{
+      t.addEventListener('click', ()=>{
+        document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+        const mode = t.dataset.sort;
+        applySort(mode);
+      });
+    });
+
+    function applySort(mode){
+      if(mode==='cheapest'){
+        current = [...sampleFlights].sort((a,b)=>a.price-b.price);
+      } else if(mode==='fastest'){
+        // simplistic: parse hours from duration
+        const durToMin = d=>{
+          const m = d.match(/(\d+)h\s*(\d+)?m?/);
+          if(!m) return 9999;
+          return Number(m[1])*60 + (m[2]?Number(m[2]):0);
+        };
+        current = [...sampleFlights].sort((a,b)=>durToMin(a.duration)-durToMin(b.duration));
+      } else {
+        // recommended: preserve original order or mixed metric
+        current = [...sampleFlights];
+      }
+      renderList(current);
+    }
+
+    // filters: simple implementation
+    // filters + price range slider wiring
+    document.getElementById('priceRange').addEventListener('input', e=>{
+      const max = e.target.value;
+      document.getElementById('priceMax').value = max;
+      // live update
+      applyFilters();
+    });
+    document.getElementById('applyFilters').addEventListener('click', applyFilters);
+    document.getElementById('resetFilters').addEventListener('click', ()=>{
+      document.querySelectorAll('input[data-filter="stops"]').forEach(i=>i.checked=false);
+      document.getElementById('priceMin').value=''; document.getElementById('priceMax').value='';
+      document.getElementById('priceRange').value=1000;
+      current = [...sampleFlights]; renderList(current);
+    });
+
+    function applyFilters(){
+      const stopsChecked = Array.from(document.querySelectorAll('input[data-filter="stops"]:checked')).map(i=>i.value);
+      const min = Number(document.getElementById('priceMin').value) || 0;
+      const max = Number(document.getElementById('priceMax').value) || Infinity;
+      current = sampleFlights.filter(f=>{
+        if(!(f.price>=min && f.price<=max)) return false;
+        if(stopsChecked.length){
+          const okStops = stopsChecked.some(s=>{
+            if(s==='2+') return f.stops>=2;
+            return Number(s)===f.stops;
+          });
+          if(!okStops) return false;
+        }
+        return true;
+      });
+      renderList(current);
+    }
+
+    // init
+    applySort('recommended');
+    // set default slider max (approx)
+    document.getElementById('priceRange').max = Math.max(...sampleFlights.map(f=>f.price), 1000);
+    document.getElementById('priceRange').value = document.getElementById('priceRange').max;
+    document.getElementById('priceMax').value = document.getElementById('priceRange').value;
+
+    // Home/logo helpers:
+    // - clicking the Home button / logo already navigates via the anchor href.
+    // - to set your logo file programmatically, update #siteLogoImg.src:
+    //   document.getElementById('siteLogoImg').src = '../assets/your-logo.png';
+    // - Example: if you prefer a JS click handler instead of anchor:
+    document.getElementById('homeBtn')?.addEventListener('click', function(e){
+      // allow normal anchor navigation; this listener is optional
+    });
+
+    // NAV selection: make nav-left items selectable and optionally navigate
+    document.querySelectorAll('.site-nav .nav-left a.nav-link').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        document.querySelectorAll('.site-nav .nav-left a.nav-link').forEach(x=>x.classList.remove('active'));
+        a.classList.add('active');
+        const href = a.dataset.href;
+        if(href){
+          // encode spaces and special chars
+          window.location.href = encodeURI(href);
+        }
+      });
+    });
+
+    // On desktop pointer devices allow hover to temporarily highlight menu
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      const navLinks = Array.from(document.querySelectorAll('.site-nav .nav-left a.nav-link'));
+      // do NOT default to the first item — only restore if there's an explicitly persisted active item
+      let persisted = document.querySelector('.site-nav .nav-left a.nav-link.active') || null;
+      navLinks.forEach(a=>{
+        a.addEventListener('mouseenter', ()=> {
+          navLinks.forEach(x=>x.classList.remove('active'));
+          a.classList.add('active');
+        });
+        a.addEventListener('mouseleave', ()=> {
+          navLinks.forEach(x=>x.classList.remove('active'));
+          // if there is a persisted clicked item, restore it; otherwise leave none active
+          if(persisted) persisted.classList.add('active');
+        });
+        a.addEventListener('click', ()=> { persisted = a; });
+      });
+    }
+
+    // Language and currency selection (persisted)
+    function setPref(cls, val){
+      localStorage.setItem(cls, val);
+      document.querySelectorAll('.' + cls).forEach(el=>{
+        el.classList.toggle('active', el.dataset.value === val);
+      });
+      // update visible currency button when currency changes
+      const curBtn = document.querySelector('.cur-btn');
+      if(curBtn && cls === 'cur'){
+        curBtn.textContent = val + ' ▾';
+      }
+      // update visible language button when language changes
+      const langBtn = document.querySelector('.lang-btn');
+      if(langBtn && cls === 'lang'){
+        langBtn.textContent = val + ' ▾';
+      }
+    }
+    // remove the old .lang/.cur click binding (we now use dropdown items)
+    // init from storage (fallbacks)
+    setPref('lang', localStorage.getItem('lang') || 'EN');
+    setPref('cur', localStorage.getItem('cur') || 'SAR');
+
+    // language dropdown behavior (touch/click)
+    (function(){
+      const dropdown = document.querySelector('.lang-dropdown');
+      if(!dropdown) return;
+      const btn = dropdown.querySelector('.lang-btn');
+      const menu = dropdown.querySelector('.lang-menu');
+      // toggle on button click (useful on touch)
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        dropdown.classList.toggle('open');
+        btn.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+      });
+      // select language from menu
+      menu.querySelectorAll('.lang-item').forEach(item=>{
+        item.addEventListener('click', function(e){
+          const v = this.dataset.value;
+          setPref('lang', v);
+          // mark active in menu
+          menu.querySelectorAll('.lang-item').forEach(i=>i.classList.remove('active'));
+          this.classList.add('active');
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          // optional: load localized resources or update UI strings here
+        });
+      });
+      // close when clicking outside
+      document.addEventListener('click', function(ev){
+        if(!dropdown.contains(ev.target)) {
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      // initialize active menu item
+      const saved = localStorage.getItem('lang') || 'EN';
+      const activeItem = menu.querySelector(`.lang-item[data-value="${saved}"]`);
+      if(activeItem) activeItem.classList.add('active');
+    })();
+
+    // currency dropdown behavior (touch/click)
+    (function(){
+      const dropdown = document.querySelector('.cur-dropdown');
+      if(!dropdown) return;
+      const btn = dropdown.querySelector('.cur-btn');
+      const menu = dropdown.querySelector('.cur-menu');
+      // toggle on button click (useful on touch)
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        dropdown.classList.toggle('open');
+        btn.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+      });
+      // select currency from menu
+      menu.querySelectorAll('.cur-item').forEach(item=>{
+        item.addEventListener('click', function(e){
+          const v = this.dataset.value;
+          setPref('cur', v);
+          // mark active in menu
+          menu.querySelectorAll('.cur-item').forEach(i=>i.classList.remove('active'));
+          this.classList.add('active');
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        });
+      });
+      // close when clicking outside
+      document.addEventListener('click', function(ev){
+        if(!dropdown.contains(ev.target)) {
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      // initialize active menu item
+      const saved = localStorage.getItem('cur') || 'SAR';
+      const activeItem = menu.querySelector(`.cur-item[data-value="${saved}"]`);
+      if(activeItem) activeItem.classList.add('active');
+    })();
+
+    // optional: simple handlers for support/my trips/login
+    document.getElementById('supportLink')?.addEventListener('click', e=>{ e.preventDefault(); alert('Open Support (implement link)'); });
+    document.getElementById('myTripsLink')?.addEventListener('click', e=>{ e.preventDefault(); alert('Open My Trips (implement link)'); });
+    document.getElementById('loginBtn')?.addEventListener('click', e=>{ e.preventDefault(); alert('Open Login (implement link)'); });
+  </script>
+</body>
+</html>

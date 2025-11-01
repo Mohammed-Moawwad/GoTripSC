@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< Updated upstream
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -814,4 +815,484 @@
 
     <script src="HomePageHotels.js"></script>
   </body>
+=======
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GoTrip — Hotels</title>
+  <link rel="stylesheet" href="hotels.css" />
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header class="site-header" role="banner">
+    <div class="container nav">
+      <a href="../Flights/index.html" class="brand" aria-label="GoTrip Home">
+  <span class="logo">
+    <img src="../assets/imges/logo.jpg" alt="GoTrip Logo" class="logo-img">
+  </span>
+  <span class="brand-name">GoTrip</span>
+</a>
+
+
+      <nav class="primary-nav" aria-label="Primary">
+        <a class="nav-link" href="../flights/index.html">Flights</a>
+        <a class="nav-link active" href="./hotels.html">Hotels</a>
+        <a class="nav-link" href="../buses/buses.html">Buses</a>
+      </nav>
+
+      <div class="actions">
+        <div class="lang">
+          <button class="lang-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2a10 10 0 100 20A10 10 0 0012 2Zm0 2c1.5 0 3.6 2.7 4 6H8c.4-3.3 2.5-6 4-6Zm-4 8h8c-.4 3.3-2.5 6-4 6s-3.6-2.7-4-6Z"/></svg>
+            <span id="langLabel">English</span>
+            <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </button>
+          <ul class="lang-menu" id="langMenu" role="listbox" tabindex="-1">
+            <li role="option" data-lang="English" aria-selected="true">English</li>
+            <li role="option" data-lang="العربية">العربية</li>
+            <li role="option" data-lang="Français">Français</li>
+            <li role="option" data-lang="Deutsch">Deutsch</li>
+            <li role="option" data-lang="Español">Español</li>
+            <li role="option" data-lang="Türkçe">Türkçe</li>
+            <li role="option" data-lang="Русский">Русский</li>
+            <li role="option" data-lang="中文">中文</li>
+            <li role="option" data-lang="हिन्दी">हिन्दी</li>
+            <li role="option" data-lang="Português">Português</li>
+          </ul>
+        </div>
+
+        <button class="icon-btn" id="cartBtn" aria-label="Cart">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M7 18a2 2 0 104 0 2 2 0 00-4 0zm8 0a2 2 0 104 0 2 2 0 00-4 0zM7.2 6h12.3l-1.5 7.5a2 2 0 01-2 1.5H9a2 2 0 01-2-1.5L5.3 4H3V3h3a1 1 0 01.98.8L7.2 6z"/></svg>
+          <span class="badge" id="cartCount">0</span>
+        </button>
+
+        <a href="#" class="btn sign-in-btn">Sign in</a>
+
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobilePanel">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-panel" id="mobilePanel" hidden>
+      <nav class="mobile-nav" aria-label="Mobile">
+        <a class="nav-link" href="../flights/index.html">Flights</a>
+        <a class="nav-link active" href="./hotels.html">Hotels</a>
+        <a class="nav-link" href="../buses/buses.html">Buses</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your Journey Begins Here</h1>
+      <p>Discover, Book, and Go Anywhere</p>
+    </div>
+
+    <!-- Hotels booking card -->
+    <div class="booking-card">
+      <div class="booking-head">
+        <span class="head-icon"><img src="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/assets/imges/h-icon.jpg" alt=""></span>
+        <span class="head-title">Hotels</span>
+      </div>
+
+      <form id="hotelForm" class="grid-form" autocomplete="off">
+        <div class="field">
+          <label for="dest">Destination</label>
+          <input id="dest" placeholder="City, hotel, or landmark" required />
+        </div>
+        <div class="field">
+          <label for="checkin">Check-in</label>
+          <input id="checkin" type="date" required />
+        </div>
+        <div class="field">
+          <label for="checkout">Check-out</label>
+          <input id="checkout" type="date" required />
+        </div>
+        <div class="field">
+          <label for="guests">Guests & Rooms</label>
+          <select id="guests">
+            <option>2 Adults in 1 Room</option>
+            <option>2 Adults, 1 Child</option>
+            <option>Family (4)</option>
+            <option>Group (6+)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="hclass">Class</label>
+          <select id="hclass">
+            <option>Economy</option>
+            <option>Business</option>
+            <option>Luxury</option>
+          </select>
+        </div>
+        <label class="checkbox">
+          <input type="checkbox" id="freeCancel" /> <span>Free cancellation</span>
+        </label>
+        <button class="search-btn" type="submit">Search</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== Stories ===== -->
+  <section class="stories">
+    <div class="container">
+      <h3 class="section-title">Stories</h3>
+      <div class="story-grid">
+        <a class="story-card" href="#">
+          <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1400&auto=format&fit=crop" alt="Direct vs third-party" />
+          <div class="story-info">
+            <strong>Should You Book Direct or Go Third-Party When It’s Nonrefundable?</strong>
+            <span class="meta">GoTrip Travel Blog</span>
+          </div>
+        </a>
+        <a class="story-card" href="#">
+          <img src="https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?q=80&w=1400&auto=format&fit=crop" alt="Asian scholarships" />
+          <div class="story-info">
+            <strong>Top 10 Asian Countries With Generous Scholarships (2025-2026)</strong>
+            <span class="meta">GoTrip Travel Blog</span>
+          </div>
+        </a>
+        <a class="story-card" href="#">
+          <img src="https://images.unsplash.com/photo-1500835556837-99ac94a94552?q=80&w=1400&auto=format&fit=crop" alt="Midnight glow" />
+          <div class="story-info">
+            <strong>The Midnight Glow: Why Some Places Are Better After Sunset</strong>
+            <span class="meta">GoTrip Travel Blog</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Popular Hotels in Jeddah ===== -->
+  <section class="popular-hotels">
+    <div class="container">
+      <h3 class="section-title">Popular Hotels in Jeddah</h3>
+      <div class="hotel-cards">
+        <article class="hotel-card">
+          <img src="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/assets/imges/radison blue hotel.jpg" alt="Radisson Blue Jeddah" />
+          <div class="h-info">
+            <strong>Radisson Blu Hotel, Jeddah Corniche</strong>
+            <div class="meta"><span class="stars">★★★★☆</span><span class="reviews">4.5 (2,428 reviews)</span></div>
+            <div class="price">Per night <b>SAR 568</b></div>
+          </div>
+        </article>
+
+        <article class="hotel-card">
+          <img src="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/assets/imges/ " alt="Rosewood Jeddah" />
+          <div class="h-info">
+            <strong>Rosewood Jeddah</strong>
+            <div class="meta"><span class="stars">★★★★★</span><span class="reviews">4.8 (1,084 reviews)</span></div>
+            <div class="price">Per night <b>SAR 836</b></div>
+          </div>
+        </article>
+
+        <article class="hotel-card">
+          <img src="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/assets/imges/Assila, a Luxury Collection.jpg" alt="Assila Luxury Collection" />
+          <div class="h-info">
+            <strong>Assila, a Luxury Collection</strong>
+            <div class="meta"><span class="stars">★★★★★</span><span class="reviews">4.7 (735 reviews)</span></div>
+            <div class="price">Per night <b>SAR 897</b></div>
+          </div>
+        </article>
+
+        <article class="hotel-card">
+          <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?q=80&w=1200&auto=format&fit=crop" alt="Waldorf Astoria Jeddah" />
+          <div class="h-info">
+            <strong>Waldorf Astoria Jeddah - Qasr Al Sharq</strong>
+            <div class="meta"><span class="stars">★★★★★</span><span class="reviews">4.9 (526 reviews)</span></div>
+            <div class="price"><a href="#" class="rates">Get rates</a></div>
+          </div>
+        </article>
+
+        <article class="hotel-card">
+          <img src="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/assets/imges/Swissôtel Living Jeddah.jpg" alt="Swissôtel Living Jeddah" />
+          <div class="h-info">
+            <strong>Swissôtel Living Jeddah</strong>
+            <div class="meta"><span class="stars">★★★★☆</span><span class="reviews">4.4 (958 reviews)</span></div>
+            <div class="price">Per night <b>SAR 629</b></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Hotels in Jeddah (tiles) ===== -->
+  <section class="mini-tiles">
+    <div class="container">
+      <h3 class="section-title">Hotels in Jeddah</h3>
+      <div class="tiles-row">
+        <a class="tile" href="#"><img src="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/assets/imges/best of hilton.jpg" alt=""><span>The best of Hilton Hotels and Resorts</span></a>
+        <a class="tile" href="#"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxITEhISEhMVFRUVEhUVFRUSExUVFRUVFRUWFhYVFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy4lHiUtLSstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tKystLS04LS0tLS0tN//AABEIAKgBKwMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAACAwEEBQAGB//EAEAQAAEDAwEFBgQDBgUDBQAAAAEAAhEDEiEEBRMxQVEUIjJhcZEGUoGhQsHRFSMzYrHwFkNT4fEkkqIHVHKT0v/EABoBAAMBAQEBAAAAAAAAAAAAAAABAgMEBQb/xAApEQACAgEDBAEEAwEBAAAAAAAAAQIREgMhUQQTMUEVFCJSYTJCcSMF/9oADAMBAAIRAxEAPwC9U0pnBwpqtACe6pHFVargZXqq2eeyqHckynpQTlFpNOCrx04AVOSXgSRma/SxBaFVp1CFp6k4ys8tW0Ha3MZ+QWPIM/0R1KpM8c9VFis6d4By0K3RJT3aOnTC1amqaY7gPqljUD5G/QKc2/QUuSrSoEmIn+iuP0J6NBjkibqQMgQ7qgp6h0zKh5N7FqkUq2kc3i0hLZpy7AC2RrCfEJHRIqVvlbHnzVqcuCXFcma6iRxEKLVpUXFz23ZzzV3VV6TCAaRMgZayRnGYXPr9YtJqLV+9jbR6bupyTr/TCFNM3K2tbUo0mGo9rbQQDAJOeGFSHxFpPL/scsPkov8AqzZ9DJf2RR3SltNWTt/R+X/1uUj4i0g4O9mO/RKX/o8RY10T9yQpunPQ+xTG0D0PsVoa7adOjRFao62mbYdJ/FwwqFH4u0byA2tJgnAdwa0uPLo0n6LD5Of4mv0EfyDbRPQ+yZuT0Psg0fxRpasCnULpcGiGviTwEwru0NqMoECq4tJBI4nh6I+Tn4wH9BH8ioaB6H2KHcnofZaFHaDHUjWa4lgBJMnlxxxVA/FGl/1T7O/RHyU/wE+gj+RApnouNNQfifTf6v2d+iv07KjW1RJa8AtMkSDwwj5OS/lAXx6eykUgxTYrwY3p911jeir5XT4YvjZ8opbtdYrkN6KMdEfK6XDD43U5RVsXWKzI6LrF1dP1cddNx9HPrdNLRpSK4aoLVYsXWLoswKpYlmmrpppRYky4iKtfHBUJz1TnElRYnFJCcrG6XUAEzw5Kx20QqYYpDEnGIsmHWq3ZhJsTgxGGqk0iHuIFNMA8k0NRWIyAQWrgxWAxMpUpKMgoRTplPqaMjmCrptaBMFG19NZPUZqoL2ZbqBCZ2aWgjJOIhaOooNIwQq1hHA+ypTslwoXR0Tg5pI5o9oa2jTdu3k3FsjukiM/iHon0ajpAPXmszb5fvm2mvbuxO6FN1KZf4ycz6Ly+ubeon+j0ejrBr9mlrdBTqt3b8h/eAGJDSD+YWVrdg6SkwvqBzWgwTLj/AEWxrCbRBdO5d4IumG8JwHdAsNtSqdM/v6oulmbKe+5z3Tg+y89XydzrgrjZ2gJtDjOMS7nwTdRsXRNqCk4uDyAQJfkeR4Jmtc6yiWmuJc6406dMk5xvQcgeiZrHP39LvV7bKcgMYaUkjifEHfZO3yyduBuq7NWB0jnXbsgFkGQWCRnnwVLRaHQbt76ZFga4OOYAMsdx9YVrTF/aasuqkXOgPp07ALXfw3jJHqq2kL9xWl1e63BNKlvB38WtAtP1QlXsdk6PZWiY0PpwG3ggicuAx64VnbOn09fdms7NstgkSHenoq1dz9xSh1YHeiS2lSL4tyHtIgDqRmYU65z7tOA+rG7MhtKmabvEO+SJb6BFe7C/0XaFCi1jtG1+DILcl0OnmsUbA2eWvfebabSXm90NDTDifRa1Nzu1uBNQiWwHU2bvhm18SfOVS0L3bvUS+sSGPIJoUhUGR4ABDj0nii2vbDZ+il+w9nbve7w7u4NuvdEmIH1lbml1unpsZQbVbDAAAePdHXmqF7uzTdWneMkihT3kFv4mREdTGFOvcQaBDqgkPLrKNNzXRMbwkS3yylJZfybGnXhGjX19Br3MdUAe0AuBBkAxBPuup6yg662oCGtJcROAOKquBOrgl5Yd3DXUqZpRAmHxJ85mEjQ1DFfNWQyrF1FjSMjwQIdjAniowRXcka2h3dVgfScHMMw4AwY4pGqr0qbL3vDWy4SZju8Vls1NRumJFWuHXU+8KLN4JunuREHnAV3WPO4YZfJc7LabXP8A+0490sFY+4/Jd09rwHMMjGY68FbFLzVfQnu8+A8QaDw6NTQV6nRRUMkuTzuqk502FuwjewdIQrpK77OShZYkuarDglFqeQkjLsU2J4aiDFpZnQgMUhieGIg1FioQKaMU04MRNYlYUJFNFu04NRWosKEWKbE61cGJWKhNiIMT91HH7LrUWPEWGJrXRiAotUwpKBp+IeqyfiRp37TZd3B3u0bsjL8Cnabv91s0xkeqx/iNzd+wONGTTGKoO84u8JGAF5vWv71/h6HSfxf+mtrPCMf5D579o8LcExz68lhU6Z7LUBpnizu9q6Twqwt7WHuibf4D/FJEWtnHNvVefpuZ2WoZ09stzD9zz4jiOC4UdjHa6md3Q7jjD3GO0WkZ6xFT0R65hNekbHHuUu82vEZGDTjPqla0t3VCTQ8bi2+4gmfwHkfVHro7TR/gXbunF129ifwnogB9BhGpqG0wXPyK9w8Ls2R3PRVtJTO4rixwwcdpunv8qsd3+wrGlc3tVYA0SbnzaCKnhd4/NVNEWjT1z/01tpkgO3XjPjB5dfNADK1I7imLXn96DA1AaR3eN8d4eSnXNM0CGPP7oyRXDY44c38R80iu5vZqVx00b4Wlxdu5t/BzDuidr7L9NJozujaHF15E5NMz4eqALNOie1vMPHebnegtMD/T/D59VW0VMinXFj/A+AdQHTkYa/8AD+SdSDe2v/g3S2bbhV8J8XL0VTRMYKeqI7NBY8uLQ7d8R/Eb0xnkgA30T2YC2of3rDHaAHCGj8fMdRzRaumTuO7Uw2pJFYNjvHxD8f5JNTdnSiez276mRJcaU2iI/m6JuttnTfwJtfF5dfF3+WenVAD7D2uYfEs729BYe63/AC+SraCkYrS2q3u1hDq7XTLhEEeHy6JrQ3tp/gXTT4F2+HdHiH9FX0BYW6kDs8W1psLrR3hIqD+sJDI3B7NEVfEzHaBfif8AMjP5qzrGk0GANecuwKwY76vhZ2q3Z0eezWX0vE54o8yIPEHoruvczcMaTR/GYqF1mSMxxPmk/IejX2eO7z4Di67l1jPqrAaq+gqtDfE0C0HDsRAyJyAnUtXTLrQ9pd0DhPsu7p5pN7+zi1k2kMDVNqRtWpZSc4chj1SdjbQFVoki7OAuh66U8Gc+Dqy4WYPDEcSP6c0qFX1E713hENaG54kn8QjAXanVhri20Y829PNT9Ru79Gva2VAhqINRhiNjV2Zo5MGKtUhia6BGePDzUwjNBgxYajDUQCIBGYYghqm1GAuSzQYgQiKmFx4ScDqk5pDUWcGypsUtrNGZbHUlG6vg8IUPVRfb5AZSlc+kQsjWfFGnp3ZLiOTeZ6Ap+ztvUKwNriCBJDhn6RxWD6uCfk0Wg34Rea3IWN8QFwqth9VrbMhlJj6Zy7xPIkeitt23QlwLrbX2S4YJxwz0KnWaZlZwcKjwQ3AY9wbE8S0ea49fXhOSaZ2aGlKKpj9S7uiCR+5fwaCZhuROAfJY1J7uz1P3la6Wy4UWb3nMsiDzW7XpyACXRYWd24HIAmeq85tTUso03Ubq0ktOXG6BOQ4nryXNmkdDiyxrHu3VGKlQd902UmOkSPGI7o8wmax7hWpd+oAadPu7phpz1ui5p8pWM+qWUy6q/UQC1zBvLcuORIdmOhC6r8Q0jVDzvgGta3DzkDm5sxJI+6O4iTc0zj2qqC957zoa6mwBotd4HgSRjiVW0lR24rzUqk2+I0GB472CGAQ7jwhefr7Xd2g1mvc1pcTaTMjgW+Qyt3Y9anUupb2oBUaRcXuBEZ7rgZ8lK1UFBVXu7NTO8qD99ksoMJPd4PYRAHmM4TdW+Dp+8+N1wFFpYTPFxI7p8gr79nsLAzfP7r7g4VHh3CIJ4keRVDWanTXA9oqTTFktLhdMklwmDHVU9RDcWh7Hntbhe+JbDTSbaMfhqRJVTRVXbvUTUqEhj+NFoeM4tbEPjlgypr7YbTcK9G4ueR43OcwAcSGEwD9EzaXxJvgWOcQC2DZ3T52lsEDHFT3ohQl1Q9mm+pO9ZkUG3RbwdTjHPPJFrah/6eHvAtfIbRa5rsmLzHc/NUDqZDWX1bZB/iOBx5o9ua8Ddim95ewQDvCAZMulvMpd6I6L+r1QZXcXGpAtMGk2zDBhlSOJ8+qpaHaDbarjVOWVLSadMO7xaQGgDvEdIysPau0947i9ryYneOtMAAC36LOZqyMNJmIcGjPEcD0wk9RvdeCT1tfUt3ECsQ4uaZNFhJABkFkR+iy9o1DlwJzPQTwjHLmsw6ksEuJb/KevnCtalxbToB0XOaS4YGJcARdghZTlOXlDTKZrtAkk/nPHMq3s3V2E1WuAc2LbgSDOD06qjUosrOa3uhzS8Dg3i0tM+8q/s/QkhjahMi7I5kNGTzIMcEuGnTJe56Glt9mopGlUJY4gmQBaQMiMnyCrabb7dM7dWXCTnn5wq3ZqVM6dtRxdvAC0g8HNM5aOkjisfaAbvapaWlzXvkST+LPHn5LolqzyTshaSqj3NPbNFwc8OjDZB4iOULP1ejoVHuqXDvGfER5Lxe9c0AttMyCJhx/+OIP2VikcCTnj75Uy1p+Wh4cHo+2AMFPeHeOaWlxeTyBFo4ZmPonbA26HuFD5GiXE5xxJ+sLQ1Oy6JayqwcGuIJtMw0wZbgnjlZFD4YrZc1rZcJLpgRaDkx1BK3jqThJEvSTRq1Wzqab7+6GuBEiAYiPrI9k7aLql9AM8O8BcR0Bn24rL/wAJ6guDC5rXd55758MNAnHHKKt8P6mlk12eEBkl+Bdxm3hE8lp3mk9vdk9pOjd1OrZTbe8gNHMrtNrqbxLHtd6H8l5DW6R9kPr04Ak999s5/kWHoGvNWyndJkAwYcYPICY4clp9W7qjP6c99tTbrKTSQQ4wYggi4cj0XmdZ8UVXRabIdMNANwnAWx8N7Kpsa6rUa7fAkjxWWuDQTBHWRK1XbN0tU3VmOJbFu7J6ggQOJJWUtTUnvdGkdKK2PJs+KKwq3ugtLe60mAc5dwWjrNrMr0XjLC20ls5OSDw/Na20NjaJwNVlOqXzAAa8xyIsiAsGlo+9uXb8NJcQ40SBiTx5+ah6mpVeiu0rME0nxPeg9cCByI9Fx1lbPffhsRIHOOXJalGg6nTeyyoW3SC5pFNw8vNVTTayAGOw6x08g8Eh0eIHEZXPvZeKoygyo7BaMPY6c+C6HEHy4rTo7NeGteXFoc6ZpjIHQxkT+asDTuDWudTLTJuuaRgHkDygLY01Rz22w6H3ETSJBcIm1w5I3fhFpJGfrdHTeSWl9z2zTa4DLiIguHDLTnyCnTaWo17ajwQ20cxHjsDgOEz18yrFEVi0092+0thr20nGD3iIcPPnyU7U1ld9PdmnVgjN9G2bePPh5op+aG6L22tpCnTYKZJcS0kwci610zw4HmsfXaG5wrEWhwls3kgYGRIEE3D6LdNE6imwvD2hkNNN1OCTAAMcfvlIIrVAWneWiBB0xaDBPA3cMdE6tvYL2PL9nrPxBEuDRJ7txcGiQeHH7K3pvhvUm0NDQHE2uJJuID5LuQAshbm0WuMtNKpLXOIIpkE4nA4mfyWRV1urLHHdvADSDAcG3CXcTzzwTjFK7RLpMw9T3Xlha64BptggG6ZOR15SrdPUgU2lgPdfZLQYkAOmOneCtMfWJINKq4m26GEwLec+au1tC99NxcIc95dllkW02tyAOENGVMoqgjv4HU/iaWxa0giJa4gzBzP04Lz2tJi8EQ64iRhxE4n6Kdm6PNJrmkzlwDYLZAOZ5ZGecL0Wv0rG0e+TAkABrASGlwuAHDxIwxK3l5MdtchtMOAImoY8PcY6mDnqb+Kd2UGQBa4gkZwcjg4mTAKZqaNJppgEwd43lIl9LgCYOWhWqwFjS0ky6DjgJggEeYHulfAUJr2tIc24gNgHrEz9wq+2X05Y/d7sFsiQ4CY4yeP+6vs1psaBAY+mS8BoMkOeR4siCPqs+rVdqaVd+pqSGMZTabMNEgghreamML+4cjF2hpnU4FQmHAOBbg2uGWzyyIlFU04pMaQ107sSJLiDJPrK9XszQaTU7ynWe+KbGd4CJa62cQYHdb7qztjYVC1raBqPc7uniCAMiCAMytqtbEUeAqulxpuYTNlji0SbmB5BkcshXPibRfwIJw0MYC4nEugD6kBbml2a11S5zHm22YnDQd24jzkET1lenr7E0NV7HPe+abzu4kDjIJAHUp19w62Z872c0OLuLXMuBcWgCpYA0n1DiR9FrVhbSpODoLajhJMAhzWnh9P6rY2xpaGmYHUS7AqSKjCW2gSeUnvHksV1dzd2YBb2mmzIxa+k4Sc/MWhRPSblsNVRQ0V7qtPvAmlXYXMeHNcORgyRnn1COjSG/qySWDUOJYcjvv73AeRWxtIEP05dQDTe1pqAEXB4JJ4cAQsvRB7dbXaS0M3hdLjABbUaTJ9Crp+P0JJI09naLR6zUU9PQNSlvC+9wZDjaHvDhfOTAHovWN/9MNOBHaa/tR//AAvAP1lWlrnVKVQM4lloFwDmAek5P0Wv/irW/wDuH/8Aj+icpqI4wcj1tLZ8UhS5C4fRxPT1VGl8PU441AeHeq1nDHAgOfAwrQ2rT6uU/tWn1d7JrT1vxYnqaXKK7vhxpMh5k8SS6T/5J79iSINVxxAJdUdHoCfsj/abPmd7Kf2mz5j7I7et+Iu5pcoq/wCG2kGXAyIODn6I9J8Oim5r2EBzSCOPJPG1KfzH2RDaTPmKeGt+IdzS5LOmp1KRDpae6Gc/nLuEfzKKzKr3tfLQW2nHAxnkEkbRYfxH2UnaDB+L7IrVSrEM9PzZa2e2tTmLc+Z6R0U6ltZxBlsjeRn/AFBHRVRtFnzoxtFvzhL/AKVVDyh5sq6jY73U2sEYGTfxgc5Co634WdUvJDJe9jpByLJjl5ra/aLfnCIbRHzNScp8DuHJmanZNeowMfBic3CYKsaLQ1qbaLQ0HdCp+IZvVwa8fM1T23+Zvupbl5of28jdmV6tGkGFuGkmQWRBcSf6qrtA1a0EMxD/AMTfxEEc08av+Ye4UjVeY+yHqOqoMVd2VHsqmoKlmRYeLeLQ3z8lqDatRrY3bsAcmnqTifNIGrPUe6kao+XuhatA4p+ytqdTVfWp1Qx0NBHAdHAYnzWbX0FZ2ndRsMmoXCSIgtA6rc7SfJT2p3Ue6T1LGo0Y+j0lZrqrrcvLeY/C2FWr6WrzlxdcwZnLmkGei396fJS156DPFLu7UJQV2eTPw7VbDi5je60GTnAiJ+iGtsB72hgqNLg7xAki0nIPKV7Denou3p+VS5W7KxVUeS13w+1rGAgXCSHS45JbP5H6J1P4YmnbEyDk3NA5zb6hehqsDiC5uQZGTj06Jgf5IU1wLBHjdfsd7d1TbbcCAYmCC5x4fVMHwzV/eAhjWujEcwZnA6SvS1tKxzri3Pr/ALJ7cdfdJTS9DcE97POaLYdWkSWimC5rWktYQTERcYzwCtdj1DYILQQZk8MRn3Wu5puDg54/lFpafoQmXmIJJ+jf0V9wWB5zsepDg7ud5paSAYy81DiOZKLcahhblgJMiQYJH5r0IIiCCUFaix+HNJjhMoepfgpRPLbZoauoG7wU3DvNBEgS7OT0hpH1WNR0FSo22sBYKjS5zCWw4OBGemPde5raQRFMlvlcY+k8EzQ6cMBDjdPWP0Scr3GlSo+d/wCG9SGta54aC6oGu3l4aXPc5jjjjFo+qsarYla41QA6Q28B4dmIcA2MgkAyF9CqbsiDEJI01IcvuU5aluyFpnzfalBrXgW5dSpvmy0iWyWzHEcIVMN8l9VIaOEehAKAub8rf+0KZNNmkU4o8Y1yJpCEQOaIL6xQR8u5MYSpkIAEUFPAWTCACY2mlD1RsPmjEWTGtoea59Ajn91F3RQ+plLEMmduj5oSx3mi3p6qRVPVGIshZB81wnzTt8h3/kligyAko2vKLehEx4UuKHmw6bim3n/lQx4RF6w1IJ+jaE2Ma4pVSqU+8RxVVzlh2lwad18g70/2EL6hjipcoIKOyuB918guqu6qDWd8x9yitQillJ6EQ70uQ9875j7lL7S/5j7lN3KDcI7EB96fJI1b/mPuVPbKnzH3XCgi3KXY0w78+Qf2hU+Y+6a3aNT5ik7pFugs108C31E+R7dpVPmKI7UqfN9lXFNCaar6bT4D6ifJaG1qvX7I/wBrP6j2VC1FCiXTQvwUupnyXf2w/oPZczbLubQqTmpJaqXRwYfWTRqjbH8iMbXHNqyWtQVGqn0OndCXWzNr9qt6fZd+1G9FjsbnKcVlPooI1j1k2ZbXFEAUbB/ZRNK9pM8tgWE8IHmoFN3CZTw3+8FQW/3A/VOxWAKcdVLTngjAH9g/qpA9PuixWcSYP+yDPPimtB9ekORPaeh/qkBXIM/7LrvIoy2f+FJ+iAAvxwQFyYW/3MoQgk4OhE1xQmFLYQMaH+Sax/RLj09ky08FnI0igygLkZZ5fVCWeSzLIlTKEhSEUImUxqUjClxBMdKgFC1TcsZQKsc12QpeRlJDl13FR2x2CCmPjCUUQPBZqDRV2GDmFznAoXDKABVTC0EOq50YQ8uKB5Wcs7KVUOcBCRATaZxlKjK6tNszaQywJb2iU4JFTiuiUXkSvAyjSBKe7TBK0pyrpIWWonZrpnnKf19k1rklhRtcutHJIbJ9VI9Pc/7JYPREqJJkdfZFeOv3QkrmR0QAyZ5j2/RR/fEhcuJ5IELzPE/1UkH+wijoo9YQAMeS5zfVHb5wojzlPYBe780bGooHmm0x5QhsEdSb1H6fdPFPnK5sdE0U/L+i55s3ic3glOAJTyD/AMJRPn+qzspgWqQxcR5rg0qiLIjouARAKQkwTIj1UqSoCTKJKEpiByQEKQUMhSlYBhAVMqLk6QAuKiUcoSUsUVZEoiZUBykEKoxSFYMqCERQFaJkkMMJm98j9km1AWlNtM0i2igyU0FJBRAppmLGKQShCKE7JJBRh3mlgBGFQmSXKQ9RKi5FCsKFOUErk6FYUIrktSnQmxocmMKrNfCMVR9UNMEy20omn+5VQalTv+ixlFmyLrqvl9/ySnVR/ZVc1VAKjEpsshyIBVBVKc16rEixtyKUGFNyMbFZOV0nouaURIScR5HZQOKKEKTgPI6FIC5TKWAZElCWrg4LkYhkCWoCmSguRiPIEqCFLigJW0US5EkqBUSzUUBybSBMsAyuISQug9fus5JGqZngog5cuTRkwpRghcuVkEyOqh1YLly0SJYBqrt4oXKqEGKiE1Vy5NCAdqEJrrlytRQmAa/mibWXLkSQ4jGuTW1QuXLKSNEEao6KO09Fy5Z0OzjUnmmU6ihcmItMqhHeFy5QwRBeFwqqVypImyRUUOeuXJNJBYAPqivK5ckyjr1DnKFyljOL1BKhcgCClOcuXLWiRZehL1y5JlxO3vVRvB5rlyxZqkf/2Q==" alt=""><span>Most Recommended Al Shati District Hotels</span></a>
+        <a class="tile" href="#"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop" alt=""><span>Most Recommended Resort in Jeddah</span></a>
+        <a class="tile" href="#"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800&auto=format&fit=crop" alt=""><span>Highest Rated Hotels in Jeddah</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Top Cities ===== -->
+  <section class="top-cities">
+    <div class="container">
+      <h3 class="section-title">Hotels in Top Cities</h3>
+      <div class="city-grid">
+        <a class="city" href="#"><img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/277338135.jpg?k=e9b16850c3ed4b45fa6ff60067738e87f0d75add4ff498036cb35d8ce2d73277&o=" alt=""><span>Makkah</span></a>
+        <a class="city" href="#"><img src="https://www.ahstatic.com/photos/b9x5_ho_00_p_1024x768.jpg" alt=""><span>Al Madinah</span></a>
+        <a class="city" href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFxwzU7P1FeCsC8GNgS0kgMiSjzOqMHzuA0g&s" alt=""><span>Riyadh</span></a>
+        <a class="city" href="#"><img src="https://digital.ihg.com/is/image/ihg/crowne-plaza-jeddah-6841560337-4x3" alt=""><span>Jeddah</span></a>
+        <a class="city" href="#"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=900&auto=format&fit=crop" alt=""><span>Al Khobar</span></a>
+        <a class="city" href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRun2iRfffXn56ubPOiLBp1diOsdFE50nb3hg&s" alt=""><span>Dammam</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Trip Ideas ===== -->
+  <section class="ideas">
+    <div class="container">
+      <div class="ideas-head">
+        <h3 class="section-title">Trip Ideas from Saudi Arabia</h3>
+        <div class="chips" id="chips">
+          <button class="chip" data-tag="Nature">Nature</button>
+          <button class="chip" data-tag="Family-friendly">Family-friendly</button>
+          <button class="chip" data-tag="Beach">Beach</button>
+          <button class="chip" data-tag="Halal-friendly">Halal-friendly</button>
+          <button class="chip" data-tag="Romantic">Romantic</button>
+          <button class="chip" data-tag="Backpacking">Backpacking</button>
+          <button class="chip" data-tag="Summer Special">Summer Special</button>
+          <button class="chip" data-tag="Cultural">Cultural</button>
+        </div>
+      </div>
+
+      <div class="ideas-grid" id="ideasGrid">
+        <article class="idea" data-tags="Nature,Family-friendly">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZiB-b5DcYDDw2VcSU3I0yp0CUty3CDj0f4g&s" alt="">
+          <div class="info"><strong>Abha</strong><span>SAR 135</span></div>
+        </article>
+        <article class="idea" data-tags="Beach,Family-friendly,Summer Special">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPaom3WfhjqIinTheadNg6hRu05Jp8qu8GTw&s" alt="">
+          <div class="info"><strong>Jazan</strong><span>SAR 178</span></div>
+        </article>
+        <article class="idea" data-tags="Cultural,Romantic">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6SBDh-SN-XPEQ4euRINPlEU7saQ4UuSEnXg&s" alt="">
+          <div class="info"><strong>Tbilisi</strong><span>SAR 665</span></div>
+        </article>
+        <article class="idea" data-tags="Cultural,Backpacking">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLcyifAr2ZxG6BgfrFq8ocEymfRVlGCqm2bA&s" alt="">
+          <div class="info"><strong>Marrakesh</strong><span>SAR 803</span></div>
+        </article>
+        <article class="idea" data-tags="Cultural">
+          <img src="https://annaeverywhere.com/wp-content/uploads/2021/10/where-to-stay-in-Warsaw.jpg" alt="">
+          <div class="info"><strong>Warsaw</strong><span>SAR 666</span></div>
+        </article>
+        <article class="idea" data-tags="Beach">
+          <img src="https://www.c-hed.org/wp-content/uploads/2013/02/cochin.jpg" alt="">
+          <div class="info"><strong>Cochin</strong><span>SAR 830</span></div>
+        </article>
+        <article class="idea" data-tags="Romantic,Nature">
+          <img src="https://hips.hearstapps.com/hmg-prod/images/why-geneva-is-perfect-for-country-lovers-646df373e46c2.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*" alt="">
+          <div class="info"><strong>Geneva</strong><span>SAR 749</span></div>
+        </article>
+        <article class="idea" data-tags="Cultural,Summer Special">
+          <img src="https://saudipedia.com/en/saudipediaen/uploads/images/2024/05/29/thumbs/600x600/84094.jpg" alt="">
+          <div class="info"><strong>Taif</strong><span>SAR 506</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Why Choose (requested position) ===== -->
+  <section class="why-section">
+    <div class="container">
+      <h2 class="section-title center">Why Choose GoTrip</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7Zm0 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+          </div>
+          <h3>Best Price Guarantee</h3>
+          <p>We ensure the best prices for flights, hotels, and buses.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a8 8 0 0 0-8 8v5a3 3 0 0 0 3 3h2v-6H7v-2a5 5 0 0 1 10 0v2h-2v6h2a3 3 0 0 0 3-3v-5a8 8 0 0 0-8-8Z"/></svg>
+          </div>
+          <h3>24/7 Customer Support</h3>
+          <p>Travel experts available anytime via chat, WhatsApp, or email.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2V6a5 5 0 0 0-5-5Zm0 2a3 3 0 0 1 3 3v3H9V6a3 3 0 0 1 3-3Z"/></svg>
+          </div>
+          <h3>Secure Booking</h3>
+          <p>All payments are encrypted and protected.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Hotel Companies / Partners ===== -->
+  <section class="sponsors-section">
+    <div class="container sponsors-grid">
+      <div class="sponsors-col">
+        <h3>Popular Hotel Chains</h3>
+        <p class="muted">Find great stays from your favourite brands</p>
+      </div>
+      <div class="logos-grid">
+        <img src="https://logo.clearbit.com/hilton.com" alt="Hilton">
+        <img src="https://logo.clearbit.com/marriott.com" alt="Marriott">
+        <img src="https://logo.clearbit.com/ihg.com" alt="IHG">
+        <img src="https://logo.clearbit.com/accor.com" alt="Accor">
+        <img src="https://logo.clearbit.com/hyatt.com" alt="Hyatt">
+        <img src="https://logo.clearbit.com/radissonhotels.com" alt="Radisson">
+        <img src="https://logo.clearbit.com/fourseasons.com" alt="Four Seasons">
+        <img src="https://logo.clearbit.com/rotana.com" alt="Rotana">
+      </div>
+
+      <div class="sponsors-col">
+        <h3>Our Travel Partners</h3>
+        <p class="muted">We search the best hotel deals on these sites</p>
+      </div>
+      <div class="logos-grid">
+        <img src="https://logo.clearbit.com/booking.com" alt="Booking.com">
+        <img src="https://logo.clearbit.com/trip.com" alt="Trip.com">
+        <img src="https://logo.clearbit.com/agoda.com" alt="Agoda">
+        <img src="https://logo.clearbit.com/expedia.com" alt="Expedia">
+        <img src="https://logo.clearbit.com/hotels.com" alt="Hotels.com">
+        <img src="https://logo.clearbit.com/airbnb.com" alt="Airbnb">
+        <img src="https://logo.clearbit.com/priceline.com" alt="Priceline">
+        <img src="https://logo.clearbit.com/kayak.com" alt="KAYAK">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Testimonials (new) ===== -->
+  <section class="testimonials-section">
+    <div class="container">
+      <h2 class="section-title center">What Our Travelers Say</h2>
+      <div class="testimonials-grid">
+        <article class="t-card">
+          <div class="t-head">
+            
+            <div><strong>Ahmed Al-Harbi</strong><div class="stars" aria-label="5 stars">★★★★★</div></div>
+          </div>
+          <p>Booked a last-minute stay in Jeddah. Prices were better than elsewhere and the check-in instructions were clear. Will use again!</p>
+        </article>
+
+        <article class="t-card">
+          <div class="t-head">
+            
+            <div><strong>Laura Gómez</strong><div class="stars" aria-label="4 stars">★★★★☆</div></div>
+          </div>
+          <p>Good selection of hotels and helpful filters. Support on WhatsApp replied in minutes when I needed a date change.</p>
+        </article>
+
+        <article class="t-card">
+          <div class="t-head">
+            
+            <div><strong>Kenji Sato</strong><div class="stars" aria-label="5 stars">★★★★★</div></div>
+          </div>
+          <p>Found a great resort deal in Bali. Loved the free-cancellation badge and honest reviews. Highly recommended for hotel bookings.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== App Download (last) ===== -->
+  <section class="app-cta">
+    <div class="container app-wrap">
+      <div class="app-illustration" aria-hidden="true">
+        <div class="device"><div class="dot"></div></div>
+      </div>
+      <div class="app-copy">
+        <h2>Unlock the Best Travel Deals</h2>
+        <p class="muted">Download the GoTrip App</p>
+        <ul class="checks">
+          <li>Search, compare &amp; book flights, hotels, and buses all in one app</li>
+          <li>Save more with in-app promo codes and smart fare calendar</li>
+          <li>24/7 support through chat, WhatsApp, and phone</li>
+        </ul>
+        <div class="stores">
+          <a class="store" href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" /></a>
+          <a class="store" href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Available_on_the_App_Store_%28black%29_SVG.svg" alt="App Store" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="hotels.js"></script>
+  <!-- ... -->
+  </section>
+
+  <!-- ===== Footer (global) ===== -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="f-brand">
+        <a class="brand" href="../flights/index.html" aria-label="GoTrip Home">
+          <span class="logo">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M2 13l8.5-1.5L21 5l1 2-7.8 7.4L13 22l-2-1.2 1-4.3L8 15l-3.7 1L3 15l3-3-4-1z"/>
+            </svg>
+          </span>
+          <span class="brand-name">GoTrip</span>
+        </a>
+        <p>Your trusted travel partner for flights, hotels, and buses worldwide.</p>
+      </div>
+
+      <div>
+        <h4>About GoTrip</h4>
+        <ul class="f-links">
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Partnerships</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Support</h4>
+        <ul class="f-links">
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Connect</h4>
+        <ul class="f-links">
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Travel Guides</a></li>
+          <li><a href="#">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <small>© 2025 GoTrip. All rights reserved.</small>
+      <div class="social">
+        <a class="social-a" href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M13 3h4v3h-3v3h3v3h-3v9h-3v-9H8v-3h3V6a3 3 0 0 1 3-3z"/></svg>
+        </a>
+        <a class="social-a" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+        </a>
+        <a class="social-a" href="#" aria-label="Twitter/X">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 3h3l-8 9 7 9h-3l-5-6-5 6H3l8-9-7-9h3l5 6 5-6z"/></svg>
+        </a>
+        <a class="social-a" href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM4 8h4v12H4zm7 0h4v2a4 4 0 0 1 7 3v7h-4v-6a2 2 0 1 0-4 0v6h-3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="hotels.js"></script>
+</body>
+</html>
+
+
+</body>
+>>>>>>> Stashed changes
 </html>

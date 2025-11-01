@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< Updated upstream
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -728,4 +729,425 @@
 
     <script src="HomePageBuses.js"></script>
   </body>
+=======
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GoTrip — Buses</title>
+  <link rel="stylesheet" href="buses.css" />
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header class="site-header" role="banner">
+    <div class="container nav">
+    <a href="../Flights/index.html" class="brand" aria-label="GoTrip Home">
+  <span class="logo">
+    <img src="../assets/imges/logo.jpg" alt="GoTrip Logo" class="logo-img">
+  </span>
+  <span class="brand-name">GoTrip</span>
+</a>
+
+
+      <nav class="primary-nav" aria-label="Primary">
+        <a class="nav-link" href="../flights/index.html">Flights</a>
+        <a class="nav-link" href="../hotels/hotels.html">Hotels</a>
+        <a class="nav-link active" href="./buses.html">Buses</a>
+      </nav>
+
+      <div class="actions">
+        <div class="lang">
+          <button class="lang-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2a10 10 0 100 20A10 10 0 0012 2Zm0 2c1.5 0 3.6 2.7 4 6H8c.4-3.3 2.5-6 4-6Zm-4 8h8c-.4 3.3-2.5 6-4 6s-3.6-2.7-4-6Z"/></svg>
+            <span id="langLabel">English</span>
+            <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </button>
+          <ul class="lang-menu" id="langMenu" role="listbox" tabindex="-1">
+            <li role="option" data-lang="English" aria-selected="true">English</li>
+            <li role="option" data-lang="العربية">العربية</li>
+            <li role="option" data-lang="Français">Français</li>
+            <li role="option" data-lang="Deutsch">Deutsch</li>
+            <li role="option" data-lang="Español">Español</li>
+            <li role="option" data-lang="Türkçe">Türkçe</li>
+            <li role="option" data-lang="Русский">Русский</li>
+            <li role="option" data-lang="中文">中文</li>
+            <li role="option" data-lang="हिन्दी">हिन्दी</li>
+            <li role="option" data-lang="Português">Português</li>
+          </ul>
+        </div>
+
+        <button class="icon-btn" id="cartBtn" aria-label="Cart">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M7 18a2 2 0 104 0 2 2 0 00-4 0zm8 0a2 2 0 104 0 2 2 0 00-4 0zM7.2 6h12.3l-1.5 7.5a2 2 0 01-2 1.5H9a2 2 0 01-2-1.5L5.3 4H3V3h3a1 1 0 01.98.8L7.2 6z"/></svg>
+          <span class="badge" id="cartCount">0</span>
+        </button>
+
+        <a href="#" class="btn sign-in-btn">Sign in</a>
+
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobilePanel">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-panel" id="mobilePanel" hidden>
+      <nav class="mobile-nav" aria-label="Mobile">
+        <a class="nav-link" href="../flights/index.html">Flights</a>
+        <a class="nav-link" href="../hotels/hotels.html">Hotels</a>
+        <a class="nav-link active" href="./buses.html">Buses</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your Journey Begins Here</h1>
+      <p>Discover, Book, and Go Anywhere</p>
+    </div>
+
+    <!-- Buses booking card -->
+    <div class="booking-card">
+      <div class="booking-head">
+        <span class="head-icon"><img src="/GoTrip - PROJECT/Gotrip/Gotrip_homePage/assets/imges/buses - icon.png" alt=""></span>
+        <span class="head-title">Buses</span>
+      </div>
+
+      <form id="busForm" class="grid-form" autocomplete="off">
+        <div class="field">
+          <label for="from">From</label>
+          <input id="from" placeholder="City or Station" required />
+        </div>
+        <div class="field">
+          <label for="to">To</label>
+          <input id="to" placeholder="City or Station" required />
+        </div>
+        <div class="field">
+          <label for="depart">Departure</label>
+          <input id="depart" type="date" required />
+        </div>
+        <div class="field">
+          <label for="ret">Return</label>
+          <input id="ret" type="date" />
+        </div>
+        <div class="field">
+          <label for="pax">Passengers</label>
+          <select id="pax">
+            <option>1 Adult</option>
+            <option>2 Adults</option>
+            <option>Family (4)</option>
+            <option>Group (6+)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="cls">Class</label>
+          <select id="cls">
+            <option>Economy</option>
+            <option>Premium</option>
+            <option>VIP</option>
+          </select>
+        </div>
+        <label class="checkbox">
+          <input type="checkbox" id="directOnly" /> <span>Direct buses only</span>
+        </label>
+        <button class="search-btn" type="submit">Search</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== Features ===== -->
+  <section class="features">
+    <div class="container features-grid">
+      <div class="feat"><div class="i">🛡️</div><h4>Best Deals in Saudi Arabia</h4></div>
+      <div class="feat"><div class="i">🗺️</div><h4>Thousands of Routes</h4></div>
+      <div class="feat"><div class="i">💳</div><h4>Multiple Payment Methods</h4></div>
+      <div class="feat"><div class="i">📞</div><h4>24/7 Customer Service</h4></div>
+    </div>
+  </section>
+
+  <!-- ===== Popular Bus Routes ===== -->
+  <section class="popular-buses">
+    <div class="container">
+      <h3 class="section-title">Popular Bus Routes in Saudi Arabia</h3>
+      <div class="bus-cards">
+        <article class="bus-card">
+          <img src="https://images.unsplash.com/photo-1544989164-31dc3c645987?q=80&w=1200&auto=format&fit=crop" alt="Riyadh" />
+          <div class="b-info">
+            <strong>Riyadh ⇄ Jeddah</strong>
+            <div class="meta"><span class="stars">★★★★☆</span><span class="reviews">Comfort • AC • Wi-Fi</span></div>
+            <div class="price">One-way from <b>SAR 99</b></div>
+          </div>
+        </article>
+        <article class="bus-card">
+          <img src="https://images.unsplash.com/photo-1505714197102-6ae87c1a9d70?q=80&w=1200&auto=format&fit=crop" alt="Makkah" />
+          <div class="b-info">
+            <strong>Makkah ⇄ Madinah</strong>
+            <div class="meta"><span class="stars">★★★★★</span><span class="reviews">Express • Snacks</span></div>
+            <div class="price">One-way from <b>SAR 75</b></div>
+          </div>
+        </article>
+        <article class="bus-card">
+          <img src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6?q=80&w=1200&auto=format&fit=crop" alt="Dammam" />
+          <div class="b-info">
+            <strong>Dammam ⇄ Riyadh</strong>
+            <div class="meta"><span class="stars">★★★★☆</span><span class="reviews">Sleeper seats • USB</span></div>
+            <div class="price">One-way from <b>SAR 69</b></div>
+          </div>
+        </article>
+        <article class="bus-card">
+          <img src="https://images.unsplash.com/photo-1542315192-1f61a29a21fe?q=80&w=1200&auto=format&fit=crop" alt="Abha" />
+          <div class="b-info">
+            <strong>Jeddah ⇄ Abha</strong>
+            <div class="meta"><span class="stars">★★★★☆</span><span class="reviews">Panoramic • Rest stop</span></div>
+            <div class="price">One-way from <b>SAR 149</b></div>
+          </div>
+        </article>
+        <article class="bus-card">
+          <img src="https://images.unsplash.com/photo-1532634896-26909d0d4b6a?q=80&w=1200&auto=format&fit=crop" alt="Al-Ula" />
+          <div class="b-info">
+            <strong>Tabuk ⇄ Al-Ula</strong>
+            <div class="meta"><span class="stars">★★★★☆</span><span class="reviews">Scenic route</span></div>
+            <div class="price">One-way from <b>SAR 129</b></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== City Tiles ===== -->
+  <section class="mini-tiles">
+    <div class="container">
+      <h3 class="section-title">Bus Stations in Top Cities</h3>
+      <div class="tiles-row">
+        <a class="tile" href="#"><img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=800&auto=format&fit=crop" alt=""><span>Riyadh</span></a>
+        <a class="tile" href="#"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800&auto=format&fit=crop" alt=""><span>Jeddah</span></a>
+        <a class="tile" href="#"><img src="https://images.unsplash.com/photo-1604335399105-b0b2f2dfad73?q=80&w=800&auto=format&fit=crop" alt=""><span>Abha</span></a>
+        <a class="tile" href="#"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=800&auto=format&fit=crop" alt=""><span>Al Khobar</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Trip Ideas ===== -->
+  <section class="ideas">
+    <div class="container">
+      <div class="ideas-head">
+        <h3 class="section-title">Trip Ideas from Saudi Arabia</h3>
+        <div class="chips" id="chips">
+          <button class="chip" data-tag="Nature">Nature</button>
+          <button class="chip" data-tag="Family-friendly">Family-friendly</button>
+          <button class="chip" data-tag="Beach">Beach</button>
+          <button class="chip" data-tag="Halal-friendly">Halal-friendly</button>
+          <button class="chip" data-tag="Romantic">Romantic</button>
+          <button class="chip" data-tag="Backpacking">Backpacking</button>
+          <button class="chip" data-tag="Summer Special">Summer Special</button>
+          <button class="chip" data-tag="Cultural">Cultural</button>
+        </div>
+      </div>
+
+      <div class="ideas-grid" id="ideasGrid">
+        <article class="idea" data-tags="Nature">
+          <img src="https://images.unsplash.com/photo-1558981359-219d6364c9c8?q=80&w=1000&auto=format&fit=crop" alt="">
+          <div class="info"><strong>Taif</strong><span>SAR 75</span></div>
+        </article>
+        <article class="idea" data-tags="Beach,Family-friendly,Summer Special">
+          <img src="https://images.unsplash.com/photo-1541417904950-b855846fe074?q=80&w=1000&auto=format&fit=crop" alt="">
+          <div class="info"><strong>Jazan</strong><span>SAR 88</span></div>
+        </article>
+        <article class="idea" data-tags="Cultural,Romantic">
+          <img src="https://images.unsplash.com/photo-1473042904451-00171c69419d?q=80&w=1000&auto=format&fit=crop" alt="">
+          <div class="info"><strong>Al-Ula</strong><span>SAR 120</span></div>
+        </article>
+        <article class="idea" data-tags="Cultural,Backpacking">
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1000&auto=format&fit=crop" alt="">
+          <div class="info"><strong>Hail</strong><span>SAR 60</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Why Choose (with 24/7 Support) ===== -->
+  <section class="why-section">
+    <div class="container">
+      <h2 class="section-title center">Why Choose GoTrip</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7Zm0 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+          </div>
+          <h3>Best Price Guarantee</h3>
+          <p>We secure the best prices for buses, flights, and hotels.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3a8 8 0 0 0-8 8v5a3 3 0 0 0 3 3h2v-6H7v-2a5 5 0 0 1 10 0v2h-2v6h2a3 3 0 0 0 3-3v-5a8 8 0 0 0-8-8Z"/></svg>
+          </div>
+          <h3>24/7 Customer Support</h3>
+          <p>Get help anytime via chat, WhatsApp, or email.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1a5 5 0 0 0-5 5v3H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-2V6a5 5 0 0 0-5-5Zm0 2a3 3 0 0 1 3 3v3H9V6a3 3 0 0 1 3-3Z"/></svg>
+          </div>
+          <h3>Secure Booking</h3>
+          <p>All payments are encrypted and protected.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Bus Companies & Partners ===== -->
+  <section class="sponsors-section">
+    <div class="container sponsors-grid">
+      <div class="sponsors-col">
+        <h3>Popular Bus Companies</h3>
+        <p class="muted">Ride with trusted operators worldwide</p>
+      </div>
+      <div class="logos-grid">
+        <img src="https://logo.clearbit.com/flixbus.com" alt="FlixBus">
+        <img src="https://logo.clearbit.com/greyhound.com" alt="Greyhound">
+        <img src="https://logo.clearbit.com/megabus.com" alt="Megabus">
+        <img src="https://logo.clearbit.com/nationalexpress.com" alt="National Express">
+        <img src="https://logo.clearbit.com/alsa.com" alt="ALSA">
+        <img src="https://logo.clearbit.com/eurolines.eu" alt="Eurolines">
+        <img src="https://logo.clearbit.com/regiojet.com" alt="RegioJet">
+        <img src="https://logo.clearbit.com/flixbus.com" alt="FlixBus 2">
+      </div>
+
+      <div class="sponsors-col">
+        <h3>Our Travel Partners</h3>
+        <p class="muted">We compare the best bus deals on these sites</p>
+      </div>
+      <div class="logos-grid">
+        <img src="https://logo.clearbit.com/omio.com" alt="Omio">
+        <img src="https://logo.clearbit.com/busbud.com" alt="Busbud">
+        <img src="https://logo.clearbit.com/rome2rio.com" alt="Rome2rio">
+        <img src="https://logo.clearbit.com/booking.com" alt="Booking.com">
+        <img src="https://logo.clearbit.com/trip.com" alt="Trip.com">
+        <img src="https://logo.clearbit.com/kayak.com" alt="Kayak">
+        <img src="https://logo.clearbit.com/expedia.com" alt="Expedia">
+        <img src="https://logo.clearbit.com/priceline.com" alt="Priceline">
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Testimonials ===== -->
+  <section class="testimonials-section">
+    <div class="container">
+      <h2 class="section-title center">What Our Travelers Say</h2>
+      <div class="testimonials-grid">
+        <article class="t-card">
+          <div class="t-head">
+            <img src="https://images.unsplash.com/photo-1527980965255-9c7f1a7d81d2?q=80&w=400&auto=format&fit=crop" alt="Noura AlQahtani" />
+            <div><strong>Noura Al-Qahtani</strong><div class="stars" aria-label="5 stars">★★★★★</div></div>
+          </div>
+          <p>Booked Riyadh → Jeddah VIP seats. Clean bus, on time, and easy e-ticket in the app. Great value!</p>
+        </article>
+
+        <article class="t-card">
+          <div class="t-head">
+            <img src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=400&auto=format&fit=crop" alt="Omar Khan" />
+            <div><strong>Omar Khan</strong><div class="stars" aria-label="4 stars">★★★★☆</div></div>
+          </div>
+          <p>Filters helped me find a direct night bus with USB ports. Support replied quickly on WhatsApp.</p>
+        </article>
+
+        <article class="t-card">
+          <div class="t-head">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&auto=format&fit=crop" alt="Sofia Martins" />
+            <div><strong>Sofia Martins</strong><div class="stars" aria-label="5 stars">★★★★★</div></div>
+          </div>
+          <p>Used GoTrip around the Gulf. Clear prices, free-cancellation options, and smooth check-in at stations.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== App Download (last) ===== -->
+  <section class="app-cta">
+    <div class="container app-wrap">
+      <div class="app-illustration" aria-hidden="true">
+        <div class="device"><div class="dot"></div></div>
+      </div>
+      <div class="app-copy">
+        <h2>Unlock the Best Travel Deals</h2>
+        <p class="muted">Download the GoTrip App</p>
+        <ul class="checks">
+          <li>Search, compare &amp; book buses, flights, and hotels in one app</li>
+          <li>Save more with in-app promo codes and smart fare calendar</li>
+          <li>24/7 support through chat, WhatsApp, and phone</li>
+        </ul>
+        <div class="stores">
+          <a class="store" href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" /></a>
+          <a class="store" href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Available_on_the_App_Store_%28black%29_SVG.svg" alt="App Store" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="f-brand">
+        <a class="brand" href="../flights/index.html" aria-label="GoTrip Home">
+          <span class="logo">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M2 13l8.5-1.5L21 5l1 2-7.8 7.4L13 22l-2-1.2 1-4.3L8 15l-3.7 1L3 15l3-3-4-1z"/>
+            </svg>
+          </span>
+          <span class="brand-name">GoTrip</span>
+        </a>
+        <p>Your trusted travel partner for buses, flights, and hotels worldwide.</p>
+      </div>
+
+      <div>
+        <h4>About GoTrip</h4>
+        <ul class="f-links">
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Partnerships</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Support</h4>
+        <ul class="f-links">
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Connect</h4>
+        <ul class="f-links">
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Travel Guides</a></li>
+          <li><a href="#">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <small>© 2025 GoTrip. All rights reserved.</small>
+      <div class="social">
+        <a class="social-a" href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M13 3h4v3h-3v3h3v3h-3v9h-3v-9H8v-3h3V6a3 3 0 0 1 3-3z"/></svg>
+        </a>
+        <a class="social-a" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+        </a>
+        <a class="social-a" href="#" aria-label="Twitter/X">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 3h3l-8 9 7 9h-3l-5-6-5 6H3l8-9-7-9h3l5 6 5-6z"/></svg>
+        </a>
+        <a class="social-a" href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M6 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM4 8h4v12H4zm7 0h4v2a4 4 0 0 1 7 3v7h-4v-6a2 2 0 1 0-4 0v6h-3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="buses.js"></script>
+</body>
+>>>>>>> Stashed changes
 </html>
