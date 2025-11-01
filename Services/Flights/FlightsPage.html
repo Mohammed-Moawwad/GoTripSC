@@ -633,14 +633,14 @@
         <a
           id="homeBtn"
           class="brand-link"
-          href="../HomePage/HomePage.html"
+          href="../../HomePage/HomePage.html"
           title="GoTrip home"
           aria-label="GoTrip home"
         >
           <span class="brand-badge" aria-hidden="true">
             <img
               id="siteLogoImg"
-              src="../HomePage/Photos/logo.jpg"
+              src="../../HomePage/Photos/logo.jpg"
               alt="GoTrip logo"
               onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect rx=%229%22 width=%2248%22 height=%2248%22 fill=%22%23ffffff%22/><path d=%22M8 34v-6c0-5 6-9 14-9s14 4 14 9v6%22 stroke=%22%231ea1ff%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 fill=%22none%22/></svg>'"
             />
@@ -653,17 +653,17 @@
       <nav class="site-nav" aria-label="main navigation">
         <ul class="nav-left">
           <li>
-            <a class="nav-link active" href="../HomePage/HomePage.html"
+            <a class="nav-link active" href="../../HomePage/HomePage.html"
               >Flights</a
             >
           </li>
           <li>
-            <a class="nav-link" href="../HomePage/HomePageBuses.html">Buses</a>
+            <a class="nav-link" href="../../HomePage/HomePageBuses.html"
+              >Buses</a
+            >
           </li>
           <li>
-            <a class="nav-link" href="../HomePage/HomePageHotels.html"
-              >Hotels</a
-            >
+            <a class="nav-link" href="../Hotels/HotelsPage.html">Hotels</a>
           </li>
         </ul>
 
@@ -718,7 +718,7 @@
           <li><a class="small" href="#" id="myTripsLink">My Trips</a></li>
           <li>
             <a
-              href="../Login/signin.html"
+              href="../../Login/signin.html"
               class="signin-btn"
               aria-label="Sign in"
             >
@@ -726,7 +726,11 @@
             </a>
           </li>
           <li>
-            <a href="../Login/login.html" class="login-btn" aria-label="Login">
+            <a
+              href="../../Login/login.html"
+              class="login-btn"
+              aria-label="Login"
+            >
               Login
             </a>
           </li>
@@ -1354,10 +1358,10 @@
               .querySelectorAll(".site-nav .nav-left a.nav-link")
               .forEach((x) => x.classList.remove("active"));
             a.classList.add("active");
-            const href = a.dataset.href;
+            const href = a.getAttribute("href");
             if (href) {
-              // encode spaces and special chars
-              window.location.href = encodeURI(href);
+              // navigate to the link
+              window.location.href = href;
             }
           });
         });
