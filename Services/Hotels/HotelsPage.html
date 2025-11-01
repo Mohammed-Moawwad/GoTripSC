@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hotel Results - GoTrip</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="HotelsPage.css" />
+  </head>
+  <body>
+    <!-- topbar with Home and GoTrip logo -->
+    <div class="topbar">
+      <!-- Home button (click -> homepage) and logo placeholder -->
+      <div class="brand-wrap">
+        <a
+          id="homeBtn"
+          class="brand-link"
+          href="../../HomePage/HomePage.html"
+          title="GoTrip home"
+          aria-label="GoTrip home"
+        >
+          <span class="brand-badge" aria-hidden="true">
+            <img
+              id="siteLogoImg"
+              src="../../HomePage/Photos/logo.jpg"
+              alt="GoTrip logo"
+              onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect rx=%229%22 width=%2248%22 height=%2248%22 fill=%22%23ffffff%22/><path d=%22M8 34v-6c0-5 6-9 14-9s14 4 14 9v6%22 stroke=%22%231ea1ff%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 fill=%22none%22/></svg>'"
+            />
+          </span>
+          <span class="brand-title">GoTrip</span>
+        </a>
+      </div>
+
+      <!-- main navigation -->
+      <nav class="site-nav" aria-label="main navigation">
+        <ul class="nav-left">
+          <li>
+            <a class="nav-link" href="../Flights/FlightsPage.html">Flights</a>
+          </li>
+          <li>
+            <a class="nav-link" href="../../HomePage/HomePageBuses.html"
+              >Buses</a
+            >
+          </li>
+          <li>
+            <a class="nav-link active" href="../../HomePage/HomePageHotels.html"
+              >Hotels</a
+            >
+          </li>
+        </ul>
+
+        <ul class="nav-right">
+          <!-- language dropdown: hover on desktop, click to toggle on touch -->
+          <li class="lang-dropdown" aria-haspopup="true">
+            <button class="small lang-btn" type="button" aria-expanded="false">
+              EN ▾
+            </button>
+            <ul class="lang-menu" role="menu" aria-label="Select language">
+              <li class="lang-item" role="menuitem" data-value="EN">
+                EN — English
+              </li>
+              <li class="lang-item" role="menuitem" data-value="AR">
+                AR — العربية
+              </li>
+              <li class="lang-item" role="menuitem" data-value="FR">
+                FR — Français
+              </li>
+              <li class="lang-item" role="menuitem" data-value="TR">
+                TR — Türkçe
+              </li>
+              <li class="lang-item" role="menuitem" data-value="RU">
+                RU — Русский
+              </li>
+            </ul>
+          </li>
+          <!-- currency dropdown: hover on desktop, click to toggle on touch -->
+          <li class="cur-dropdown" aria-haspopup="true">
+            <button class="small cur-btn" type="button" aria-expanded="false">
+              SAR ▾
+            </button>
+            <ul class="cur-menu" role="menu" aria-label="Select currency">
+              <li class="cur-item" role="menuitem" data-value="SAR">
+                SAR — Saudi Riyal
+              </li>
+              <li class="cur-item" role="menuitem" data-value="USD">
+                USD — US Dollar
+              </li>
+              <li class="cur-item" role="menuitem" data-value="EUR">
+                EUR — Euro
+              </li>
+              <li class="cur-item" role="menuitem" data-value="AED">
+                AED — UAE Dirham
+              </li>
+              <li class="cur-item" role="menuitem" data-value="GBP">
+                GBP — British Pound
+              </li>
+            </ul>
+          </li>
+          <li><a class="small" href="#" id="supportLink">Support</a></li>
+          <li><a class="small" href="#" id="myTripsLink">My Trips</a></li>
+          <li>
+            <a
+              href="../../Login/signin.html"
+              class="signin-btn"
+              aria-label="Sign in"
+            >
+              Sign in
+            </a>
+          </li>
+          <li>
+            <a
+              href="../../Login/login.html"
+              class="login-btn"
+              aria-label="Login"
+            >
+              Login
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Search Summary -->
+    <div class="wrap">
+      <header class="summary">
+        <div>
+          <div class="route" id="hotelDestination">Loading...</div>
+          <div class="meta" id="hotelMeta">
+            Searching hotels — results from multiple providers
+          </div>
+        </div>
+        <div class="dates" id="hotelDates">—</div>
+      </header>
+
+      <!-- Hotel Search Form -->
+      <div class="booking-card" style="margin: 20px 0; max-width: 100%">
+        <form id="hotelSearchForm" class="grid-form" autocomplete="off">
+          <div class="field">
+            <label for="dest">Destination</label>
+            <input id="dest" placeholder="City, hotel, or landmark" required />
+          </div>
+          <div class="field">
+            <label for="checkin">Check-in</label>
+            <input id="checkin" type="date" required />
+          </div>
+          <div class="field">
+            <label for="checkout">Check-out</label>
+            <input id="checkout" type="date" required />
+          </div>
+          <div class="field">
+            <label for="guests">Guests & Rooms</label>
+            <select id="guests">
+              <option>2 Adults in 1 Room</option>
+              <option>2 Adults, 1 Child</option>
+              <option>Family (4)</option>
+              <option>Group (6+)</option>
+            </select>
+          </div>
+          <button class="search-btn" type="submit">Search</button>
+        </form>
+      </div>
+
+      <!-- Filters and Results Section -->
+      <div class="cols">
+        <!-- Filters Sidebar -->
+        <nav class="filters" aria-label="Hotel filters">
+          <h3 style="margin-bottom: 16px; font-weight: 700">Filter by</h3>
+
+          <!-- Price Range -->
+          <div style="margin-bottom: 20px">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Price per night
+            </div>
+            <div class="price-range">
+              <input
+                id="priceMin"
+                type="number"
+                placeholder="Min"
+                style="
+                  width: 70px;
+                  padding: 8px;
+                  border-radius: 6px;
+                  border: 1px solid #e6eef9;
+                "
+              />
+              <span style="margin: 0 8px">—</span>
+              <input
+                id="priceMax"
+                type="number"
+                placeholder="Max"
+                style="
+                  width: 70px;
+                  padding: 8px;
+                  border-radius: 6px;
+                  border: 1px solid #e6eef9;
+                "
+              />
+            </div>
+            <input
+              id="priceRange"
+              type="range"
+              min="0"
+              max="2000"
+              step="50"
+              value="2000"
+              style="width: 100%; margin-top: 10px"
+            />
+          </div>
+
+          <hr
+            style="margin: 16px 0; border: none; border-top: 1px solid #eef2f7"
+          />
+
+          <!-- Star Rating -->
+          <div style="margin-bottom: 20px">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Star rating
+            </div>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" data-filter="stars" value="5" />
+              <span style="margin-left: 6px">★★★★★ (5 stars)</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" data-filter="stars" value="4" />
+              <span style="margin-left: 6px">★★★★ (4 stars)</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" data-filter="stars" value="3" />
+              <span style="margin-left: 6px">★★★ (3 stars)</span>
+            </label>
+          </div>
+
+          <hr
+            style="margin: 16px 0; border: none; border-top: 1px solid #eef2f7"
+          />
+
+          <!-- Amenities -->
+          <div style="margin-bottom: 20px">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Amenities
+            </div>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="freeWifi" />
+              <span style="margin-left: 6px">Free WiFi</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="pool" />
+              <span style="margin-left: 6px">Pool</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="parking" />
+              <span style="margin-left: 6px">Free Parking</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="restaurant" />
+              <span style="margin-left: 6px">Restaurant</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="gym" />
+              <span style="margin-left: 6px">Gym/Fitness Center</span>
+            </label>
+          </div>
+
+          <hr
+            style="margin: 16px 0; border: none; border-top: 1px solid #eef2f7"
+          />
+
+          <!-- Cancellation Policy -->
+          <div style="margin-bottom: 20px">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Cancellation policy
+            </div>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="freeCancel" />
+              <span style="margin-left: 6px">Free cancellation</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="payAtProperty" />
+              <span style="margin-left: 6px">Pay at property</span>
+            </label>
+          </div>
+
+          <hr
+            style="margin: 16px 0; border: none; border-top: 1px solid #eef2f7"
+          />
+
+          <!-- Availability -->
+          <div style="margin-bottom: 20px">
+            <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px">
+              Availability
+            </div>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="availableNow" />
+              <span style="margin-left: 6px">Available now</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" id="instantBooking" />
+              <span style="margin-left: 6px">Instant booking</span>
+            </label>
+          </div>
+
+          <!-- Filter Buttons -->
+          <div style="display: flex; gap: 8px; margin-top: 20px">
+            <button
+              id="applyFilters"
+              style="
+                flex: 1;
+                padding: 10px;
+                border-radius: 8px;
+                border: 0;
+                background: var(--accent);
+                color: #fff;
+                cursor: pointer;
+                font-weight: 600;
+              "
+            >
+              Apply
+            </button>
+            <button
+              id="resetFilters"
+              style="
+                flex: 1;
+                padding: 10px;
+                border-radius: 8px;
+                border: 1px solid #cfefff;
+                background: #fff;
+                color: var(--accent);
+                cursor: pointer;
+                font-weight: 600;
+              "
+            >
+              Reset
+            </button>
+          </div>
+        </nav>
+
+        <!-- Results Section -->
+        <section class="results">
+          <div class="toolbar">
+            <div class="tabs" role="tablist">
+              <div class="tab active" data-sort="recommended">Recommended</div>
+              <div class="tab" data-sort="price">Lowest Price</div>
+              <div class="tab" data-sort="rating">Highest Rating</div>
+            </div>
+            <div class="stats" id="resultsCount">— results</div>
+          </div>
+
+          <div class="list" id="resultsList">
+            <!-- Hotel cards will be injected here by JavaScript -->
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ====== Footer ====== -->
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="f-col">
+          <div class="f-brand">GoTrip</div>
+          <p class="muted">
+            Your trusted travel partner for flights, hotels, and buses
+            worldwide.
+          </p>
+        </div>
+
+        <div class="f-col">
+          <h4>About GoTrip</h4>
+          <ul class="f-links">
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Partnerships</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col">
+          <h4>Support</h4>
+          <ul class="f-links">
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+
+        <div class="f-col">
+          <h4>Connect</h4>
+          <ul class="f-links">
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Newsletter</a></li>
+            <li><a href="#">Travel Guides</a></li>
+            <li><a href="#">Help Center</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="copy">© 2025 GoTrip. All rights reserved.</div>
+        <div class="social">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">◎</a>
+          <a href="#" aria-label="X">𝕏</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="HotelsPage.js"></script>
+  </body>
+</html>
