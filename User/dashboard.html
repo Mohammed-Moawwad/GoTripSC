@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - GoTrip</title>
+  <link rel="stylesheet" href="../HomePage/HomePage.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <style>
+    body { background: #f4f7fa; margin: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+    .dashboard-layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 260px; background: #fff; border-right: 1.5px solid #e5e7eb; display: flex; flex-direction: column; align-items: stretch; padding: 2rem 1.2rem 1rem 1.2rem;
+      box-shadow: 0 2px 8px #0001; z-index: 2;
+    }
+    .sidebar .logo { text-align: center; margin-bottom: 2rem; }
+    .sidebar .logo img { width: 80px;  }
+    .sidebar nav { flex: 1; }
+    .sidebar nav a {
+      display: flex; align-items: center; gap: 0.9em; color: #222; text-decoration: none; font-size: 1.08em; padding: 0.7em 1em; border-radius: 8px; margin-bottom: 0.2em; transition: background 0.15s, color 0.15s;
+    }
+    .sidebar nav a.active, .sidebar nav a:focus {
+      background: #e0e7ff; color: #2563eb; font-weight: 600; border-left: 4px solid #2563eb;
+    }
+    .sidebar nav a:hover { background: #f1f5ff; color: #2563eb; }
+    .sidebar .bottom-links { margin-top: 2em; }
+    .sidebar .bottom-links a { color: #888; font-size: 1em; display: flex; align-items: center; gap: 0.7em; margin-bottom: 0.7em; }
+    .sidebar .bottom-links a:hover { color: #2563eb; }
+    .main-content { flex: 1; padding: 0 0 0 0; display: flex; flex-direction: column; }
+    .navbar {
+      background: #fff; border-bottom: 1.5px solid #e5e7eb; padding: 1.1em 2.5em; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10;
+    }
+    .navbar .welcome { font-size: 1.25em; font-weight: 600; color: #2563eb; }
+    .navbar .profile { display: flex; align-items: center; gap: 1em; }
+    .navbar .profile .avatar { width: 38px; height: 38px; border-radius: 50%; background: #e0e7ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1em; font-weight: 700; }
+    .navbar .profile .name { font-weight: 600; color: #222; }
+    .navbar .profile .notifications { color: #2563eb; font-size: 1.3em; position: relative; }
+    .navbar .profile .notifications .dot { position: absolute; top: 0; right: -2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; }
+    .dashboard-overview { padding: 2.5em 2.5em 1.5em 2.5em; background: #fff; border-radius: 0 0 16px 16px; box-shadow: 0 2px 8px #0001; margin-bottom: 2em; }
+    .dashboard-overview .search-bar { width: 100%; padding: 1em 1.2em; border-radius: 8px; border: 1.5px solid #93c5fd; font-size: 1.1em; margin-bottom: 1.5em; box-shadow: 0 1px 4px #0001; }
+    .dashboard-overview .quick-actions { display: flex; gap: 1.5em; margin-bottom: 2em; }
+    .dashboard-overview .quick-actions button {
+      background: #2563eb; color: #fff; border: none; border-radius: 24px; padding: 0.9em 2.2em; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 2px 8px #2563eb22;
+    }
+    .dashboard-overview .quick-actions button:hover { background: #1d4ed8; transform: translateY(-2px) scale(1.04); box-shadow: 0 6px 24px #2563eb33; }
+    .dashboard-overview .upcoming-trips { margin-bottom: 2em; }
+    .dashboard-overview .upcoming-trips h3 { font-size: 1.15em; color: #2563eb; margin-bottom: 0.7em; }
+    .dashboard-overview .trips-list { display: flex; gap: 1.2em; flex-wrap: wrap; }
+    .dashboard-overview .trip-card {
+      background: #f8fafc; border-radius: 12px; padding: 1.1em 1.3em; box-shadow: 0 2px 12px #0001; min-width: 260px; flex: 1 1 260px; display: flex; flex-direction: column; gap: 0.3em; border-left: 6px solid #e0e7ff; transition: box-shadow 0.18s, border-color 0.18s;
+    }
+    .dashboard-overview .trip-card .trip-type { display: flex; align-items: center; gap: 0.5em; font-size: 1em; font-weight: 600; }
+    .dashboard-overview .trip-card .badge { font-size: 0.92em; font-weight: 600; border-radius: 12px; padding: 0.18em 0.8em; }
+    .dashboard-overview .trip-card .badge.flight { background: #e0f2fe; color: #2563eb; }
+    .dashboard-overview .trip-card .badge.bus { background: #fef3c7; color: #f59e42; }
+    .dashboard-overview .trip-card .badge.hotel { background: #fee2e2; color: #ef4444; }
+    .dashboard-overview .trip-card .destination { font-size: 1.15em; font-weight: 700; color: #222; }
+    .dashboard-overview .trip-card .date { color: #888; font-size: 0.98em; }
+    .dashboard-overview .trip-card .status { font-size: 0.97em; color: #22c55e; font-weight: 600; }
+    .dashboard-overview .trip-card .actions { margin-top: 0.5em; }
+    .dashboard-overview .trip-card .actions button { background: #fff; color: #2563eb; border: 1.5px solid #2563eb; border-radius: 18px; padding: 0.4em 1.2em; font-size: 1em; font-weight: 600; cursor: pointer; margin-right: 0.5em; transition: background 0.15s, color 0.15s; }
+    .dashboard-overview .trip-card .actions button:hover { background: #2563eb; color: #fff; }
+    .dashboard-overview .no-trips { color: #888; font-size: 1.05em; margin-top: 1em; }
+    .dashboard-sections { display: flex; flex-wrap: wrap; gap: 2em; padding: 0 2.5em 2.5em 2.5em; }
+    .dashboard-section { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; flex: 1 1 350px; min-width: 320px; padding: 2em 1.5em; margin-bottom: 1em; }
+    .dashboard-section h4 { color: #2563eb; margin-bottom: 1em; font-size: 1.15em; }
+    .dashboard-section .search-form { display: flex; flex-wrap: wrap; gap: 1em; margin-bottom: 1.2em; }
+    .dashboard-section .search-form input, .dashboard-section .search-form select { padding: 0.7em 1em; border-radius: 7px; border: 1.5px solid #93c5fd; font-size: 1em; flex: 1 1 120px; }
+    .dashboard-section .search-form button { background: #2563eb; color: #fff; border: none; border-radius: 18px; padding: 0.7em 1.5em; font-size: 1em; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .dashboard-section .search-form button:hover { background: #1d4ed8; }
+    .dashboard-section .results { margin-top: 1em; }
+    .dashboard-section .result-card { background: #f8fafc; border-radius: 8px; padding: 1em 1.2em; margin-bottom: 0.7em; box-shadow: 0 1px 4px #0001; display: flex; align-items: center; gap: 1em; }
+    .dashboard-section .result-card .icon { font-size: 1.3em; margin-right: 0.7em; }
+    .dashboard-section .result-card .details { flex: 1; }
+    .dashboard-section .result-card .actions button { background: #2563eb; color: #fff; border: none; border-radius: 14px; padding: 0.4em 1em; font-size: 0.98em; font-weight: 600; cursor: pointer; }
+    .dashboard-section .result-card .actions button:hover { background: #1d4ed8; }
+    .footer { background: #f1f5ff; color: #888; text-align: center; padding: 1.2em 0; font-size: 1em; margin-top: auto; }
+    .footer a { color: #2563eb; margin: 0 0.7em; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    @media (max-width: 900px) {
+      .dashboard-layout { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; border-right: none; border-bottom: 1.5px solid #e5e7eb; }
+      .main-content { padding: 0; }
+      .dashboard-overview, .dashboard-sections { padding: 1em; }
+    }
+    @media (max-width: 600px) {
+      .dashboard-section { min-width: 100%; padding: 1em 0.5em; }
+      .dashboard-overview, .dashboard-sections { padding: 0.5em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+  <div class="logo"><a href="../HomePage/HomePage.html"><img src="/HomePage/Photos/logo-bg removed.png  " alt="GoTrip Logo" style="cursor:pointer;max-width:110px;max-height:110px;object-fit:contain;" /></a></div>
+      <nav>
+  <a href="../HomePage/HomePage.html"><i class="bi bi-house-door"></i> Home</a>
+  <a href="../Services/FlightsPage.html"><i class="bi bi-airplane"></i> Flights</a>
+  <a href="../HomePage/HomePageBuses.html"><i class="bi bi-bus-front"></i> Buses</a>
+  <a href="../HomePage/HomePageHotels.html"><i class="bi bi-building"></i> Hotels</a>
+  <a href="#" class="active"><i class="bi bi-calendar-check"></i> My Bookings</a>
+  <a href="profile.html"><i class="bi bi-person"></i> Profile</a>
+  <a href="#support"><i class="bi bi-question-circle"></i> Help & Support</a>
+      </nav>
+      <div class="bottom-links">
+        <a href="#about"><i class="bi bi-info-circle"></i> About Us</a>
+        <a href="#terms"><i class="bi bi-file-earmark-text"></i> Terms & Conditions</a>
+        <a href="#privacy"><i class="bi bi-shield-lock"></i> Privacy Policy</a>
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="navbar">
+        <div class="welcome">Welcome back, <span id="userName">User</span>!</div>
+        <div class="profile">
+          <a href="profile.html" style="display:flex;align-items:center;gap:1em;text-decoration:none;color:inherit;">
+            <span class="avatar" id="userAvatar">U</span>
+            <span class="name" id="userEmail">user@email.com</span>
+          </a>
+        </div>
+      </div>
+      <div class="dashboard-overview">
+        <input class="search-bar" type="text" placeholder="Search for flights, buses, or hotels..." />
+        <div class="quick-actions">
+          <button onclick="window.location.href='../Services/FlightsPage.html'">Book a Flight</button>
+          <button onclick="window.location.href='../HomePage/HomePageBuses.html'">Book a Bus Ticket</button>
+          <button onclick="window.location.href='../HomePage/HomePageHotels.html'">Book a Hotel</button>
+        </div>
+        <div class="upcoming-trips">
+          <h3>Upcoming Trips</h3>
+          <div class="trips-list">
+            <div class="trip-card">
+              <div class="trip-type"><i class="bi bi-airplane"></i> <span class="badge flight">Flight</span></div>
+              <div class="destination">Jeddah → Istanbul</div>
+              <div class="date">2025-11-10</div>
+              <div class="status">Confirmed</div>
+              <div class="actions"><button>Modify</button><button>Cancel</button></div>
+            </div>
+            <div class="trip-card">
+              <div class="trip-type"><i class="bi bi-bus-front"></i> <span class="badge bus">Bus</span></div>
+              <div class="destination">Riyadh → Dammam</div>
+              <div class="date">2025-11-15</div>
+              <div class="status">Pending</div>
+              <div class="actions"><button>Modify</button><button>Cancel</button></div>
+            </div>
+            <div class="trip-card">
+              <div class="trip-type"><i class="bi bi-building"></i> <span class="badge hotel">Hotel</span></div>
+              <div class="destination">Hilton, Mecca</div>
+              <div class="date">2025-11-20</div>
+              <div class="status">Confirmed</div>
+              <div class="actions"><button>Modify</button><button>Cancel</button></div>
+            </div>
+          </div>
+          <div class="no-trips" style="display:none;">No upcoming trips found.</div>
+        </div>
+      </div>
+      <div class="dashboard-sections">
+        <div class="dashboard-section" id="flight-booking">
+          <h4>Flight Booking</h4>
+          <form class="search-form">
+            <input type="text" placeholder="Departure City/Airport" />
+            <input type="text" placeholder="Arrival City/Airport" />
+            <input type="date" />
+            <input type="number" min="1" placeholder="Passengers" />
+            <button type="submit">Search Flights</button>
+          </form>
+          <div class="results"></div>
+        </div>
+        <div class="dashboard-section" id="bus-booking">
+          <h4>Bus Booking</h4>
+          <form class="search-form">
+            <input type="text" placeholder="Departure City/Station" />
+            <input type="text" placeholder="Arrival City/Station" />
+            <input type="date" />
+            <button type="submit">Search Buses</button>
+          </form>
+          <div class="results"></div>
+        </div>
+        <div class="dashboard-section" id="hotel-booking">
+          <h4>Hotel Booking</h4>
+          <form class="search-form">
+            <input type="text" placeholder="Destination (City or Hotel Name)" />
+            <input type="date" placeholder="Check-in" />
+            <input type="date" placeholder="Check-out" />
+            <input type="number" min="1" placeholder="Guests" />
+            <button type="submit">Search Hotels</button>
+          </form>
+          <div class="results"></div>
+        </div>
+      </div>
+      <div class="dashboard-sections">
+        <div class="dashboard-section" id="booking-history">
+          <h4>Booking History</h4>
+          <div class="results">
+            <div class="result-card">
+              <span class="icon"><i class="bi bi-airplane"></i></span>
+              <div class="details">
+                <div style="font-size:1.13em;font-weight:700; color:#222;">Flight: <span style="font-weight:700;">Jeddah → Istanbul</span></div>
+                <div style="color:#2563eb;font-size:1em; font-weight:600;">2025-09-10</div>
+                <span style="display:inline-block; background:#22c55e; color:#fff; font-size:0.98em; font-weight:600; border-radius:12px; padding:0.18em 0.9em; margin-top:0.3em;">Completed</span>
+              </div>
+              <div class="actions">
+                <button style="background:#2563eb;color:#fff;border:none;">Re-book</button>
+                <button style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;margin-left:0.5em;">Preview</button>
+              </div>
+            </div>
+            <div class="result-card">
+              <span class="icon"><i class="bi bi-bus-front"></i></span>
+              <div class="details">
+                <div style="font-size:1.13em;font-weight:700; color:#222;">Bus: <span style="font-weight:700;">Riyadh → Dammam</span></div>
+                <div style="color:#2563eb;font-size:1em; font-weight:600;">2025-08-15</div>
+                <span style="display:inline-block; background:#22c55e; color:#fff; font-size:0.98em; font-weight:600; border-radius:12px; padding:0.18em 0.9em; margin-top:0.3em;">Completed</span>
+              </div>
+              <div class="actions">
+                <button style="background:#2563eb;color:#fff;border:none;">Re-book</button>
+                <button style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;margin-left:0.5em;">Preview</button>
+              </div>
+            </div>
+            <div class="result-card">
+              <span class="icon"><i class="bi bi-building"></i></span>
+              <div class="details">
+                <div style="font-size:1.13em;font-weight:700; color:#222;">Hotel: <span style="font-weight:700;">Hilton, Mecca</span></div>
+                <div style="color:#2563eb;font-size:1em; font-weight:600;">2025-08-20</div>
+                <span style="display:inline-block; background:#22c55e; color:#fff; font-size:0.98em; font-weight:600; border-radius:12px; padding:0.18em 0.9em; margin-top:0.3em;">Completed</span>
+              </div>
+              <div class="actions">
+                <button style="background:#2563eb;color:#fff;border:none;">Re-book</button>
+                <button style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;margin-left:0.5em;">Preview</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-section" id="profile">
+          <h4>Profile & Account Settings</h4>
+          <div class="results">
+            <div>Name: <span id="profileName">User</span></div>
+            <div>Email: <span id="profileEmail">user@email.com</span></div>
+            <div>Phone: <span id="profilePhone">+966-555-5555</span></div>
+            <div>Preferences: <span id="profilePrefs">Window seat, 4-star hotels</span></div>
+            <div>Payment Methods: <span id="profilePayment">Visa **** 1234</span></div>
+            <div><button>Edit Profile</button></div>
+          </div>
+        </div>
+        <div class="dashboard-section" id="support">
+          <h4>Support & Help</h4>
+          <div class="results">
+            <div><a href="#">FAQs</a></div>
+            <div><a href="#">Live Chat</a></div>
+            <div><a href="#">Contact Us</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        &copy; 2025 GoTrip. <a href="#about">About Us</a> | <a href="#terms">Terms & Conditions</a> | <a href="#privacy">Privacy Policy</a> | <a href="#">Facebook</a> | <a href="#">Instagram</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Example: Fill user info from localStorage if available
+    const user = JSON.parse(localStorage.getItem('gotripUser'));
+    if (user) {
+      document.getElementById('userName').textContent = user.firstName || 'User';
+      document.getElementById('userAvatar').textContent = (user.firstName?.[0] || 'U').toUpperCase();
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('profileName').textContent = user.firstName || 'User';
+      document.getElementById('profileEmail').textContent = user.email;
+    }
+  </script>
+</body>
+</html>

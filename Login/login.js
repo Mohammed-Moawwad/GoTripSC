@@ -192,6 +192,16 @@ document.addEventListener("DOMContentLoaded", function () {
         passwordError.classList.remove("hidden");
         isValid = false;
       }
+      // If all validations pass, redirect to home page and store user info
+      if (isValid) {
+        // Store user info in localStorage (for demo/session)
+        localStorage.setItem("gotripUser", JSON.stringify({
+          firstName: firstName.value,
+          lastName: lastName.value,
+          email: email.value
+        }));
+        window.location.href = "../HomePage/HomePage.html";
+      }
     });
   }
 });
