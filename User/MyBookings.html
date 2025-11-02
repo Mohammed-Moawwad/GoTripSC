@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - GoTrip</title>
+  <link rel="stylesheet" href="../HomePage/HomePage.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <style>
+    body { background: #f4f7fa; margin: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+    .dashboard-layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 220px; /* slightly narrower to match design */
+      background: #fff;
+      border-right: 1px solid #eef2ff;
+      display: flex; flex-direction: column; align-items: stretch;
+      padding: 1.25rem 0.9rem 1rem 0.9rem;
+      box-shadow: 0 2px 8px #0001; z-index: 2;
+    }
+    .sidebar .logo { text-align: center; margin: 0 0 1.6rem 0; }
+    .sidebar .logo .logo-box {
+      width: 72px; height: 72px; border-radius: 12px; background: #fff; display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    }
+    .sidebar .logo img { width: 56px; height: auto; display: block; }
+    .sidebar nav { flex: 1; padding-top: 0.5rem; }
+    .sidebar nav a {
+      display: flex; align-items: center; gap: 0.85em; color: #111827; text-decoration: none; font-size: 1.02em;
+      padding: 0.8em 0.9em; border-radius: 12px; margin-bottom: 0.6rem; transition: background 0.15s, color 0.15s, transform 0.08s;
+      position: relative; overflow: visible;
+    }
+    .sidebar nav a i { font-size: 1.15em; width: 22px; text-align: center; color: #374151; }
+    .sidebar nav a.active, .sidebar nav a:focus {
+      background: #eef2ff; color: #2563eb; font-weight: 600; box-shadow: 0 6px 18px rgba(37,99,235,0.06);
+    }
+    /* left blue accent for active item */
+    .sidebar nav a.active::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 8px;
+      bottom: 8px;
+      width: 6px;
+      background: #2563eb;
+      border-radius: 8px;
+    }
+    .sidebar nav a:hover { background: #f8fafc; color: #2563eb; transform: translateY(-1px); }
+    .sidebar .bottom-links { margin-top: auto; display:flex; flex-direction:column; align-items:center; padding-bottom:0.8rem; }
+    .sidebar .bottom-links a { color: #6b7280; font-size: 0.98em; display: flex; align-items: center; gap: 0.7em; margin-bottom: 0.6rem; text-decoration:none; }
+    .sidebar .bottom-links a:hover { color: #2563eb; }
+    .sidebar .bottom-links a.logout {
+      display: flex; align-items: center; justify-content: center; gap: 0.6em;
+      background: #ef4444; color: #fff; font-weight: 700; padding: 0.55em 1.1em; border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12); text-decoration: none; width: calc(100% - 2.4rem); margin: 0.2rem auto 0.9rem; border: none;
+    }
+    .sidebar .bottom-links a.logout i { font-size: 1.05em; }
+    .sidebar .bottom-links a.logout:hover { background: #dc2626; color: #fff; transform: translateY(-1px); }
+    .main-content { flex: 1; padding: 0 0 0 0; display: flex; flex-direction: column; }
+    .navbar {
+      background: #fff; border-bottom: 1.5px solid #e5e7eb; padding: 1.1em 2.5em; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10;
+    }
+    .navbar .welcome { font-size: 1.25em; font-weight: 600; color: #2563eb; }
+    .navbar .profile { display: flex; align-items: center; gap: 1em; }
+    .navbar .profile .avatar { width: 38px; height: 38px; border-radius: 50%; background: #e0e7ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1em; font-weight: 700; }
+    .navbar .profile .name { font-weight: 600; color: #222; }
+    .navbar .profile .notifications { color: #2563eb; font-size: 1.3em; position: relative; }
+    .navbar .profile .notifications .dot { position: absolute; top: 0; right: -2px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; }
+    .dashboard-overview { padding: 2.5em 2.5em 1.5em 2.5em; background: #fff; border-radius: 0 0 16px 16px; box-shadow: 0 2px 8px #0001; margin-bottom: 2em; }
+    .dashboard-overview .search-bar { width: 100%; padding: 1em 1.2em; border-radius: 8px; border: 1.5px solid #93c5fd; font-size: 1.1em; margin-bottom: 1.5em; box-shadow: 0 1px 4px #0001; }
+    .dashboard-overview .quick-actions { display: flex; gap: 1.5em; margin-bottom: 2em; }
+    .dashboard-overview .quick-actions button {
+      background: #2563eb; color: #fff; border: none; border-radius: 24px; padding: 0.9em 2.2em; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 2px 8px #2563eb22;
+    }
+    .dashboard-overview .quick-actions button:hover { background: #1d4ed8; transform: translateY(-2px) scale(1.04); box-shadow: 0 6px 24px #2563eb33; }
+    .dashboard-overview .upcoming-trips { margin-bottom: 2em; }
+    .dashboard-overview .upcoming-trips h3 { font-size: 1.15em; color: #2563eb; margin-bottom: 0.7em; }
+    .dashboard-overview .trips-list { display: flex; gap: 1.2em; flex-wrap: wrap; }
+    .dashboard-overview .trip-card {
+      background: #f8fafc; border-radius: 12px; padding: 1.1em 1.3em; box-shadow: 0 2px 12px #0001; min-width: 260px; flex: 1 1 260px; display: flex; flex-direction: column; gap: 0.3em; border-left: 6px solid #e0e7ff; transition: box-shadow 0.18s, border-color 0.18s;
+    }
+    .dashboard-overview .trip-card .trip-type { display: flex; align-items: center; gap: 0.5em; font-size: 1em; font-weight: 600; }
+    .dashboard-overview .trip-card .badge { font-size: 0.92em; font-weight: 600; border-radius: 12px; padding: 0.18em 0.8em; }
+    .dashboard-overview .trip-card .badge.flight { background: #e0f2fe; color: #2563eb; }
+    .dashboard-overview .trip-card .badge.bus { background: #fef3c7; color: #f59e42; }
+    .dashboard-overview .trip-card .badge.hotel { background: #fee2e2; color: #ef4444; }
+    .dashboard-overview .trip-card .destination { font-size: 1.15em; font-weight: 700; color: #222; }
+    .dashboard-overview .trip-card .date { color: #888; font-size: 0.98em; }
+  .dashboard-overview .trip-card .status { font-size: 0.97em; font-weight: 600; display:flex;align-items:center;gap:0.5rem; }
+  .dashboard-overview .trip-card .status .status-dot { width:10px;height:10px;border-radius:50%;display:inline-block; }
+  .dashboard-overview .trip-card .status.confirmed .status-dot { background:#22c55e; }
+  .dashboard-overview .trip-card .status.pending .status-dot { background:#f59e0b; }
+  .dashboard-overview .trip-card .status.cancelled .status-dot { background:#ef4444; }
+  /* Reminder / action buttons */
+  .dashboard-overview .trip-card .actions { margin-top: 0.5em; display:flex;flex-wrap:wrap;gap:0.5rem; }
+  .dashboard-overview .trip-card .actions button { display:inline-flex;align-items:center;gap:0.45rem; }
+  .dashboard-overview .trip-card .actions .reminder-btn { background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:18px;padding:0.45em 0.9em;font-weight:700; }
+  .dashboard-overview .trip-card .actions .modify-btn { background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.45em 0.95em;font-weight:700; }
+  .dashboard-overview .trip-card .actions .cancel-btn { background:#fff;color:#ef4444;border:1.5px solid #ef4444;border-radius:18px;padding:0.45em 0.95em;font-weight:700; }
+    .dashboard-overview .trip-card .actions { margin-top: 0.5em; }
+    .dashboard-overview .trip-card .actions button { background: #fff; color: #2563eb; border: 1.5px solid #2563eb; border-radius: 18px; padding: 0.4em 1.2em; font-size: 1em; font-weight: 600; cursor: pointer; margin-right: 0.5em; transition: background 0.15s, color 0.15s; }
+    .dashboard-overview .trip-card .actions button:hover { background: #2563eb; color: #fff; }
+    .dashboard-overview .no-trips { color: #888; font-size: 1.05em; margin-top: 1em; }
+    .dashboard-sections { display: flex; flex-wrap: wrap; gap: 2em; padding: 0 2.5em 2.5em 2.5em; }
+    .dashboard-section { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; flex: 1 1 350px; min-width: 320px; padding: 2em 1.5em; margin-bottom: 1em; }
+    .dashboard-section h4 { color: #2563eb; margin-bottom: 1em; font-size: 1.15em; }
+    .dashboard-section .search-form { display: flex; flex-wrap: wrap; gap: 1em; margin-bottom: 1.2em; }
+    .dashboard-section .search-form input, .dashboard-section .search-form select { padding: 0.7em 1em; border-radius: 7px; border: 1.5px solid #93c5fd; font-size: 1em; flex: 1 1 120px; }
+    .dashboard-section .search-form button { background: #2563eb; color: #fff; border: none; border-radius: 18px; padding: 0.7em 1.5em; font-size: 1em; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .dashboard-section .search-form button:hover { background: #1d4ed8; }
+    .dashboard-section .results { margin-top: 1em; }
+    .dashboard-section .result-card { background: #f8fafc; border-radius: 8px; padding: 1em 1.2em; margin-bottom: 0.7em; box-shadow: 0 1px 4px #0001; display: flex; align-items: center; gap: 1em; }
+    .dashboard-section .result-card .icon { font-size: 1.3em; margin-right: 0.7em; }
+    .dashboard-section .result-card .details { flex: 1; }
+    .dashboard-section .result-card .actions button { background: #2563eb; color: #fff; border: none; border-radius: 14px; padding: 0.4em 1em; font-size: 0.98em; font-weight: 600; cursor: pointer; }
+    .dashboard-section .result-card .actions button:hover { background: #1d4ed8; }
+  /* Booking history filters */
+  .history-filters { display:flex; gap:0.6rem; align-items:center; margin-bottom:0.8rem; flex-wrap:wrap; }
+  .history-filters select, .history-filters button { padding:0.45em 0.8em; border-radius:8px; border:1px solid #d1d5db; background:#fff; }
+  .history-filters .clear-filters { background:#fff;color:#374151;border:1px solid #e5e7eb; }
+  .result-card .history-status { display:inline-block; font-size:0.92em; font-weight:700; padding:0.18em 0.7em; border-radius:12px; }
+  .history-status.completed { background:#22c55e;color:#fff; }
+  .history-status.pending { background:#f59e0b;color:#fff; }
+  .history-status.cancelled { background:#ef4444;color:#fff; }
+  /* Search suggestions */
+  .search-suggestions { position:relative; max-width:900px; }
+  .search-suggestions ul { position:absolute; left:0; right:0; background:#fff; border:1px solid #e5e7eb; border-radius:8px; list-style:none; margin:0; padding:0.25rem 0; box-shadow:0 6px 18px rgba(15,23,42,0.06); z-index:30; }
+  .search-suggestions li { padding:0.6rem 0.9rem; cursor:pointer; }
+  .search-suggestions li:hover { background:#f8fafc; }
+  /* Profile photo upload preview */
+  .profile-photo-upload { display:flex; gap:0.8rem; align-items:center; }
+  .profile-photo-upload img { width:64px;height:64px;border-radius:50%;object-fit:cover;background:#fff;border:1px solid #e5e7eb;padding:3px; }
+  /* Bookings management styles */
+  .analytics-charts { display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; }
+  .chart-card { background:#fff; border-radius:12px; box-shadow:0 2px 8px #0001; padding:1rem; flex:1 1 320px; min-height:220px; }
+  .recommendations { display:flex; gap:1rem; flex-wrap:wrap; }
+  .recommend-card { background:#fff;border-radius:12px;padding:1rem;box-shadow:0 2px 8px #0001;flex:1 1 220px;display:flex;flex-direction:column;justify-content:space-between; }
+  .recommend-card h5 { margin:0 0 0.5rem 0;color:#111827; }
+  .support-box { background:#fff;border-radius:12px;padding:1rem;box-shadow:0 2px 8px #0001; }
+    .footer { background: #f1f5ff; color: #888; text-align: center; padding: 1.2em 0; font-size: 1em; margin-top: auto; }
+    .footer a { color: #2563eb; margin: 0 0.7em; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    @media (max-width: 900px) {
+      .dashboard-layout { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; border-right: none; border-bottom: 1.5px solid #e5e7eb; }
+      .main-content { padding: 0; }
+      .dashboard-overview, .dashboard-sections { padding: 1em; }
+    }
+    @media (max-width: 600px) {
+      .dashboard-section { min-width: 100%; padding: 1em 0.5em; }
+      .dashboard-overview, .dashboard-sections { padding: 0.5em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+  <div class="logo"><a href="../HomePage/HomePage.html"><div class="logo-box"><img src="/HomePage/Photos/logo-bg removed.png" alt="GoTrip Logo" style="cursor:pointer;object-fit:contain;" /></div></a></div>
+    <nav>
+  <a href="../HomePage/HomePage.html" class="nav-item"><i class="bi bi-house-door"></i><span class="label">Home</span></a>
+  <a href="../Services/FlightsPage.html" class="nav-item"><i class="bi bi-airplane"></i><span class="label">Flights</span></a>
+  <a href="../HomePage/HomePageBuses.html" class="nav-item"><i class="bi bi-bus-front"></i><span class="label">Buses</span></a>
+  <a href="../HomePage/HomePageHotels.html" class="nav-item" id="nav-hotels"><i class="bi bi-building"></i><span class="label">Hotels</span></a>
+  <a href="MyBookings.html" class="nav-item active"><i class="bi bi-calendar-check"></i><span class="label">My Bookings</span></a>
+  <a href="profile.html" class="nav-item"><i class="bi bi-person"></i><span class="label">Profile</span></a>
+  <a href="UserDashboard.html" class="nav-item"><i class="bi bi-speedometer2"></i><span class="label">Dashboard</span></a>
+  <a href="#support" class="nav-item"><i class="bi bi-question-circle"></i><span class="label">Help & Support</span></a>
+    </nav>
+      <div class="bottom-links">
+        <a href="#" id="logoutBtn" class="logout" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Log out</a>
+        <a href="#about"><i class="bi bi-info-circle"></i> About Us</a>
+        <a href="#terms"><i class="bi bi-file-earmark-text"></i> Terms & Conditions</a>
+        <a href="#privacy"><i class="bi bi-shield-lock"></i> Privacy Policy</a>
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+      </div>
+    </aside>
+    <div class="main-content">
+      <div class="navbar">
+        <div class="welcome">Welcome back, <span id="userName">User</span>!</div>
+        <div class="profile">
+          <a href="profile.html" style="display:flex;align-items:center;gap:1em;text-decoration:none;color:inherit;">
+            <span class="avatar" id="userAvatar">U</span>
+            <span class="name" id="userEmail">user@email.com</span>
+          </a>
+        </div>
+      </div>
+  <div class="dashboard-overview">
+        <input class="search-bar" type="text" placeholder="Search for flights, buses, or hotels..." />
+        <div class="quick-actions">
+          <button onclick="window.location.href='/HomePage/HomePage.html'">Book a Flight</button>
+          <button onclick="window.location.href='../HomePage/HomePageBuses.html'">Book a Bus Ticket</button>
+          <button onclick="window.location.href='../HomePage/HomePageHotels.html'">Book a Hotel</button>
+        </div>
+        <div class="upcoming-trips">
+          <h3>Upcoming Trips</h3>
+          <div class="trips-list">
+            <div class="trip-card" data-type="flight" data-status="confirmed">
+              <div class="trip-type"><i class="bi bi-airplane"></i> <span class="badge flight">Flight</span></div>
+              <div class="destination">Jeddah → Istanbul</div>
+              <div class="date">2025-11-10</div>
+              <div class="status confirmed"><span class="status-dot"></span>Confirmed</div>
+              <div class="actions"><button class="reminder-btn" onclick="setReminder('trip1', '2025-11-09')"><i class="bi bi-bell"></i> Reminder</button><button class="modify-btn"><i class="bi bi-pencil"></i> Modify</button><button class="cancel-btn"><i class="bi bi-x-circle"></i> Cancel</button></div>
+            </div>
+            <div class="trip-card" data-type="bus" data-status="pending">
+              <div class="trip-type"><i class="bi bi-bus-front"></i> <span class="badge bus">Bus</span></div>
+              <div class="destination">Riyadh → Dammam</div>
+              <div class="date">2025-11-15</div>
+              <div class="status pending"><span class="status-dot"></span>Pending</div>
+              <div class="actions"><button class="reminder-btn" onclick="setReminder('trip2', '2025-11-14')"><i class="bi bi-bell"></i> Reminder</button><button class="modify-btn"><i class="bi bi-pencil"></i> Modify</button><button class="cancel-btn"><i class="bi bi-x-circle"></i> Cancel</button></div>
+            </div>
+            <div class="trip-card" data-type="hotel" data-status="confirmed">
+              <div class="trip-type"><i class="bi bi-building"></i> <span class="badge hotel">Hotel</span></div>
+              <div class="destination">Hilton, Mecca</div>
+              <div class="date">2025-11-20</div>
+              <div class="status confirmed"><span class="status-dot"></span>Confirmed</div>
+              <div class="actions"><button class="reminder-btn" onclick="setReminder('trip3', '2025-11-19')"><i class="bi bi-bell"></i> Reminder</button><button class="modify-btn"><i class="bi bi-pencil"></i> Modify</button><button class="cancel-btn"><i class="bi bi-x-circle"></i> Cancel</button></div>
+            </div>
+          </div>
+          <div class="no-trips" style="display:none;">No upcoming trips found.</div>
+        </div>
+      </div>
+      <div class="dashboard-sections">
+        <div class="dashboard-section" id="booking-history">
+          <h4>Booking History</h4>
+          <div class="history-filters">
+            <select id="filterType">
+              <option value="all">All Types</option>
+              <option value="flight">Flights</option>
+              <option value="bus">Buses</option>
+              <option value="hotel">Hotels</option>
+            </select>
+            <select id="filterStatus">
+              <option value="all">All Statuses</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <button id="clearFilters" class="clear-filters">Clear</button>
+          </div>
+          <div class="results" id="historyResults">
+            <div class="result-card" data-type="flight" data-status="completed">
+              <span class="icon"><i class="bi bi-airplane"></i></span>
+              <div class="details">
+                <div style="font-size:1.13em;font-weight:700; color:#222;">Flight: <span style="font-weight:700;">Jeddah → Istanbul</span></div>
+                <div style="color:#2563eb;font-size:1em; font-weight:600;">2025-09-10</div>
+                <span class="history-status completed">Completed</span>
+              </div>
+              <div class="actions">
+                <button onclick="rebook('h1')">Re-book</button>
+                <button onclick="preview('h1')" style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;margin-left:0.5em;">Preview</button>
+              </div>
+            </div>
+            <div class="result-card" data-type="bus" data-status="completed">
+              <span class="icon"><i class="bi bi-bus-front"></i></span>
+              <div class="details">
+                <div style="font-size:1.13em;font-weight:700; color:#222;">Bus: <span style="font-weight:700;">Riyadh → Dammam</span></div>
+                <div style="color:#2563eb;font-size:1em; font-weight:600;">2025-08-15</div>
+                <span class="history-status completed">Completed</span>
+              </div>
+              <div class="actions">
+                <button onclick="rebook('h2')">Re-book</button>
+                <button onclick="preview('h2')" style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;margin-left:0.5em;">Preview</button>
+              </div>
+            </div>
+            <div class="result-card" data-type="hotel" data-status="completed">
+              <span class="icon"><i class="bi bi-building"></i></span>
+              <div class="details">
+                <div style="font-size:1.13em;font-weight:700; color:#222;">Hotel: <span style="font-weight:700;">Hilton, Mecca</span></div>
+                <div style="color:#2563eb;font-size:1em; font-weight:600;">2025-08-20</div>
+                <span class="history-status completed">Completed</span>
+              </div>
+              <div class="actions">
+                <button onclick="rebook('h3')">Re-book</button>
+                <button onclick="preview('h3')" style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;margin-left:0.5em;">Preview</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dashboard-section" id="profile">
+          <h4>Profile & Account Settings</h4>
+          <div class="results">
+            <div class="profile-photo-upload">
+              <img id="profilePreview" src="" alt="Profile" onerror="this.src='https://via.placeholder.com/64?text=U'" />
+              <div>
+                <div>Name: <span id="profileName">User</span></div>
+                <div>Email: <span id="profileEmail">user@email.com</span></div>
+                <div>Phone: <span id="profilePhone">+966-555-5555</span></div>
+                <div>Preferences: <span id="profilePrefs">Window seat, 4-star hotels</span></div>
+                <div>Payment Methods: <span id="profilePayment">Visa **** 1234</span></div>
+                <div style="margin-top:0.4rem;"><label style="cursor:pointer;background:#2563eb;color:#fff;padding:0.45em 0.8em;border-radius:10px;">Upload Photo<input id="profilePhotoInput" type="file" accept="image/*" style="display:none;" /></label></div>
+              </div>
+            </div>
+            <div style="margin-top:0.6rem;"><button>Edit Profile</button></div>
+          </div>
+        </div>
+        <div class="dashboard-section" id="support">
+          <h4>Support & Help</h4>
+          <div class="results">
+            <div><a href="#">FAQs</a></div>
+            <div><a href="#">Live Chat</a></div>
+            <div><a href="#">Contact Us</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        &copy; 2025 GoTrip. <a href="#about">About Us</a> | <a href="#terms">Terms & Conditions</a> | <a href="#privacy">Privacy Policy</a> | <a href="#">Facebook</a> | <a href="#">Instagram</a>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Example: Fill user info from localStorage if available
+    const user = JSON.parse(localStorage.getItem('gotripUser'));
+    if (user) {
+      document.getElementById('userName').textContent = user.firstName || 'User';
+      document.getElementById('userAvatar').textContent = (user.firstName?.[0] || 'U').toUpperCase();
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('profileName').textContent = user.firstName || 'User';
+      document.getElementById('profileEmail').textContent = user.email;
+    }
+    
+    // Logout helper: clears stored user and redirects to sign-in page
+    function logout() {
+      try {
+        localStorage.removeItem('gotripUser');
+        // optionally clear other session-related keys if used
+      } catch (e) {
+        console.warn('Error clearing localStorage during logout', e);
+      }
+      // Redirect to signin (adjust path if your sign-in page is elsewhere)
+      window.location.href = '../Login/signin.html';
+    }
+
+    // --- Booking history filters and helpers ---
+    const filterType = document.getElementById('filterType');
+    const filterStatus = document.getElementById('filterStatus');
+    const clearFilters = document.getElementById('clearFilters');
+    const historyResults = document.getElementById('historyResults');
+
+    function applyHistoryFilters() {
+      const t = filterType.value;
+      const s = filterStatus.value;
+      const cards = historyResults.querySelectorAll('.result-card');
+      cards.forEach(c => {
+        const ct = c.dataset.type || 'all';
+        const cs = c.dataset.status || 'all';
+        const typeMatch = (t === 'all') || (ct === t);
+        const statusMatch = (s === 'all') || (cs === s);
+        c.style.display = (typeMatch && statusMatch) ? '' : 'none';
+      });
+    }
+    filterType?.addEventListener('change', applyHistoryFilters);
+    filterStatus?.addEventListener('change', applyHistoryFilters);
+    clearFilters?.addEventListener('click', () => { filterType.value='all'; filterStatus.value='all'; applyHistoryFilters(); });
+
+    function rebook(id) { alert('Re-book demo: ' + id); }
+    function preview(id) { alert('Preview demo: ' + id); }
+
+    // --- Reminders ---
+    function setReminder(tripId, remindOn) {
+      // store a simple reminder flag (in a real app you'd schedule a push/email)
+      const reminders = JSON.parse(localStorage.getItem('gotripReminders') || '{}');
+      reminders[tripId] = { remindOn };
+      localStorage.setItem('gotripReminders', JSON.stringify(reminders));
+      alert('Reminder set for ' + remindOn);
+      // update button text visually
+      const btn = document.querySelector(`[onclick*="${tripId}"]`);
+      if (btn) btn.textContent = 'Reminder set';
+    }
+
+    // --- Search auto-suggestions (simple demo) ---
+    const searchInput = document.querySelector('.search-bar');
+    const suggestions = ['Jeddah', 'Istanbul', 'Riyadh', 'Dammam', 'Mecca', 'Hilton', 'Riyadh → Dammam', 'Jeddah → Istanbul'];
+    // create suggestion container
+    const sugWrap = document.createElement('div'); sugWrap.className='search-suggestions';
+    const sugList = document.createElement('ul'); sugWrap.appendChild(sugList);
+    searchInput.parentNode.insertBefore(sugWrap, searchInput.nextSibling);
+
+    function showSuggestions(q) {
+      sugList.innerHTML='';
+      if (!q) { sugList.style.display='none'; return; }
+      const matches = suggestions.filter(s => s.toLowerCase().includes(q.toLowerCase())).slice(0,6);
+      if (matches.length===0) { sugList.style.display='none'; return; }
+      matches.forEach(m => {
+        const li = document.createElement('li'); li.textContent = m; li.addEventListener('click', ()=>{ searchInput.value = m; sugList.style.display='none'; });
+        sugList.appendChild(li);
+      });
+      sugList.style.display='block';
+    }
+    searchInput?.addEventListener('input', (e)=> showSuggestions(e.target.value));
+    document.addEventListener('click', (e)=>{ if (!sugWrap.contains(e.target) && e.target!==searchInput) sugList.style.display='none'; });
+
+    // --- Profile photo upload preview ---
+    const photoInput = document.getElementById('profilePhotoInput');
+    const previewImg = document.getElementById('profilePreview');
+    photoInput?.addEventListener('change', (e)=>{
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = (ev)=>{ previewImg.src = ev.target.result; localStorage.setItem('gotripProfilePhoto', ev.target.result); };
+      reader.readAsDataURL(f);
+    });
+    // load existing photo if saved
+    const savedPhoto = localStorage.getItem('gotripProfilePhoto');
+    if (savedPhoto) previewImg.src = savedPhoto;
+  </script>
+</body>
+</html>
