@@ -53,6 +53,30 @@
     @media (max-width: 700px) {
       .profile-section { padding: 1em 0.5em; }
     }
+    /* Sidebar footer styles (logout pill, legal links, socials) */
+    .sidebar .logout-btn {
+      width: 100%;
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.85em 0;
+      font-size: 1.06em;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(239,68,68,0.15);
+    }
+    .sidebar .logout-btn i { font-size: 1.05rem; }
+    .sidebar .bottom-links { margin-top: 0.9rem; color: #6b7280; font-size: 0.95em; display: flex; flex-direction: column; gap: 0.35rem; padding-top: 1rem; border-top: 1px solid #f3f4f6; }
+    .sidebar .bottom-links a { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 0.6rem; padding-left: 4px; }
+    .sidebar .bottom-links a i { font-size: 0.98rem; color: #9ca3af; }
+    .sidebar .socials { margin-top: 0.6rem; display: flex; gap: 0.6rem; align-items: center; padding-left: 4px; }
+    .sidebar .socials a { color: #6b7280; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width:34px; height:34px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
+    .sidebar .socials a i { font-size: 1rem; }
   </style>
 </head>
 <body>
@@ -64,14 +88,25 @@
         <a href="../Services/FlightsPage.html"><i class="bi bi-airplane"></i> Flights</a>
         <a href="../HomePage/HomePageBuses.html"><i class="bi bi-bus-front"></i> Buses</a>
         <a href="../HomePage/HomePageHotels.html"><i class="bi bi-building"></i> Hotels</a>
-        <a href="dashboard.html"><i class="bi bi-calendar-check"></i> My Bookings</a>
-        <a href="#" class="active"><i class="bi bi-person"></i> Profile</a>
-        <a href="#support"><i class="bi bi-question-circle"></i> Help & Support</a>
+  <a href="dashboard.html"><i class="bi bi-calendar-check"></i> My Bookings</a>
+  <a href="#" class="active"><i class="bi bi-person"></i> Profile</a>
+  <!-- Dashboard option placed under Profile per request -->
+  <a href="UserDashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+  <a href="#support"><i class="bi bi-question-circle"></i> Help & Support</a>
       </nav>
       <div style="margin-top:auto;padding-top:2em;">
-        <button id="logoutBtn" style="width:100%;background:#ef4444;color:#fff;border:none;border-radius:12px;padding:0.8em 0;font-size:1.08em;font-weight:600;display:flex;align-items:center;justify-content:center;gap:0.7em;cursor:pointer;">
-          <i class="bi bi-box-arrow-right"></i> Log Out
+        <button id="logoutBtn" class="logout-btn">
+          <i class="bi bi-box-arrow-right"></i> Log out
         </button>
+        <div class="bottom-links">
+          <a href="../About/about.html"><i class="bi bi-info-circle"></i> About Us</a>
+          <a href="../legal/terms.html"><i class="bi bi-file-text"></i> Terms &amp; Conditions</a>
+          <a href="../legal/privacy.html"><i class="bi bi-shield-lock"></i> Privacy Policy</a>
+          <div class="socials">
+            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
       </div>
     </aside>
     <div class="main-content">
@@ -85,7 +120,6 @@
           <div style="color:#2563eb;font-size:1.05em;margin-top:0.2em;" id="profileEmail">user@email.com</div>
           <div style="margin-top:0.5em;display:flex;gap:1.5em;align-items:center;">
             <span style="background:#e0e7ff;color:#2563eb;font-weight:600;border-radius:12px;padding:0.2em 1em;font-size:1em;">Gold Member</span>
-            <span style="color:#22c55e;font-weight:600;font-size:1.1em;">Points: <span id="profilePoints">2,500</span></span>
           </div>
         </div>
         <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;cursor:pointer;">Redeem Points</button>
@@ -98,9 +132,8 @@
           <button class="tab-btn" data-tab="payment">Payment</button>
           <button class="tab-btn" data-tab="privacy">Privacy & Security</button>
           <button class="tab-btn" data-tab="notifications">Notifications</button>
-          <button class="tab-btn" data-tab="loyalty">Loyalty</button>
           <button class="tab-btn" data-tab="social">Social</button>
-          <button class="tab-btn" data-tab="history">Booking History</button>
+          <button class="tab-btn" data-tab="social">Social</button>
           <button class="tab-btn" data-tab="support">Support</button>
         </div>
         <div class="tab-content" id="tab-personal">
@@ -121,17 +154,15 @@
               <input type="tel" placeholder="Mobile Number" style="flex:2;" />
               <button type="button" style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:12px;padding:0.4em 1em;">Verify</button>
             </div>
-            <label>Profile Picture:</label>
-            <input type="file" accept="image/*" style="margin-bottom:1em;" />
-            <label>Date of Birth:</label>
-            <input type="date" style="margin-bottom:1em;" />
-            <label>Gender:</label>
-            <select style="margin-bottom:1.5em;">
-              <option value="">Select</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem;margin-bottom:1em;">
+              <label style="margin:0;white-space:nowrap;">Profile Picture:</label>
+              <input type="file" accept="image/*" style="width:240px;" />
+
+              <label style="margin:0 0 0 0.6rem;white-space:nowrap;">Date of Birth:</label>
+              <input type="date" style="width:150px;padding:0.35rem;border-radius:8px;border:1px solid #e6e9ef;" />
+
+             
+            </div>
             <div style="text-align:right;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
           </form>
         </div>
@@ -258,15 +289,7 @@
             <div style="text-align:right;margin-top:1.5em;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
           </form>
         </div>
-        <div class="tab-content" id="tab-loyalty" style="display:none;">
-          <h3>Loyalty Program / Points</h3>
-          <div style="margin-bottom:1em;">Membership Tier: <span style="background:#e0e7ff;color:#2563eb;font-weight:600;border-radius:12px;padding:0.2em 1em;font-size:1em;">Gold</span></div>
-          <div style="margin-bottom:1em;">Points Balance: <span id="profilePoints2">2,500</span></div>
-          <div style="margin-bottom:1em;">Points Earned: 3,000</div>
-          <div style="margin-bottom:1em;">Points Redeemed: 500</div>
-          <div style="margin-bottom:1em;">Tier Status: Gold (Free upgrades, lounge access)</div>
-          <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Redeem Points</button>
-        </div>
+        
         <div class="tab-content" id="tab-social" style="display:none;">
           <h3>Social Connections</h3>
           <form class="profile-form">
@@ -282,47 +305,7 @@
             <div style="text-align:right;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
           </form>
         </div>
-        <div class="tab-content" id="tab-history" style="display:none;">
-          <h3>Booking History</h3>
-          <div style="margin-bottom:1em;">
-            <div style="background:#f8fafc;border-radius:8px;padding:1em 1.2em;margin-bottom:0.7em;box-shadow:0 1px 4px #0001;display:flex;align-items:center;gap:1em;">
-              <span class="icon"><i class="bi bi-airplane"></i></span>
-              <div style="flex:1;">
-                <div style="font-size:1.13em;font-weight:700;color:#222;">Flight: <span style="font-weight:700;">Jeddah → Istanbul</span></div>
-                <div style="color:#2563eb;font-size:1em;font-weight:600;">2025-09-10</div>
-                <span style="display:inline-block;background:#22c55e;color:#fff;font-size:0.98em;font-weight:600;border-radius:12px;padding:0.18em 0.9em;margin-top:0.3em;">Completed</span>
-              </div>
-              <div>
-                <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.4em 1.2em;font-size:1em;font-weight:600;margin-right:0.5em;">Re-book</button>
-                <button style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:18px;padding:0.4em 1.2em;font-size:1em;font-weight:600;">Preview</button>
-              </div>
-            </div>
-            <div style="background:#f8fafc;border-radius:8px;padding:1em 1.2em;margin-bottom:0.7em;box-shadow:0 1px 4px #0001;display:flex;align-items:center;gap:1em;">
-              <span class="icon"><i class="bi bi-bus-front"></i></span>
-              <div style="flex:1;">
-                <div style="font-size:1.13em;font-weight:700;color:#222;">Bus: <span style="font-weight:700;">Riyadh → Dammam</span></div>
-                <div style="color:#2563eb;font-size:1em;font-weight:600;">2025-08-15</div>
-                <span style="display:inline-block;background:#22c55e;color:#fff;font-size:0.98em;font-weight:600;border-radius:12px;padding:0.18em 0.9em;margin-top:0.3em;">Completed</span>
-              </div>
-              <div>
-                <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.4em 1.2em;font-size:1em;font-weight:600;margin-right:0.5em;">Re-book</button>
-                <button style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:18px;padding:0.4em 1.2em;font-size:1em;font-weight:600;">Preview</button>
-              </div>
-            </div>
-            <div style="background:#f8fafc;border-radius:8px;padding:1em 1.2em;margin-bottom:0.7em;box-shadow:0 1px 4px #0001;display:flex;align-items:center;gap:1em;">
-              <span class="icon"><i class="bi bi-building"></i></span>
-              <div style="flex:1;">
-                <div style="font-size:1.13em;font-weight:700;color:#222;">Hotel: <span style="font-weight:700;">Hilton, Mecca</span></div>
-                <div style="color:#2563eb;font-size:1em;font-weight:600;">2025-08-20</div>
-                <span style="display:inline-block;background:#22c55e;color:#fff;font-size:0.98em;font-weight:600;border-radius:12px;padding:0.18em 0.9em;margin-top:0.3em;">Completed</span>
-              </div>
-              <div>
-                <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.4em 1.2em;font-size:1em;font-weight:600;margin-right:0.5em;">Re-book</button>
-                <button style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:18px;padding:0.4em 1.2em;font-size:1em;font-weight:600;">Preview</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        
         <div class="tab-content" id="tab-support" style="display:none;">
           <h3>Support & Help</h3>
           <div style="margin-bottom:1em;"><button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Contact Support</button></div>
