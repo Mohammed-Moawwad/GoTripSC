@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bus Monthly Reports - GoTrip Admin</title>
+    <title>User Monthly Reports - GoTrip Admin</title>
     <link rel="stylesheet" href="../../Admin/admin-dashboard.css" />
-    <link rel="stylesheet" href="bus-reports.css" />
+    <link rel="stylesheet" href="user-reports.css" />
     <link rel="stylesheet" href="../admin-modal.css" />
     <link
       rel="stylesheet"
@@ -25,7 +25,7 @@
           </div>
           <span class="logo-text">GoTrip</span>
         </div>
-        <h1 class="page-title">Bus Monthly Reports</h1>
+        <h1 class="page-title">User Monthly Reports</h1>
         <div class="admin-controls">
           <div class="admin-profile">
             <div class="admin-avatar">A</div>
@@ -42,7 +42,7 @@
     <div class="breadcrumb">
       <a href="../../HomePage/HomePage.html">Home</a> /
       <a href="../admin-dashboard.html">Dashboard</a> /
-      <a href="bus-management.html">Bus Management</a> /
+      <a href="user-management.html">User Management</a> /
       <span>Monthly Reports</span>
     </div>
 
@@ -70,52 +70,52 @@
       <!-- Summary Cards -->
       <div class="report-summary">
         <div class="summary-card">
-          <div class="summary-icon trips">
-            <i class="fas fa-bus"></i>
+          <div class="summary-icon registrations">
+            <i class="fas fa-user-plus"></i>
           </div>
           <div class="summary-content">
-            <h3 id="total-trips">0</h3>
-            <p>Total Trips</p>
-            <span class="trend positive" id="trips-trend"
+            <h3 id="new-registrations">0</h3>
+            <p>New Registrations</p>
+            <span class="trend positive" id="registrations-trend"
               >+0% vs last month</span
             >
           </div>
         </div>
 
         <div class="summary-card">
-          <div class="summary-icon users">
+          <div class="summary-icon active-users">
             <i class="fas fa-users"></i>
           </div>
           <div class="summary-content">
-            <h3 id="users-served">0</h3>
-            <p>Users Served</p>
-            <span class="trend positive" id="users-trend"
+            <h3 id="active-users">0</h3>
+            <p>Active Users</p>
+            <span class="trend positive" id="active-trend"
               >+0% vs last month</span
             >
           </div>
         </div>
 
         <div class="summary-card">
-          <div class="summary-icon revenue">
-            <i class="fas fa-dollar-sign"></i>
+          <div class="summary-icon bookings">
+            <i class="fas fa-ticket-alt"></i>
           </div>
           <div class="summary-content">
-            <h3 id="total-revenue">$0</h3>
-            <p>Total Revenue</p>
-            <span class="trend positive" id="revenue-trend"
+            <h3 id="total-bookings">0</h3>
+            <p>Total Bookings Made</p>
+            <span class="trend positive" id="bookings-trend"
               >+0% vs last month</span
             >
           </div>
         </div>
 
         <div class="summary-card">
-          <div class="summary-icon occupancy">
+          <div class="summary-icon retention">
             <i class="fas fa-chart-line"></i>
           </div>
           <div class="summary-content">
-            <h3 id="avg-occupancy">0%</h3>
-            <p>Avg Occupancy</p>
-            <span class="trend neutral" id="occupancy-trend"
+            <h3 id="retention-rate">0%</h3>
+            <p>Retention Rate</p>
+            <span class="trend neutral" id="retention-trend"
               >0% vs last month</span
             >
           </div>
@@ -124,20 +124,20 @@
 
       <!-- Detailed Breakdown Table -->
       <div class="report-details">
-        <h2><i class="fas fa-route"></i> Route Performance Breakdown</h2>
+        <h2><i class="fas fa-chart-bar"></i> User Activity Breakdown</h2>
         <div class="table-container">
           <table class="report-table">
             <thead>
               <tr>
-                <th>Route</th>
-                <th>Total Trips</th>
-                <th>Passengers</th>
-                <th>Revenue</th>
-                <th>Avg Occupancy</th>
-                <th>Canceled</th>
+                <th>User Segment</th>
+                <th>Total Users</th>
+                <th>New This Month</th>
+                <th>Active Users</th>
+                <th>Bookings Made</th>
+                <th>Avg Sessions</th>
               </tr>
             </thead>
-            <tbody id="route-breakdown-body">
+            <tbody id="segment-breakdown-body">
               <!-- Populated via JS -->
             </tbody>
           </table>
@@ -147,19 +147,44 @@
       <!-- Additional Stats -->
       <div class="additional-stats">
         <div class="stat-box">
-          <h3>Top Performing Route</h3>
-          <p id="top-route">Cairo – Alexandria</p>
-          <span id="top-route-revenue">$182,400</span>
+          <h3>Most Active User</h3>
+          <p id="top-user">john_doe</p>
+          <span id="top-user-bookings">47 bookings</span>
         </div>
         <div class="stat-box">
-          <h3>Total Cancellations</h3>
-          <p id="total-canceled">12</p>
-          <span id="cancel-rate">8.3% of trips</span>
+          <h3>Account Suspensions</h3>
+          <p id="total-suspended">5</p>
+          <span id="suspend-rate">0.8% of total users</span>
         </div>
         <div class="stat-box">
-          <h3>Peak Travel Day</h3>
-          <p id="peak-day">Friday</p>
-          <span id="peak-trips">28 trips</span>
+          <h3>Average Session Duration</h3>
+          <p id="avg-session">12.5</p>
+          <span id="session-info">minutes per session</span>
+        </div>
+      </div>
+
+      <!-- User Demographics Chart Placeholder -->
+      <div class="report-details">
+        <h2><i class="fas fa-globe"></i> User Demographics Overview</h2>
+        <div class="demographics-grid">
+          <div class="demo-card">
+            <h4><i class="fas fa-map-marker-alt"></i> Top Locations</h4>
+            <ul id="top-locations-list">
+              <!-- Populated via JS -->
+            </ul>
+          </div>
+          <div class="demo-card">
+            <h4><i class="fas fa-mobile-alt"></i> Device Usage</h4>
+            <ul id="device-usage-list">
+              <!-- Populated via JS -->
+            </ul>
+          </div>
+          <div class="demo-card">
+            <h4><i class="fas fa-star"></i> User Ratings</h4>
+            <ul id="ratings-list">
+              <!-- Populated via JS -->
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -182,23 +207,29 @@
         <div class="logout-modal-icon">
           <i class="fas fa-sign-out-alt"></i>
         </div>
-        <h2 class="logout-modal-title">Quit Admin Dashboard?</h2>
-        <p class="logout-modal-message">
-          Are you sure you want to logout from the admin dashboard?
+        <h2>Quit Admin Dashboard?</h2>
+        <p>
+          Are you sure you want to leave the admin dashboard? You'll be
+          redirected to the homepage.
         </p>
         <div class="logout-modal-buttons">
-          <button class="logout-modal-btn cancel-btn" id="cancelLogout">
-            Cancel
+          <button
+            class="logout-modal-btn logout-modal-btn-cancel"
+            id="cancelLogout"
+          >
+            <i class="fas fa-times"></i> Cancel
           </button>
-          <button class="logout-modal-btn confirm-btn" id="confirmLogout">
-            Yes, Logout
+          <button
+            class="logout-modal-btn logout-modal-btn-confirm"
+            id="confirmLogout"
+          >
+            <i class="fas fa-check"></i> Yes, Logout
           </button>
         </div>
       </div>
     </div>
 
-    <!-- JavaScript -->
     <script src="../admin-modal.js"></script>
-    <script src="bus-reports.js"></script>
+    <script src="user-reports.js"></script>
   </body>
 </html>

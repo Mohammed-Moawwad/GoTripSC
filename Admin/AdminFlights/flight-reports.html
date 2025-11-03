@@ -6,6 +6,7 @@
     <title>Flight Monthly Reports - GoTrip Admin</title>
     <link rel="stylesheet" href="../../Admin/admin-dashboard.css" />
     <link rel="stylesheet" href="flight-reports.css" />
+    <link rel="stylesheet" href="../admin-modal.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -39,6 +40,7 @@
 
     <!-- Breadcrumb -->
     <div class="breadcrumb">
+      <a href="../../HomePage/HomePage.html">Home</a> /
       <a href="../admin-dashboard.html">Dashboard</a> /
       <a href="flight-management.html">Flight Management</a> /
       <span>Monthly Reports</span>
@@ -174,6 +176,29 @@
       </div>
     </footer>
 
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+      <div class="logout-modal">
+        <div class="logout-modal-icon">
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <h2 class="logout-modal-title">Quit Admin Dashboard?</h2>
+        <p class="logout-modal-message">
+          Are you sure you want to logout from the admin dashboard?
+        </p>
+        <div class="logout-modal-buttons">
+          <button class="logout-modal-btn cancel-btn" id="cancelLogout">
+            Cancel
+          </button>
+          <button class="logout-modal-btn confirm-btn" id="confirmLogout">
+            Yes, Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="../admin-modal.js"></script>
     <script src="flight-reports.js"></script>
   </body>
 </html>

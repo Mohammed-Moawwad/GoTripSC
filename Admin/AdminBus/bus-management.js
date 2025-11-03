@@ -286,15 +286,7 @@ class BusManagement {
   }
 
   handleLogout() {
-    if (confirm("Are you sure you want to logout?")) {
-      this.showNotification("Logging out...", "info");
-
-      // In a real application, you would redirect to the logout endpoint
-      setTimeout(() => {
-        // window.location.href = '/logout';
-        this.showNotification("Successfully logged out", "success");
-      }, 1000);
-    }
+    showLogoutModal("../../HomePage/HomePage.html");
   }
 
   showAdminProfile() {

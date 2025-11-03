@@ -13,6 +13,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="flight-management.css" />
+    <link rel="stylesheet" href="../admin-modal.css" />
   </head>
   <body>
     <!-- Header Section -->
@@ -42,7 +43,7 @@
 
     <!-- Breadcrumb Navigation -->
     <div class="breadcrumb">
-      <a href="/">Home</a> &gt;
+      <a href="../../HomePage/HomePage.html">Home</a> &gt;
       <a href="../admin-dashboard.html">Administrator</a> &gt; Flight Management
     </div>
 
@@ -207,7 +208,29 @@
       </div>
     </footer>
 
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+      <div class="logout-modal">
+        <div class="logout-modal-icon">
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <h2 class="logout-modal-title">Quit Admin Dashboard?</h2>
+        <p class="logout-modal-message">
+          Are you sure you want to logout from the admin dashboard?
+        </p>
+        <div class="logout-modal-buttons">
+          <button class="logout-modal-btn cancel-btn" id="cancelLogout">
+            Cancel
+          </button>
+          <button class="logout-modal-btn confirm-btn" id="confirmLogout">
+            Yes, Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- JavaScript -->
+    <script src="../admin-modal.js"></script>
     <script src="flight-management.js"></script>
   </body>
 </html>

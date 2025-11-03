@@ -6,6 +6,7 @@
     <title>Hotel Monthly Reports - GoTrip Admin</title>
     <link rel="stylesheet" href="../../Admin/admin-dashboard.css" />
     <link rel="stylesheet" href="hotel-reports.css" />
+    <link rel="stylesheet" href="../admin-modal.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -39,6 +40,7 @@
 
     <!-- Breadcrumb -->
     <div class="breadcrumb">
+      <a href="../../HomePage/HomePage.html">Home</a> /
       <a href="../admin-dashboard.html">Dashboard</a> /
       <a href="hotel-management.html">Hotel Management</a> /
       <span>Monthly Reports</span>
@@ -174,6 +176,35 @@
       </div>
     </footer>
 
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+      <div class="logout-modal">
+        <div class="logout-modal-icon">
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <h2>Quit Admin Dashboard?</h2>
+        <p>
+          Are you sure you want to leave the admin dashboard? You'll be
+          redirected to the homepage.
+        </p>
+        <div class="logout-modal-buttons">
+          <button
+            class="logout-modal-btn logout-modal-btn-cancel"
+            id="cancelLogout"
+          >
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button
+            class="logout-modal-btn logout-modal-btn-confirm"
+            id="confirmLogout"
+          >
+            <i class="fas fa-check"></i> Yes, Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../admin-modal.js"></script>
     <script src="hotel-reports.js"></script>
   </body>
 </html>
