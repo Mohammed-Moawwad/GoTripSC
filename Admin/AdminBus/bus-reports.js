@@ -231,12 +231,7 @@ class BusReports {
     const logoutBtn = document.querySelector(".logout-btn");
     if (logoutBtn) {
       logoutBtn.addEventListener("click", () => {
-        if (confirm("Are you sure you want to logout?")) {
-          this.showNotification("Logging out...", "info");
-          setTimeout(() => {
-            window.location.href = "../../Login/login.html";
-          }, 1000);
-        }
+        showLogoutModal("../../HomePage/HomePage.html");
       });
     }
   }

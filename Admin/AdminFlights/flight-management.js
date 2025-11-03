@@ -337,12 +337,7 @@ class FlightManagement {
   }
 
   handleLogout() {
-    if (confirm("Are you sure you want to logout?")) {
-      this.showNotification("Logging out...", "info");
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 1000);
-    }
+    showLogoutModal("../../HomePage/HomePage.html");
   }
 
   showAdminProfile() {

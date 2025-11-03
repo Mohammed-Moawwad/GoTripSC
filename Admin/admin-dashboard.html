@@ -13,6 +13,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <link rel="stylesheet" href="admin-dashboard.css" />
+    <link rel="stylesheet" href="admin-modal.css" />
   </head>
   <body>
     <!-- Header Section -->
@@ -43,7 +44,9 @@
     </header>
 
     <!-- Breadcrumb Navigation -->
-    <div class="breadcrumb"><a href="/">Home</a> &gt; Administrator</div>
+    <div class="breadcrumb">
+      <a href="../HomePage/HomePage.html">Home</a> &gt; Administrator
+    </div>
 
     <!-- Main Content Section -->
     <div class="main-content">
@@ -100,6 +103,23 @@
             </p>
           </div>
         </a>
+
+        <!-- Users Card -->
+        <a
+          href="AdminUser/user-management.html"
+          class="service-card"
+          data-service="users"
+        >
+          <div class="service-overlay">
+            <div class="service-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3 class="service-title">Manage Users</h3>
+            <p class="service-description">
+              Add, edit, delete, and view user accounts.
+            </p>
+          </div>
+        </a>
       </div>
     </div>
 
@@ -115,7 +135,36 @@
       </div>
     </footer>
 
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal-overlay" id="logoutModal">
+      <div class="logout-modal">
+        <div class="logout-modal-icon">
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <h2>Quit Admin Dashboard?</h2>
+        <p>
+          Are you sure you want to leave the admin dashboard? You'll be
+          redirected to the homepage.
+        </p>
+        <div class="logout-modal-buttons">
+          <button
+            class="logout-modal-btn logout-modal-btn-cancel"
+            id="cancelLogout"
+          >
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button
+            class="logout-modal-btn logout-modal-btn-confirm"
+            id="confirmLogout"
+          >
+            <i class="fas fa-check"></i> Yes, Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- JavaScript -->
+    <script src="admin-modal.js"></script>
     <script src="admin-dashboard.js"></script>
   </body>
 </html>
