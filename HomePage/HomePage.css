@@ -426,6 +426,12 @@ select:focus {
   gap: 8px;
   color: #475069;
 }
+.checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #007bff;
+}
 .search-btn {
   grid-column: 1 / -1;
   height: 44px;
