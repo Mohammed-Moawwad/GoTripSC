@@ -83,6 +83,8 @@
         top: 18px;
         align-self: flex-start;
         height: fit-content;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
       }
       section.results {
         flex: 1;
@@ -242,7 +244,7 @@
         flex-shrink: 0;
       }
       .price {
-        font-weight: 900;
+        font-weight: 600;
         font-size: 22px;
         color: #071133;
       }
@@ -527,15 +529,53 @@
         margin-right: 8px;
         opacity: 0.7;
       }
+      /* custom checkbox styling */
+      .filters input[type="checkbox"] {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid #d1d5db;
+        border-radius: 4px;
+        margin-right: 8px;
+        cursor: pointer;
+        position: relative;
+        vertical-align: middle;
+        transition: all 0.2s;
+      }
+      .filters input[type="checkbox"]:hover {
+        border-color: var(--accent);
+      }
+      .filters input[type="checkbox"]:checked {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+      .filters input[type="checkbox"]:checked::after {
+        content: '✓';
+        position: absolute;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .filters label {
+        cursor: pointer;
+        user-select: none;
+      }
       /* price range track cosmetic */
       .price-range {
         display: flex;
-        gap: 0px;
-        align-items: center;
+        flex-direction: column;
+        gap: 8px;
         margin-bottom: 10px;
       }
+      .price-range .price-inputs {
+        display: flex;
+        gap: 8px;
+      }
       .price-range input[type="range"] {
-        flex: 1;
+        width: 100%;
       }
 
       /* Footer styles */
@@ -987,28 +1027,30 @@
             Price range
           </div>
           <div class="price-range">
-            <input
-              id="priceMin"
-              type="number"
-              placeholder="Min"
-              style="
-                width: 80px;
-                padding: 8px;
-                border-radius: 6px;
-                border: 1px solid #e6eef9;
-              "
-            />
-            <input
-              id="priceMax"
-              type="number"
-              placeholder="Max"
-              style="
-                width: 80px;
-                padding: 8px;
-                border-radius: 6px;
-                border: 1px solid #e6eef9;
-              "
-            />
+            <div class="price-inputs">
+              <input
+                id="priceMin"
+                type="number"
+                placeholder="Min"
+                style="
+                  width: 80px;
+                  padding: 8px;
+                  border-radius: 6px;
+                  border: 1px solid #e6eef9;
+                "
+              />
+              <input
+                id="priceMax"
+                type="number"
+                placeholder="Max"
+                style="
+                  width: 80px;
+                  padding: 8px;
+                  border-radius: 6px;
+                  border: 1px solid #e6eef9;
+                "
+              />
+            </div>
             <input
               id="priceRange"
               type="range"
@@ -1016,6 +1058,7 @@
               max="2000"
               step="10"
               value="1000"
+              style="width: 100%; accent-color: var(--accent);"
             />
           </div>
           <div style="display: flex; gap: 8px">
@@ -1060,6 +1103,96 @@
           <label style="display: block; margin-bottom: 6px"
             ><input type="checkbox" id="noOvernight" /> No overnight
             flights</label
+          >
+
+          <hr
+            style="margin: 14px 0; border: none; border-top: 1px solid #eef2f7"
+          />
+
+          <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px">
+            Airlines
+          </div>
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="airline" value="Saudia" /> Saudia</label
+          >
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="airline" value="flyadeal" /> flyadeal</label
+          >
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="airline" value="Flynas" /> Flynas</label
+          >
+          <label style="display: block; margin-bottom: 12px"
+            ><input type="checkbox" data-filter="airline" value="BlueJet" /> BlueJet</label
+          >
+
+          <hr
+            style="margin: 14px 0; border: none; border-top: 1px solid #eef2f7"
+          />
+
+          <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px">
+            Departure time
+          </div>
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="time" value="morning" /> 
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px">
+              <path fill="currentColor" d="M6 12c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6zm6-8v2m0 12v2m8-8h-2M4 12H2m15.7-5.7L16.3 7.7M7.7 16.3l-1.4 1.4m0-11.4l1.4 1.4m8.6 8.6l1.4 1.4"/>
+            </svg>
+            Morning (5AM - 12PM)</label
+          >
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="time" value="afternoon" /> 
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px">
+              <path fill="currentColor" d="M12 6a6 6 0 100 12 6 6 0 000-12z"/>
+            </svg>
+            Afternoon (12PM - 6PM)</label
+          >
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="time" value="evening" /> 
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px">
+              <path fill="currentColor" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>
+            </svg>
+            Evening (6PM - 12AM)</label
+          >
+          <label style="display: block; margin-bottom: 12px"
+            ><input type="checkbox" data-filter="time" value="night" /> 
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px">
+              <path fill="currentColor" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>
+            </svg>
+            Night (12AM - 5AM)</label
+          >
+
+          <hr
+            style="margin: 14px 0; border: none; border-top: 1px solid #eef2f7"
+          />
+
+          <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px">
+            Flight duration
+          </div>
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="duration" value="short" /> Under 3 hours</label
+          >
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="duration" value="medium" /> 3-6 hours</label
+          >
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" data-filter="duration" value="long" /> 6-12 hours</label
+          >
+          <label style="display: block; margin-bottom: 12px"
+            ><input type="checkbox" data-filter="duration" value="verylong" /> Over 12 hours</label
+          >
+
+          <hr
+            style="margin: 14px 0; border: none; border-top: 1px solid #eef2f7"
+          />
+
+          <div style="font-size: 13px; color: var(--muted); margin-bottom: 8px">
+            Baggage
+          </div>
+          <label style="display: block; margin-bottom: 6px"
+            ><input type="checkbox" id="carryOnOnly" /> Carry-on only</label
+          >
+          <label style="display: block; margin-bottom: 12px"
+            ><input type="checkbox" id="checkedBag" /> Checked baggage included</label
           >
         </nav>
 
@@ -1293,24 +1426,73 @@
         .addEventListener("click", applyFilters);
       document.getElementById("resetFilters").addEventListener("click", () => {
         document
-          .querySelectorAll('input[data-filter="stops"]')
+          .querySelectorAll('input[type="checkbox"]')
           .forEach((i) => (i.checked = false));
         document.getElementById("priceMin").value = "";
         document.getElementById("priceMax").value = "";
-        document.getElementById("priceRange").value = 1000;
+        document.getElementById("priceRange").value = document.getElementById("priceRange").max;
+        document.getElementById("priceMax").value = document.getElementById("priceRange").max;
         current = [...sampleFlights];
         renderList(current);
       });
 
+      // Helper function to parse time from HH:MM format
+      function getTimeCategory(timeStr) {
+        const hour = parseInt(timeStr.split(':')[0]);
+        if (hour >= 5 && hour < 12) return 'morning';
+        if (hour >= 12 && hour < 18) return 'afternoon';
+        if (hour >= 18 && hour < 24) return 'evening';
+        return 'night';
+      }
+
+      // Helper function to get duration in minutes
+      function getDurationMinutes(durationStr) {
+        const match = durationStr.match(/(\d+)h\s*(\d+)?m?/);
+        if (!match) return 0;
+        return Number(match[1]) * 60 + (match[2] ? Number(match[2]) : 0);
+      }
+
+      // Helper function to get duration category
+      function getDurationCategory(durationStr) {
+        const minutes = getDurationMinutes(durationStr);
+        if (minutes < 180) return 'short'; // under 3h
+        if (minutes < 360) return 'medium'; // 3-6h
+        if (minutes < 720) return 'long'; // 6-12h
+        return 'verylong'; // over 12h
+      }
+
       function applyFilters() {
+        // Get all filter values
         const stopsChecked = Array.from(
           document.querySelectorAll('input[data-filter="stops"]:checked')
         ).map((i) => i.value);
+        
+        const airlinesChecked = Array.from(
+          document.querySelectorAll('input[data-filter="airline"]:checked')
+        ).map((i) => i.value);
+        
+        const timesChecked = Array.from(
+          document.querySelectorAll('input[data-filter="time"]:checked')
+        ).map((i) => i.value);
+        
+        const durationsChecked = Array.from(
+          document.querySelectorAll('input[data-filter="duration"]:checked')
+        ).map((i) => i.value);
+
         const min = Number(document.getElementById("priceMin").value) || 0;
-        const max =
-          Number(document.getElementById("priceMax").value) || Infinity;
+        const max = Number(document.getElementById("priceMax").value) || Infinity;
+        
+        const bookOnSite = document.getElementById("bookOnSite")?.checked;
+        const noOvernight = document.getElementById("noOvernight")?.checked;
+        const carryOnOnly = document.getElementById("carryOnOnly")?.checked;
+        const checkedBag = document.getElementById("checkedBag")?.checked;
+
+        // Filter flights
         current = sampleFlights.filter((f) => {
+          // Price filter
           if (!(f.price >= min && f.price <= max)) return false;
+          
+          // Stops filter
           if (stopsChecked.length) {
             const okStops = stopsChecked.some((s) => {
               if (s === "2+") return f.stops >= 2;
@@ -1318,8 +1500,35 @@
             });
             if (!okStops) return false;
           }
+          
+          // Airline filter
+          if (airlinesChecked.length) {
+            if (!airlinesChecked.includes(f.airline)) return false;
+          }
+          
+          // Departure time filter
+          if (timesChecked.length) {
+            const depTimeCategory = getTimeCategory(f.dep);
+            if (!timesChecked.includes(depTimeCategory)) return false;
+          }
+          
+          // Duration filter
+          if (durationsChecked.length) {
+            const durCategory = getDurationCategory(f.duration);
+            if (!durationsChecked.includes(durCategory)) return false;
+          }
+          
+          // No overnight flights filter (simple check: if arrival is "next day")
+          if (noOvernight) {
+            const depHour = parseInt(f.dep.split(':')[0]);
+            const arrHour = parseInt(f.arr.split(':')[0]);
+            // Simple heuristic: if arrival hour < departure hour, it's overnight
+            if (arrHour < depHour && getDurationMinutes(f.duration) > 180) return false;
+          }
+          
           return true;
         });
+        
         renderList(current);
       }
 
@@ -1334,6 +1543,15 @@
         document.getElementById("priceRange").max;
       document.getElementById("priceMax").value =
         document.getElementById("priceRange").value;
+
+      // Add real-time filtering when checkboxes change
+      document.querySelectorAll('.filters input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', applyFilters);
+      });
+
+      // Add real-time filtering for price inputs
+      document.getElementById("priceMin")?.addEventListener('input', applyFilters);
+      document.getElementById("priceMax")?.addEventListener('input', applyFilters);
 
       // Home/logo helpers:
       // - clicking the Home button / logo already navigates via the anchor href.
