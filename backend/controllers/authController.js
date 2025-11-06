@@ -59,12 +59,16 @@ const signup = async (req, res) => {
     // Hash the password (10 salt rounds)
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Generate unique user ID (USR + timestamp + random)
+    const userId = `USR${Date.now()}${Math.floor(Math.random() * 1000)}`;
+
     // Insert new user into database
     const [result] = await db.execute(
       `INSERT INTO users 
-       (first_name, last_name, email, phone, birth_date, password_hash, status, role) 
-       VALUES (?, ?, ?, ?, ?, ?, 'Active', 'user')`,
+       (user_id, first_name, last_name, email, phone, birth_date, password_hash, status, role) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, 'Active', 'user')`,
       [
+        userId,
         first_name,
         last_name,
         email,
@@ -73,8 +77,6 @@ const signup = async (req, res) => {
         hashedPassword,
       ]
     );
-
-    const userId = result.insertId;
 
     // Generate JWT token
     const token = jwt.sign(
