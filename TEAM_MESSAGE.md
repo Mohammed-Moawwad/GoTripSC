@@ -7,7 +7,7 @@
 ```
 🚀 Hey Team! Important Update 🚀
 
-We now have a CLOUD DATABASE on Railway! 
+We now have a CLOUD DATABASE on Railway!
 
 This means:
 ✅ We ALL share the SAME database
@@ -28,7 +28,7 @@ This means:
 
 3. Test it works:
    npm start
-   
+
    You should see:
    ✅ MySQL Database connected successfully!
 
@@ -45,27 +45,32 @@ This means:
 ## For a Video Call Explanation (Use This Script):
 
 ### Introduction (1 min)
+
 "Hey everyone! So we were all using local databases, right? That means when I added a hotel, you couldn't see it. We had to share SQL files back and forth. That's annoying.
 
 So I set up Railway - it's a free cloud database. Think of it like Google Drive but for our database instead of files."
 
 ### Show Diagram (1 min)
+
 "Let me show you how it works:
 
 **Before:** Each of us had our own database
+
 - Mohammed's computer → Mohammed's database
 - Ibrahim's computer → Ibrahim's database
 - Different data! 😢
 
 **Now:** We all connect to ONE database in the cloud
+
 - Mohammed's computer → Railway (cloud)
 - Ibrahim's computer → Railway (cloud)
 - Same data! 😊"
 
 ### Live Demo (3 mins)
+
 "Let me show you live:
 
-1. **[Open Railway dashboard]** 
+1. **[Open Railway dashboard]**
    This is our database. See these 11 hotels? That's our actual data.
 
 2. **[Open your localhost]**
@@ -77,12 +82,13 @@ So I set up Railway - it's a free cloud database. Think of it like Google Drive 
 4. **[Ask teammate to run npm start]**
    Now Ibrahim, can you open the hotels page?
    Do you see the hotel I just added?
-   
+
    [They should say YES!]
-   
+
    That's Railway! Instant sync!"
 
 ### Setup Instructions (3 mins)
+
 "Okay, to set this up:
 
 1. Pull the latest code
@@ -95,6 +101,7 @@ That's it! You're now connected to Railway.
 Read the RAILWAY_GUIDE_FOR_TEAM.md file I added - it has tests you can run to verify everything works."
 
 ### Q&A (2 mins)
+
 **Expected Questions:**
 
 Q: "Do I need to install MySQL?"
@@ -116,12 +123,14 @@ A: "Yes! Railway gives us $5/month credit which is more than enough for developm
 Title: "🚀 We're now using Railway Cloud Database!"
 
 Body:
-```markdown
+
+````markdown
 ## 🌍 Important: Railway Cloud Database Setup
 
 We've migrated from local databases to **Railway cloud database** for better team collaboration!
 
 ### Why?
+
 - ✅ Everyone sees the same data
 - ✅ No more manual database syncing
 - ✅ Instant updates across all team members
@@ -134,8 +143,10 @@ We've migrated from local databases to **Railway cloud database** for better tea
    git pull origin main
    npm install
    ```
+````
 
 2. **Create `.env` file**
+
    - Copy `.env.example` to `.env`
    - Get Railway password from team chat
    - Replace `ASK_MOHAMMED_FOR_PASSWORD` with actual password
@@ -147,14 +158,18 @@ We've migrated from local databases to **Railway cloud database** for better tea
    ```
 
 ### Full Guide
+
 📖 Read [RAILWAY_GUIDE_FOR_TEAM.md](./RAILWAY_GUIDE_FOR_TEAM.md) for:
+
 - How Railway works
 - Step-by-step tests
 - Troubleshooting tips
 - FAQ
 
 ### Need Help?
+
 Contact @Mohammed-Moawwad in Discord/WhatsApp or comment here!
+
 ```
 
 ---
@@ -178,3 +193,4 @@ Contact @Mohammed-Moawwad in Discord/WhatsApp or comment here!
 ---
 
 ## Perfect! Now you have everything ready! 🎉
+```
