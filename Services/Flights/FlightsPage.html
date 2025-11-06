@@ -427,6 +427,91 @@
         background: rgba(255, 255, 255, 0.15);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
+
+      /* Authentication UI Styles */
+      /* Base Authentication Button Styles */
+      .nav-right .btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* Sign Up Button */
+      #signupBtn {
+        background: #fff !important;
+        color: #007bff !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      #signupBtn:hover {
+        background: #f0f8ff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Login Button */
+      #loginBtn {
+        background: transparent !important;
+        color: #fff !important;
+        border: 2px solid #fff !important;
+      }
+
+      #loginBtn:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      /* My Trips Button */
+      .my-trips-btn {
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 100%
+        ) !important;
+        color: white !important;
+        border: none !important;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        padding: 8px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .my-trips-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+      }
+      .logout-btn {
+        background: #ef4444 !important;
+        color: white !important;
+        border: none !important;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .logout-btn:hover {
+        background: #dc2626 !important;
+        transform: translateY(-2px);
+      }
+      .user-welcome {
+        font-weight: 600;
+        color: #fff;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        display: inline-block;
+      }
+
       /* currency dropdown styling */
       .cur-dropdown {
         position: relative;
@@ -753,24 +838,54 @@
             </ul>
           </li>
           <li><a class="small" href="#" id="supportLink">Support</a></li>
-          <li><a class="small" href="#" id="myTripsLink">My Trips</a></li>
+
+          <!-- Authentication Buttons -->
           <li>
             <a
               href="../../Login/signin.html"
-              class="signin-btn"
-              aria-label="Sign in"
+              class="btn"
+              id="signupBtn"
+              aria-label="Sign up"
             >
-              Sign in
+              Sign up
             </a>
           </li>
           <li>
             <a
               href="../../Login/login.html"
-              class="login-btn"
+              class="btn"
+              id="loginBtn"
               aria-label="Login"
             >
               Login
             </a>
+          </li>
+          <li>
+            <span
+              class="user-welcome"
+              id="userNameDisplay"
+              style="display: none"
+            ></span>
+          </li>
+          <li>
+            <a
+              href="../../User/dashboard.html"
+              class="btn my-trips-btn"
+              id="myTripsBtn"
+              style="display: none"
+            >
+              My Trips
+            </a>
+          </li>
+          <li>
+            <button
+              class="btn logout-btn"
+              id="logoutBtn"
+              onclick="logoutWithConfirmation()"
+              style="display: none"
+            >
+              Logout
+            </button>
           </li>
         </ul>
       </nav>
@@ -2141,5 +2256,7 @@
         </div>
       </div>
     </footer>
+
+    <script src="../../auth-helper.js"></script>
   </body>
 </html>

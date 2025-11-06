@@ -96,24 +96,54 @@
             </ul>
           </li>
           <li><a class="small" href="#" id="supportLink">Support</a></li>
-          <li><a class="small" href="#" id="myTripsLink">My Trips</a></li>
+
+          <!-- Authentication Buttons -->
           <li>
             <a
               href="../../Login/signin.html"
-              class="signin-btn"
-              aria-label="Sign in"
+              class="btn"
+              id="signupBtn"
+              aria-label="Sign up"
             >
-              Sign in
+              Sign up
             </a>
           </li>
           <li>
             <a
               href="../../Login/login.html"
-              class="login-btn"
+              class="btn"
+              id="loginBtn"
               aria-label="Login"
             >
               Login
             </a>
+          </li>
+          <li>
+            <span
+              class="user-welcome"
+              id="userNameDisplay"
+              style="display: none"
+            ></span>
+          </li>
+          <li>
+            <a
+              href="../../User/dashboard.html"
+              class="btn my-trips-btn"
+              id="myTripsBtn"
+              style="display: none"
+            >
+              My Trips
+            </a>
+          </li>
+          <li>
+            <button
+              class="btn logout-btn"
+              id="logoutBtn"
+              onclick="logoutWithConfirmation()"
+              style="display: none"
+            >
+              Logout
+            </button>
           </li>
         </ul>
       </nav>
@@ -239,24 +269,80 @@
               Amenities
             </div>
             <label style="display: block; margin-bottom: 8px; cursor: pointer">
-              <input type="checkbox" id="freeWifi" />
+              <input type="checkbox" class="amenity-filter" value="Free WiFi" />
               <span style="margin-left: 6px">Free WiFi</span>
             </label>
             <label style="display: block; margin-bottom: 8px; cursor: pointer">
-              <input type="checkbox" id="pool" />
-              <span style="margin-left: 6px">Pool</span>
+              <input
+                type="checkbox"
+                class="amenity-filter"
+                value="Swimming Pool"
+              />
+              <span style="margin-left: 6px">Swimming Pool</span>
             </label>
             <label style="display: block; margin-bottom: 8px; cursor: pointer">
-              <input type="checkbox" id="parking" />
-              <span style="margin-left: 6px">Free Parking</span>
+              <input type="checkbox" class="amenity-filter" value="Gym" />
+              <span style="margin-left: 6px">Gym</span>
             </label>
             <label style="display: block; margin-bottom: 8px; cursor: pointer">
-              <input type="checkbox" id="restaurant" />
+              <input
+                type="checkbox"
+                class="amenity-filter"
+                value="Restaurant"
+              />
               <span style="margin-left: 6px">Restaurant</span>
             </label>
             <label style="display: block; margin-bottom: 8px; cursor: pointer">
-              <input type="checkbox" id="gym" />
-              <span style="margin-left: 6px">Gym/Fitness Center</span>
+              <input type="checkbox" class="amenity-filter" value="Spa" />
+              <span style="margin-left: 6px">Spa</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" class="amenity-filter" value="Parking" />
+              <span style="margin-left: 6px">Parking</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input
+                type="checkbox"
+                class="amenity-filter"
+                value="Room Service"
+              />
+              <span style="margin-left: 6px">Room Service</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input
+                type="checkbox"
+                class="amenity-filter"
+                value="Airport Shuttle"
+              />
+              <span style="margin-left: 6px">Airport Shuttle</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input
+                type="checkbox"
+                class="amenity-filter"
+                value="Bar/Lounge"
+              />
+              <span style="margin-left: 6px">Bar/Lounge</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input
+                type="checkbox"
+                class="amenity-filter"
+                value="Conference Rooms"
+              />
+              <span style="margin-left: 6px">Conference Rooms</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input
+                type="checkbox"
+                class="amenity-filter"
+                value="Beach Access"
+              />
+              <span style="margin-left: 6px">Beach Access</span>
+            </label>
+            <label style="display: block; margin-bottom: 8px; cursor: pointer">
+              <input type="checkbox" class="amenity-filter" value="Kids Club" />
+              <span style="margin-left: 6px">Kids Club</span>
             </label>
           </div>
 
@@ -404,6 +490,7 @@
       </div>
     </footer>
 
+    <script src="../../auth-helper.js"></script>
     <script src="HotelsPage.js"></script>
   </body>
 </html>

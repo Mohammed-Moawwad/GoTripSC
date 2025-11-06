@@ -70,9 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const hasUpper = /[A-Z]/.test(password.value);
 
         if (hasLength && hasDigit && hasSymbol && hasUpper) {
-          // Form is valid, proceed with login
-          alert("Login successful! Redirecting...");
-          // window.location.href = 'dashboard.html';
+          // Form is valid, proceed with login - Call the authentication API
+          handleLogin(email.value, password.value);
         } else {
           password.classList.add("error");
           passwordError.textContent = "Password must meet all requirements";
@@ -192,6 +191,239 @@ document.addEventListener("DOMContentLoaded", function () {
         passwordError.classList.remove("hidden");
         isValid = false;
       }
+
+      // If form is valid, submit to backend
+      if (isValid) {
+        handleSignup({
+          first_name: firstName.value,
+          last_name: lastName.value,
+          email: email.value,
+          phone: phone.value,
+          birth_date: birthDate.value,
+          password: password.value,
+        });
+      }
     });
   }
 });
+
+// ====================================
+// API Integration Functions
+// ====================================
+const API_BASE_URL = "http://localhost:3000/api";
+
+/**
+ * Handle user login (signin.html)
+ */
+async function handleLogin(email, password) {
+  try {
+    // Show loading state
+    const submitBtn = document.querySelector(
+      '#loginForm button[type="submit"]'
+    );
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Logging in...";
+
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      // Save token and user data to localStorage
+      localStorage.setItem("authToken", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data.user));
+
+      // Check if user is admin and redirect accordingly
+      if (result.data.user.role === "admin") {
+        showSuccessMessage(
+          "Welcome back, Admin!",
+          "Redirecting to admin dashboard..."
+        );
+        setTimeout(() => {
+          window.location.href = "/Admin/admin-dashboard.html";
+        }, 1500);
+      } else {
+        showSuccessMessage(
+          `Welcome back, ${result.data.user.first_name}!`,
+          "Redirecting to homepage..."
+        );
+        setTimeout(() => {
+          window.location.href = "/HomePage/HomePage.html";
+        }, 1500);
+      }
+    } else {
+      // Show error message
+      showErrorMessage("Login Failed", result.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    showErrorMessage(
+      "Connection Error",
+      "Please make sure the server is running."
+    );
+    const submitBtn = document.querySelector(
+      '#loginForm button[type="submit"]'
+    );
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Login";
+  }
+}
+
+/**
+ * Handle user signup (login.html - which is actually the registration page)
+ */
+async function handleSignup(userData) {
+  try {
+    // Show loading state
+    const submitBtn = document.querySelector(
+      '#registerForm button[type="submit"]'
+    );
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Creating Account...";
+
+    const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      // Save token and user data to localStorage
+      localStorage.setItem("authToken", result.data.token);
+      localStorage.setItem("user", JSON.stringify(result.data.user));
+
+      // Show beautiful success message
+      showSuccessMessage(
+        `Welcome to GoTrip, ${result.data.user.first_name}!`,
+        "Your account has been created successfully. Redirecting to homepage..."
+      );
+
+      // Redirect to homepage after 2 seconds
+      setTimeout(() => {
+        window.location.href = "/HomePage/HomePage.html";
+      }, 2000);
+    } else {
+      // Show error message
+      showErrorMessage("Registration Failed", result.message);
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  } catch (error) {
+    console.error("Signup error:", error);
+    showErrorMessage(
+      "Connection Error",
+      "Please make sure the server is running."
+    );
+    const submitBtn = document.querySelector(
+      '#registerForm button[type="submit"]'
+    );
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Create Account";
+  }
+}
+
+// ====================================
+// Beautiful Notification Functions
+// ====================================
+
+/**
+ * Show a beautiful success message
+ */
+function showSuccessMessage(title, message) {
+  // Remove any existing notifications
+  removeNotifications();
+
+  // Create notification container
+  const notification = document.createElement("div");
+  notification.className = "custom-notification success-notification";
+  notification.innerHTML = `
+    <div class="notification-content">
+      <div class="notification-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <div class="notification-text">
+        <h3>${title}</h3>
+        <p>${message}</p>
+      </div>
+    </div>
+    <div class="notification-progress"></div>
+  `;
+
+  document.body.appendChild(notification);
+
+  // Animate in
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 100);
+
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    removeNotifications();
+  }, 5000);
+}
+
+/**
+ * Show a beautiful error message
+ */
+function showErrorMessage(title, message) {
+  // Remove any existing notifications
+  removeNotifications();
+
+  // Create notification container
+  const notification = document.createElement("div");
+  notification.className = "custom-notification error-notification";
+  notification.innerHTML = `
+    <div class="notification-content">
+      <div class="notification-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      <div class="notification-text">
+        <h3>${title}</h3>
+        <p>${message}</p>
+      </div>
+      <button class="notification-close" onclick="removeNotifications()">×</button>
+    </div>
+  `;
+
+  document.body.appendChild(notification);
+
+  // Animate in
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 100);
+
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    removeNotifications();
+  }, 5000);
+}
+
+/**
+ * Remove all notifications
+ */
+function removeNotifications() {
+  const notifications = document.querySelectorAll(".custom-notification");
+  notifications.forEach((notification) => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  });
+}

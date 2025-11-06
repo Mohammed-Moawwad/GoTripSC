@@ -89,11 +89,8 @@
           <button class="filter-btn" data-status="active">
             <i class="fas fa-check-circle"></i> Active
           </button>
-          <button class="filter-btn" data-status="maintenance">
-            <i class="fas fa-tools"></i> Maintenance
-          </button>
-          <button class="filter-btn" data-status="full">
-            <i class="fas fa-ban"></i> Full
+          <button class="filter-btn" data-status="inactive">
+            <i class="fas fa-times-circle"></i> InActive
           </button>
         </div>
         <button class="add-hotel-btn">
@@ -141,6 +138,12 @@
         <a href="hotel-reports.html" class="bulk-action-btn reports-link">
           <i class="fas fa-chart-bar"></i> Monthly Reports
         </a>
+        <a
+          href="hotel-bookings-tracking.html"
+          class="bulk-action-btn reports-link"
+        >
+          <i class="fas fa-chart-line"></i> Track Bookings
+        </a>
       </div>
     </div>
 
@@ -148,7 +151,7 @@
     <!-- Status Legend -->
     <div class="status-legend">
       <span><i class="legend-dot active"></i> Active</span>
-      <span><i class="legend-dot inactive"></i> Maintenance</span>
+      <span><i class="legend-dot inactive"></i> InActive</span>
     </div>
 
     <div class="table-container" id="hotel-table-container">
@@ -220,6 +223,305 @@
             id="confirmLogout"
           >
             <i class="fas fa-check"></i> Yes, Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hotel Add/Edit Modal -->
+    <div id="hotelModal" class="modal-overlay" style="display: none">
+      <div class="modal-container" style="max-width: 800px">
+        <div class="modal-header">
+          <h2 id="modalTitle">Add New Hotel</h2>
+          <button class="modal-close" onclick="closeHotelModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-content">
+          <form id="hotelForm">
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px"
+            >
+              <!-- Left Column -->
+              <div>
+                <div class="form-group">
+                  <label for="hotelName">Hotel Name *</label>
+                  <input
+                    type="text"
+                    id="hotelName"
+                    required
+                    placeholder="Enter hotel name"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="city">City *</label>
+                  <input
+                    type="text"
+                    id="city"
+                    required
+                    placeholder="e.g., Riyadh"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="country">Country *</label>
+                  <input
+                    type="text"
+                    id="country"
+                    required
+                    placeholder="e.g., Saudi Arabia"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="location">Location/Area *</label>
+                  <input
+                    type="text"
+                    id="location"
+                    required
+                    placeholder="e.g., Downtown"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="pricePerNight">Price Per Night (SAR) *</label>
+                  <input
+                    type="number"
+                    id="pricePerNight"
+                    required
+                    min="0"
+                    step="0.01"
+                    placeholder="e.g., 500"
+                  />
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div>
+                <div class="form-group">
+                  <label for="totalRooms">Total Rooms *</label>
+                  <input
+                    type="number"
+                    id="totalRooms"
+                    required
+                    min="1"
+                    placeholder="e.g., 100"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="availableRooms">Available Rooms *</label>
+                  <input
+                    type="number"
+                    id="availableRooms"
+                    required
+                    min="0"
+                    placeholder="e.g., 80"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="rating">Rating *</label>
+                  <select id="rating" required>
+                    <option value="">Select Rating</option>
+                    <option value="5.0">⭐⭐⭐⭐⭐ (5.0)</option>
+                    <option value="4.9">⭐⭐⭐⭐⭐ (4.9)</option>
+                    <option value="4.8">⭐⭐⭐⭐⭐ (4.8)</option>
+                    <option value="4.7">⭐⭐⭐⭐⭐ (4.7)</option>
+                    <option value="4.6">⭐⭐⭐⭐⭐ (4.6)</option>
+                    <option value="4.5">⭐⭐⭐⭐ (4.5)</option>
+                    <option value="4.4">⭐⭐⭐⭐ (4.4)</option>
+                    <option value="4.3">⭐⭐⭐⭐ (4.3)</option>
+                    <option value="4.2">⭐⭐⭐⭐ (4.2)</option>
+                    <option value="4.1">⭐⭐⭐⭐ (4.1)</option>
+                    <option value="4.0">⭐⭐⭐⭐ (4.0)</option>
+                    <option value="3.9">⭐⭐⭐ (3.9)</option>
+                    <option value="3.8">⭐⭐⭐ (3.8)</option>
+                    <option value="3.7">⭐⭐⭐ (3.7)</option>
+                    <option value="3.6">⭐⭐⭐ (3.6)</option>
+                    <option value="3.5">⭐⭐⭐ (3.5)</option>
+                    <option value="3.0">⭐⭐⭐ (3.0)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="status">Status *</label>
+                  <select id="status" required>
+                    <option value="Active">Active</option>
+                    <option value="InActive">InActive</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Amenities Section (Full Width) -->
+            <div class="form-group" style="margin-top: 20px">
+              <label>Amenities *</label>
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 10px;
+                  margin-top: 10px;
+                "
+              >
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Free WiFi"
+                    style="margin-right: 8px"
+                  />
+                  <span>Free WiFi</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Swimming Pool"
+                    style="margin-right: 8px"
+                  />
+                  <span>Swimming Pool</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Gym"
+                    style="margin-right: 8px"
+                  />
+                  <span>Gym</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Restaurant"
+                    style="margin-right: 8px"
+                  />
+                  <span>Restaurant</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Spa"
+                    style="margin-right: 8px"
+                  />
+                  <span>Spa</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Parking"
+                    style="margin-right: 8px"
+                  />
+                  <span>Parking</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Room Service"
+                    style="margin-right: 8px"
+                  />
+                  <span>Room Service</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Airport Shuttle"
+                    style="margin-right: 8px"
+                  />
+                  <span>Airport Shuttle</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Bar/Lounge"
+                    style="margin-right: 8px"
+                  />
+                  <span>Bar/Lounge</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Conference Rooms"
+                    style="margin-right: 8px"
+                  />
+                  <span>Conference Rooms</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Beach Access"
+                    style="margin-right: 8px"
+                  />
+                  <span>Beach Access</span>
+                </label>
+                <label
+                  style="display: flex; align-items: center; cursor: pointer"
+                >
+                  <input
+                    type="checkbox"
+                    name="amenity"
+                    value="Kids Club"
+                    style="margin-right: 8px"
+                  />
+                  <span>Kids Club</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Description (Full Width) -->
+            <div class="form-group" style="margin-top: 20px">
+              <label for="description">Description</label>
+              <textarea
+                id="description"
+                rows="4"
+                placeholder="Enter hotel description..."
+              ></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn-secondary"
+            onclick="closeHotelModal()"
+          >
+            Cancel
+          </button>
+          <button type="button" class="btn-primary" onclick="saveHotel()">
+            <i class="fas fa-save"></i> Save Hotel
           </button>
         </div>
       </div>

@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GoTrip Authentication API Tester</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        color: white;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .test-section {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .test-section h2 {
+        color: #667eea;
+        margin-bottom: 15px;
+        font-size: 1.5em;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+        font-weight: 600;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 80px;
+        font-family: "Courier New", monospace;
+      }
+
+      button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        margin-right: 10px;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .response {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .response.success {
+        background: #d4edda;
+        border: 2px solid #28a745;
+        color: #155724;
+      }
+
+      .response.error {
+        background: #f8d7da;
+        border: 2px solid #dc3545;
+        color: #721c24;
+      }
+
+      .token-display {
+        background: #fff3cd;
+        border: 2px solid #ffc107;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        word-wrap: break-word;
+      }
+
+      .token-display strong {
+        color: #856404;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
+
+      .info-box {
+        background: #e7f3ff;
+        border-left: 4px solid #2196f3;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .info-box p {
+        margin: 5px 0;
+        color: #0c5460;
+      }
+
+      .copy-btn {
+        background: #ffc107;
+        color: #333;
+        padding: 5px 15px;
+        font-size: 14px;
+        margin-left: 10px;
+      }
+
+      .clear-btn {
+        background: #dc3545;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔐 GoTrip Authentication API Tester</h1>
+
+      <div class="info-box">
+        <p><strong>Server:</strong> http://localhost:3000</p>
+        <p>
+          <strong>Status:</strong> <span id="serverStatus">Checking...</span>
+        </p>
+        <p><strong>Saved Token:</strong> <span id="tokenStatus">None</span></p>
+      </div>
+
+      <!-- Signup Section -->
+      <div class="test-section">
+        <h2>📝 User Signup (Registration)</h2>
+        <div class="grid">
+          <div class="form-group">
+            <label>First Name *</label>
+            <input
+              type="text"
+              id="signup_first_name"
+              placeholder="John"
+              value="John"
+            />
+          </div>
+          <div class="form-group">
+            <label>Last Name *</label>
+            <input
+              type="text"
+              id="signup_last_name"
+              placeholder="Doe"
+              value="Doe"
+            />
+          </div>
+        </div>
+        <div class="grid">
+          <div class="form-group">
+            <label>Email *</label>
+            <input
+              type="email"
+              id="signup_email"
+              placeholder="john.doe@example.com"
+              value="john.doe@example.com"
+            />
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input
+              type="text"
+              id="signup_phone"
+              placeholder="+1234567890"
+              value="+1234567890"
+            />
+          </div>
+        </div>
+        <div class="grid">
+          <div class="form-group">
+            <label>Birth Date</label>
+            <input type="date" id="signup_birth_date" value="1990-01-15" />
+          </div>
+          <div class="form-group">
+            <label>Password * (min 6 characters)</label>
+            <input
+              type="password"
+              id="signup_password"
+              placeholder="••••••"
+              value="password123"
+            />
+          </div>
+        </div>
+        <button onclick="testSignup()">🚀 Create Account</button>
+        <button class="clear-btn" onclick="clearResponse('signup_response')">
+          Clear Response
+        </button>
+        <div id="signup_response"></div>
+      </div>
+
+      <!-- Login Section -->
+      <div class="test-section">
+        <h2>🔑 User Login</h2>
+        <div class="grid">
+          <div class="form-group">
+            <label>Email *</label>
+            <input
+              type="email"
+              id="login_email"
+              placeholder="john.doe@example.com"
+              value="john.doe@example.com"
+            />
+          </div>
+          <div class="form-group">
+            <label>Password *</label>
+            <input
+              type="password"
+              id="login_password"
+              placeholder="••••••"
+              value="password123"
+            />
+          </div>
+        </div>
+        <button onclick="testLogin()">🔓 Login</button>
+        <button class="clear-btn" onclick="clearResponse('login_response')">
+          Clear Response
+        </button>
+        <div id="login_response"></div>
+      </div>
+
+      <!-- Get Profile Section -->
+      <div class="test-section">
+        <h2>👤 Get Current User Profile</h2>
+        <p style="color: #666; margin-bottom: 15px">
+          Requires authentication token from signup/login
+        </p>
+        <button onclick="testGetProfile()">📥 Get My Profile</button>
+        <button class="clear-btn" onclick="clearResponse('profile_response')">
+          Clear Response
+        </button>
+        <div id="profile_response"></div>
+      </div>
+
+      <!-- Update Profile Section -->
+      <div class="test-section">
+        <h2>✏️ Update User Profile</h2>
+        <p style="color: #666; margin-bottom: 15px">
+          Requires authentication token
+        </p>
+        <div class="grid">
+          <div class="form-group">
+            <label>First Name</label>
+            <input
+              type="text"
+              id="update_first_name"
+              placeholder="Updated First Name"
+            />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input
+              type="text"
+              id="update_last_name"
+              placeholder="Updated Last Name"
+            />
+          </div>
+        </div>
+        <div class="grid">
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" id="update_phone" placeholder="+9876543210" />
+          </div>
+          <div class="form-group">
+            <label>Birth Date</label>
+            <input type="date" id="update_birth_date" />
+          </div>
+        </div>
+        <button onclick="testUpdateProfile()">💾 Update Profile</button>
+        <button class="clear-btn" onclick="clearResponse('update_response')">
+          Clear Response
+        </button>
+        <div id="update_response"></div>
+      </div>
+
+      <!-- Change Password Section -->
+      <div class="test-section">
+        <h2>🔒 Change Password</h2>
+        <p style="color: #666; margin-bottom: 15px">
+          Requires authentication token
+        </p>
+        <div class="grid">
+          <div class="form-group">
+            <label>Current Password *</label>
+            <input type="password" id="current_password" placeholder="••••••" />
+          </div>
+          <div class="form-group">
+            <label>New Password * (min 6 characters)</label>
+            <input type="password" id="new_password" placeholder="••••••" />
+          </div>
+        </div>
+        <button onclick="testChangePassword()">🔄 Change Password</button>
+        <button class="clear-btn" onclick="clearResponse('password_response')">
+          Clear Response
+        </button>
+        <div id="password_response"></div>
+      </div>
+
+      <!-- Token Management -->
+      <div class="test-section">
+        <h2>🎫 Token Management</h2>
+        <div class="form-group">
+          <label>Current Token</label>
+          <textarea
+            id="manual_token"
+            placeholder="Paste token here or use signup/login to get one automatically"
+          ></textarea>
+        </div>
+        <button onclick="saveToken()">💾 Save Token</button>
+        <button class="clear-btn" onclick="clearToken()">🗑️ Clear Token</button>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE_URL = "http://localhost:3000/api";
+      let authToken = localStorage.getItem("authToken");
+
+      // Check server status on load
+      window.onload = async () => {
+        try {
+          const response = await fetch(
+            `${API_BASE_URL.replace("/api", "")}/api/health`
+          );
+          const data = await response.json();
+          document.getElementById("serverStatus").innerHTML =
+            '✅ <span style="color: green;">Online</span>';
+        } catch (error) {
+          document.getElementById("serverStatus").innerHTML =
+            '❌ <span style="color: red;">Offline</span>';
+        }
+        updateTokenStatus();
+      };
+
+      function updateTokenStatus() {
+        const tokenEl = document.getElementById("tokenStatus");
+        if (authToken) {
+          tokenEl.innerHTML = `<span style="color: green;">✅ Token saved</span>`;
+          document.getElementById("manual_token").value = authToken;
+        } else {
+          tokenEl.innerHTML = '<span style="color: red;">❌ No token</span>';
+        }
+      }
+
+      function saveToken() {
+        const token = document.getElementById("manual_token").value.trim();
+        if (token) {
+          localStorage.setItem("authToken", token);
+          authToken = token;
+          updateTokenStatus();
+          showResponse("Token saved successfully!", "success", "manual_token");
+        } else {
+          showResponse("Please enter a token", "error", "manual_token");
+        }
+      }
+
+      function clearToken() {
+        localStorage.removeItem("authToken");
+        authToken = null;
+        document.getElementById("manual_token").value = "";
+        updateTokenStatus();
+        showResponse("Token cleared", "success", "manual_token");
+      }
+
+      async function testSignup() {
+        const data = {
+          first_name: document.getElementById("signup_first_name").value,
+          last_name: document.getElementById("signup_last_name").value,
+          email: document.getElementById("signup_email").value,
+          phone: document.getElementById("signup_phone").value,
+          birth_date: document.getElementById("signup_birth_date").value,
+          password: document.getElementById("signup_password").value,
+        };
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            authToken = result.data.token;
+            localStorage.setItem("authToken", authToken);
+            updateTokenStatus();
+
+            let display = `✅ Account Created Successfully!\n\n`;
+            display += `User ID: ${result.data.user.user_id}\n`;
+            display += `Name: ${result.data.user.first_name} ${result.data.user.last_name}\n`;
+            display += `Email: ${result.data.user.email}\n`;
+            display += `Role: ${result.data.user.role}\n`;
+            display += `Status: ${result.data.user.status}\n\n`;
+            display += `🎫 JWT Token (saved to localStorage):\n${authToken}`;
+
+            showResponse(display, "success", "signup_response");
+          } else {
+            showResponse(
+              `❌ Error: ${result.message}`,
+              "error",
+              "signup_response"
+            );
+          }
+        } catch (error) {
+          showResponse(
+            `❌ Connection Error: ${error.message}`,
+            "error",
+            "signup_response"
+          );
+        }
+      }
+
+      async function testLogin() {
+        const data = {
+          email: document.getElementById("login_email").value,
+          password: document.getElementById("login_password").value,
+        };
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            authToken = result.data.token;
+            localStorage.setItem("authToken", authToken);
+            updateTokenStatus();
+
+            let display = `✅ Login Successful!\n\n`;
+            display += `User ID: ${result.data.user.user_id}\n`;
+            display += `Name: ${result.data.user.first_name} ${result.data.user.last_name}\n`;
+            display += `Email: ${result.data.user.email}\n`;
+            display += `Role: ${result.data.user.role}\n`;
+            display += `Status: ${result.data.user.status}\n`;
+            display += `Registered: ${new Date(
+              result.data.user.registered_date
+            ).toLocaleDateString()}\n\n`;
+            display += `🎫 JWT Token (saved to localStorage):\n${authToken}`;
+
+            showResponse(display, "success", "login_response");
+          } else {
+            showResponse(
+              `❌ Error: ${result.message}`,
+              "error",
+              "login_response"
+            );
+          }
+        } catch (error) {
+          showResponse(
+            `❌ Connection Error: ${error.message}`,
+            "error",
+            "login_response"
+          );
+        }
+      }
+
+      async function testGetProfile() {
+        if (!authToken) {
+          showResponse(
+            "❌ No token found. Please signup or login first.",
+            "error",
+            "profile_response"
+          );
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/me`, {
+            method: "GET",
+            headers: { Authorization: `Bearer ${authToken}` },
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            const user = result.data.user;
+            let display = `✅ Profile Retrieved Successfully!\n\n`;
+            display += `User ID: ${user.user_id}\n`;
+            display += `Name: ${user.first_name} ${user.last_name}\n`;
+            display += `Email: ${user.email}\n`;
+            display += `Phone: ${user.phone || "N/A"}\n`;
+            display += `Birth Date: ${user.birth_date || "N/A"}\n`;
+            display += `Role: ${user.role}\n`;
+            display += `Status: ${user.status}\n`;
+            display += `Registered: ${new Date(
+              user.registered_date
+            ).toLocaleDateString()}\n`;
+            display += `Last Login: ${
+              user.last_login
+                ? new Date(user.last_login).toLocaleString()
+                : "N/A"
+            }`;
+
+            showResponse(display, "success", "profile_response");
+          } else {
+            showResponse(
+              `❌ Error: ${result.message}`,
+              "error",
+              "profile_response"
+            );
+          }
+        } catch (error) {
+          showResponse(
+            `❌ Connection Error: ${error.message}`,
+            "error",
+            "profile_response"
+          );
+        }
+      }
+
+      async function testUpdateProfile() {
+        if (!authToken) {
+          showResponse(
+            "❌ No token found. Please signup or login first.",
+            "error",
+            "update_response"
+          );
+          return;
+        }
+
+        const data = {};
+        const firstName = document.getElementById("update_first_name").value;
+        const lastName = document.getElementById("update_last_name").value;
+        const phone = document.getElementById("update_phone").value;
+        const birthDate = document.getElementById("update_birth_date").value;
+
+        if (firstName) data.first_name = firstName;
+        if (lastName) data.last_name = lastName;
+        if (phone) data.phone = phone;
+        if (birthDate) data.birth_date = birthDate;
+
+        if (Object.keys(data).length === 0) {
+          showResponse(
+            "❌ Please fill at least one field to update",
+            "error",
+            "update_response"
+          );
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            const user = result.data.user;
+            let display = `✅ Profile Updated Successfully!\n\n`;
+            display += `Updated Fields:\n`;
+            display += JSON.stringify(data, null, 2);
+            display += `\n\nCurrent Profile:\n`;
+            display += `Name: ${user.first_name} ${user.last_name}\n`;
+            display += `Email: ${user.email}\n`;
+            display += `Phone: ${user.phone || "N/A"}\n`;
+            display += `Birth Date: ${user.birth_date || "N/A"}`;
+
+            showResponse(display, "success", "update_response");
+          } else {
+            showResponse(
+              `❌ Error: ${result.message}`,
+              "error",
+              "update_response"
+            );
+          }
+        } catch (error) {
+          showResponse(
+            `❌ Connection Error: ${error.message}`,
+            "error",
+            "update_response"
+          );
+        }
+      }
+
+      async function testChangePassword() {
+        if (!authToken) {
+          showResponse(
+            "❌ No token found. Please signup or login first.",
+            "error",
+            "password_response"
+          );
+          return;
+        }
+
+        const data = {
+          currentPassword: document.getElementById("current_password").value,
+          newPassword: document.getElementById("new_password").value,
+        };
+
+        if (!data.currentPassword || !data.newPassword) {
+          showResponse(
+            "❌ Please fill both current and new password",
+            "error",
+            "password_response"
+          );
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/change-password`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            showResponse(
+              `✅ ${result.message}`,
+              "success",
+              "password_response"
+            );
+            // Clear password fields
+            document.getElementById("current_password").value = "";
+            document.getElementById("new_password").value = "";
+          } else {
+            showResponse(
+              `❌ Error: ${result.message}`,
+              "error",
+              "password_response"
+            );
+          }
+        } catch (error) {
+          showResponse(
+            `❌ Connection Error: ${error.message}`,
+            "error",
+            "password_response"
+          );
+        }
+      }
+
+      function showResponse(text, type, elementId) {
+        const el = document.getElementById(elementId);
+        el.className = `response ${type}`;
+        el.textContent = text;
+      }
+
+      function clearResponse(elementId) {
+        document.getElementById(elementId).innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

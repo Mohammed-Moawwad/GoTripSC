@@ -93,24 +93,54 @@
             </ul>
           </li>
           <li><a class="small" href="#" id="supportLink">Support</a></li>
-          <li><a class="small" href="#" id="myTripsLink">My Trips</a></li>
+
+          <!-- Authentication Buttons -->
           <li>
             <a
               href="../../Login/signin.html"
-              class="signin-btn"
-              aria-label="Sign in"
+              class="btn"
+              id="signupBtn"
+              aria-label="Sign up"
             >
-              Sign in
+              Sign up
             </a>
           </li>
           <li>
             <a
               href="../../Login/login.html"
-              class="login-btn"
+              class="btn"
+              id="loginBtn"
               aria-label="Login"
             >
               Login
             </a>
+          </li>
+          <li>
+            <span
+              class="user-welcome"
+              id="userNameDisplay"
+              style="display: none"
+            ></span>
+          </li>
+          <li>
+            <a
+              href="../../User/dashboard.html"
+              class="btn my-trips-btn"
+              id="myTripsBtn"
+              style="display: none"
+            >
+              My Trips
+            </a>
+          </li>
+          <li>
+            <button
+              class="btn logout-btn"
+              id="logoutBtn"
+              onclick="logoutWithConfirmation()"
+              style="display: none"
+            >
+              Logout
+            </button>
           </li>
         </ul>
       </nav>
@@ -359,6 +389,7 @@
       </div>
     </footer>
 
+    <script src="../../auth-helper.js"></script>
     <script src="BusesSearchResults.js"></script>
   </body>
 </html>

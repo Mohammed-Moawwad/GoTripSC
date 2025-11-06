@@ -58,8 +58,30 @@
             </ul>
           </div>
 
-          <a href="../Login/signin.html" class="btn sign-in-btn">Sign in</a>
-          <a href="../Login/login.html" class="btn login-btn">Login</a>
+          <!-- Authentication Buttons -->
+          <a href="../Login/signin.html" class="btn" id="signupBtn">Sign up</a>
+          <a href="../Login/login.html" class="btn" id="loginBtn">Login</a>
+          <span
+            class="user-welcome"
+            id="userNameDisplay"
+            style="display: none; margin-right: 10px; color: #333"
+            >Welcome!</span
+          >
+          <a
+            href="../User/dashboard.html"
+            class="btn my-trips-btn"
+            id="myTripsBtn"
+            style="display: none"
+            >My Trips</a
+          >
+          <button
+            class="btn logout-btn"
+            id="logoutBtn"
+            onclick="logoutWithConfirmation()"
+            style="display: none"
+          >
+            Logout
+          </button>
 
           <button
             class="menu-toggle"
@@ -787,6 +809,7 @@
       </div>
     </footer>
 
+    <script src="../auth-helper.js"></script>
     <script src="HomePageHotels.js"></script>
   </body>
 </html>
