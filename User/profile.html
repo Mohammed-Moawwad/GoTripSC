@@ -1,343 +1,1175 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile - GoTrip</title>
-  <link rel="stylesheet" href="../HomePage/HomePage.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-  <style>
-    body { background: #f4f7fa; margin: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-    .profile-layout { display: flex; min-height: 100vh; }
-    .sidebar {
-      width: 260px; background: #fff; border-right: 1.5px solid #e5e7eb; display: flex; flex-direction: column; align-items: stretch; padding: 2rem 1.2rem 1rem 1.2rem;
-      box-shadow: 0 2px 8px #0001; z-index: 2;
-    }
-    .sidebar .logo { text-align: center; margin-bottom: 2rem; }
-    .sidebar .logo img { width: 80px; }
-    .sidebar nav { flex: 1; }
-    .sidebar nav a {
-      display: flex; align-items: center; gap: 0.9em; color: #222; text-decoration: none; font-size: 1.08em; padding: 0.7em 1em; border-radius: 8px; margin-bottom: 0.2em; transition: background 0.15s, color 0.15s;
-    }
-    .sidebar nav a.active, .sidebar nav a:focus {
-      background: #e0e7ff; color: #2563eb; font-weight: 600; border-left: 4px solid #2563eb;
-    }
-    .sidebar nav a:hover { background: #f1f5ff; color: #2563eb; }
-    .main-content { flex: 1; padding: 0 0 0 0; display: flex; flex-direction: column; }
-    .navbar {
-      background: #fff; border-bottom: 1.5px solid #e5e7eb; padding: 1.1em 2.5em; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10;
-    }
-    .navbar .title { font-size: 1.25em; font-weight: 600; color: #2563eb; }
-    .profile-section {
-      background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; max-width: 540px; margin: 2.5em auto 0 auto; padding: 2.5em 2em 2em 2em;
-    }
-    .profile-header { display: flex; align-items: center; gap: 1.5em; margin-bottom: 2em; }
-    .profile-avatar {
-      width: 90px; height: 90px; border-radius: 50%; background: #e0e7ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 2.5em; font-weight: 700; box-shadow: 0 2px 8px #2563eb22;
-    }
-    .profile-header .profile-info { flex: 1; }
-    .profile-header .profile-info .name { font-size: 1.4em; font-weight: 700; color: #222; }
-    .profile-header .profile-info .email { color: #2563eb; font-size: 1.05em; margin-top: 0.2em; }
-    .profile-details { margin-bottom: 2em; }
-    .profile-details div { margin-bottom: 1em; font-size: 1.08em; }
-    .profile-details label { color: #888; font-weight: 500; margin-right: 0.7em; }
-    .profile-actions { display: flex; gap: 1em; }
-    .profile-actions button {
-      background: #2563eb; color: #fff; border: none; border-radius: 18px; padding: 0.7em 1.5em; font-size: 1em; font-weight: 600; cursor: pointer; transition: background 0.15s;
-    }
-    .profile-actions button.secondary {
-      background: #fff; color: #2563eb; border: 1.5px solid #2563eb;
-    }
-    .profile-actions button:hover { background: #1d4ed8; color: #fff; }
-    .profile-actions button.secondary:hover { background: #2563eb; color: #fff; }
-    @media (max-width: 700px) {
-      .profile-section { padding: 1em 0.5em; }
-    }
-    /* Sidebar footer styles (logout pill, legal links, socials) */
-    .sidebar .logout-btn {
-      width: 100%;
-      background: #ef4444;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 0.85em 0;
-      font-size: 1.06em;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      cursor: pointer;
-      box-shadow: 0 6px 16px rgba(239,68,68,0.15);
-    }
-    .sidebar .logout-btn i { font-size: 1.05rem; }
-    .sidebar .bottom-links { margin-top: 0.9rem; color: #6b7280; font-size: 0.95em; display: flex; flex-direction: column; gap: 0.35rem; padding-top: 1rem; border-top: 1px solid #f3f4f6; }
-    .sidebar .bottom-links a { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 0.6rem; padding-left: 4px; }
-    .sidebar .bottom-links a i { font-size: 0.98rem; color: #9ca3af; }
-    .sidebar .socials { margin-top: 0.6rem; display: flex; gap: 0.6rem; align-items: center; padding-left: 4px; }
-    .sidebar .socials a { color: #6b7280; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; width:34px; height:34px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,0.05); }
-    .sidebar .socials a i { font-size: 1rem; }
-  </style>
-</head>
-<body>
-  <div class="profile-layout">
-    <aside class="sidebar">
-      <div class="logo"><a href="../HomePage/HomePage.html"><img src="/HomePage/Photos/logo-bg removed.png" alt="GoTrip Logo" style="cursor:pointer;max-width:110px;max-height:110px;object-fit:contain;" /></a></div>
-      <nav>
-        <a href="../HomePage/HomePage.html"><i class="bi bi-house-door"></i> Home</a>
-        <a href="../Services/FlightsPage.html"><i class="bi bi-airplane"></i> Flights</a>
-        <a href="../HomePage/HomePageBuses.html"><i class="bi bi-bus-front"></i> Buses</a>
-        <a href="../HomePage/HomePageHotels.html"><i class="bi bi-building"></i> Hotels</a>
-  <a href="MyBookings.html"><i class="bi bi-calendar-check"></i> My Bookings</a>
-  <a href="#" class="active"><i class="bi bi-person"></i> Profile</a>
-  <!-- Dashboard option placed under Profile per request -->
-  <a href="UserDashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
-  <a href="#support"><i class="bi bi-question-circle"></i> Help & Support</a>
-      </nav>
-      <div style="margin-top:auto;padding-top:2em;">
-        <button id="logoutBtn" class="logout-btn">
-          <i class="bi bi-box-arrow-right"></i> Log out
-        </button>
-        <div class="bottom-links">
-          <a href="../About/about.html"><i class="bi bi-info-circle"></i> About Us</a>
-          <a href="../legal/terms.html"><i class="bi bi-file-text"></i> Terms &amp; Conditions</a>
-          <a href="../legal/privacy.html"><i class="bi bi-shield-lock"></i> Privacy Policy</a>
-          <div class="socials">
-            <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - GoTrip</title>
+    <link rel="stylesheet" href="../HomePage/HomePage.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <style>
+      body {
+        background: #f4f7fa;
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+      }
+      .profile-layout {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 260px;
+        background: #fff;
+        border-right: 1.5px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 2rem 1.2rem 1rem 1.2rem;
+        box-shadow: 0 2px 8px #0001;
+        z-index: 2;
+      }
+      .sidebar .logo {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .sidebar .logo img {
+        width: 80px;
+      }
+      .sidebar nav {
+        flex: 1;
+      }
+      .sidebar nav a {
+        display: flex;
+        align-items: center;
+        gap: 0.9em;
+        color: #222;
+        text-decoration: none;
+        font-size: 1.08em;
+        padding: 0.7em 1em;
+        border-radius: 8px;
+        margin-bottom: 0.2em;
+        transition: background 0.15s, color 0.15s;
+      }
+      .sidebar nav a.active,
+      .sidebar nav a:focus {
+        background: #e0e7ff;
+        color: #2563eb;
+        font-weight: 600;
+        border-left: 4px solid #2563eb;
+      }
+      .sidebar nav a:hover {
+        background: #f1f5ff;
+        color: #2563eb;
+      }
+      .main-content {
+        flex: 1;
+        padding: 0 0 0 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .navbar {
+        background: #fff;
+        border-bottom: 1.5px solid #e5e7eb;
+        padding: 1.1em 2.5em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .navbar .title {
+        font-size: 1.25em;
+        font-weight: 600;
+        color: #2563eb;
+      }
+      .profile-section {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px #0001;
+        max-width: 540px;
+        margin: 2.5em auto 0 auto;
+        padding: 2.5em 2em 2em 2em;
+      }
+      .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5em;
+        margin-bottom: 2em;
+      }
+      .profile-avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: #e0e7ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5em;
+        font-weight: 700;
+        box-shadow: 0 2px 8px #2563eb22;
+      }
+      .profile-header .profile-info {
+        flex: 1;
+      }
+      .profile-header .profile-info .name {
+        font-size: 1.4em;
+        font-weight: 700;
+        color: #222;
+      }
+      .profile-header .profile-info .email {
+        color: #2563eb;
+        font-size: 1.05em;
+        margin-top: 0.2em;
+      }
+      .profile-details {
+        margin-bottom: 2em;
+      }
+      .profile-details div {
+        margin-bottom: 1em;
+        font-size: 1.08em;
+      }
+      .profile-details label {
+        color: #888;
+        font-weight: 500;
+        margin-right: 0.7em;
+      }
+      .profile-actions {
+        display: flex;
+        gap: 1em;
+      }
+      .profile-actions button {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 18px;
+        padding: 0.7em 1.5em;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .profile-actions button.secondary {
+        background: #fff;
+        color: #2563eb;
+        border: 1.5px solid #2563eb;
+      }
+      .profile-actions button:hover {
+        background: #1d4ed8;
+        color: #fff;
+      }
+      .profile-actions button.secondary:hover {
+        background: #2563eb;
+        color: #fff;
+      }
+      @media (max-width: 700px) {
+        .profile-section {
+          padding: 1em 0.5em;
+        }
+      }
+      /* Sidebar footer styles (logout pill, legal links, socials) */
+      .sidebar .logout-btn {
+        width: 100%;
+        background: #ef4444;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        padding: 0.85em 0;
+        font-size: 1.06em;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        cursor: pointer;
+        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.15);
+      }
+      .sidebar .logout-btn i {
+        font-size: 1.05rem;
+      }
+      .sidebar .bottom-links {
+        margin-top: 0.9rem;
+        color: #6b7280;
+        font-size: 0.95em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        padding-top: 1rem;
+        border-top: 1px solid #f3f4f6;
+      }
+      .sidebar .bottom-links a {
+        color: inherit;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding-left: 4px;
+      }
+      .sidebar .bottom-links a i {
+        font-size: 0.98rem;
+        color: #9ca3af;
+      }
+      .sidebar .socials {
+        margin-top: 0.6rem;
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
+        padding-left: 4px;
+      }
+      .sidebar .socials a {
+        color: #6b7280;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      }
+      .sidebar .socials a i {
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="profile-layout">
+      <aside class="sidebar">
+        <div class="logo">
+          <a href="../HomePage/HomePage.html"
+            ><img
+              src="/HomePage/Photos/logo-bg removed.png"
+              alt="GoTrip Logo"
+              style="
+                cursor: pointer;
+                max-width: 110px;
+                max-height: 110px;
+                object-fit: contain;
+              "
+          /></a>
+        </div>
+        <nav>
+          <a href="../HomePage/HomePage.html"
+            ><i class="bi bi-house-door"></i> Home</a
+          >
+          <a href="../Services/FlightsPage.html"
+            ><i class="bi bi-airplane"></i> Flights</a
+          >
+          <a href="../HomePage/HomePageBuses.html"
+            ><i class="bi bi-bus-front"></i> Buses</a
+          >
+          <a href="../HomePage/HomePageHotels.html"
+            ><i class="bi bi-building"></i> Hotels</a
+          >
+          <a href="MyBookings.html"
+            ><i class="bi bi-calendar-check"></i> My Bookings</a
+          >
+          <a href="#" class="active"><i class="bi bi-person"></i> Profile</a>
+          <!-- Dashboard option placed under Profile per request -->
+          <a href="UserDashboard.html"
+            ><i class="bi bi-speedometer2"></i> Dashboard</a
+          >
+          <a href="#support"
+            ><i class="bi bi-question-circle"></i> Help & Support</a
+          >
+        </nav>
+        <div style="margin-top: auto; padding-top: 2em">
+          <button id="logoutBtn" class="logout-btn">
+            <i class="bi bi-box-arrow-right"></i> Log out
+          </button>
+          <div class="bottom-links">
+            <a href="../About/about.html"
+              ><i class="bi bi-info-circle"></i> About Us</a
+            >
+            <a href="../legal/terms.html"
+              ><i class="bi bi-file-text"></i> Terms &amp; Conditions</a
+            >
+            <a href="../legal/privacy.html"
+              ><i class="bi bi-shield-lock"></i> Privacy Policy</a
+            >
+            <div class="socials">
+              <a href="#" aria-label="Facebook"
+                ><i class="bi bi-facebook"></i
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><i class="bi bi-instagram"></i
+              ></a>
+            </div>
           </div>
         </div>
-      </div>
-    </aside>
-    <div class="main-content">
-      <div class="navbar">
-        <div class="title">Profile & Account Settings</div>
-      </div>
-      <div class="profile-summary" style="background:#fff;box-shadow:0 2px 8px #0001;border-radius:12px;padding:1.5em 2em;margin:2em auto 1.5em auto;max-width:700px;display:flex;align-items:center;gap:2em;">
-        <div class="profile-avatar" id="profileAvatar" style="width:90px;height:90px;border-radius:50%;background:#e0e7ff;color:#2563eb;display:flex;align-items:center;justify-content:center;font-size:2.5em;font-weight:700;box-shadow:0 2px 8px #2563eb22;">U</div>
-        <div style="flex:1;">
-          <div style="font-size:1.4em;font-weight:700;color:#222;" id="profileName">User</div>
-          <div style="color:#2563eb;font-size:1.05em;margin-top:0.2em;" id="profileEmail">user@email.com</div>
-          <div style="margin-top:0.5em;display:flex;gap:1.5em;align-items:center;">
-            <span style="background:#e0e7ff;color:#2563eb;font-weight:600;border-radius:12px;padding:0.2em 1em;font-size:1em;">Gold Member</span>
+      </aside>
+      <div class="main-content">
+        <div class="navbar">
+          <div class="title">Profile & Account Settings</div>
+        </div>
+        <div
+          class="profile-summary"
+          style="
+            background: #fff;
+            box-shadow: 0 2px 8px #0001;
+            border-radius: 12px;
+            padding: 1.5em 2em;
+            margin: 2em auto 1.5em auto;
+            max-width: 700px;
+            display: flex;
+            align-items: center;
+            gap: 2em;
+          "
+        >
+          <div
+            class="profile-avatar"
+            id="profileAvatar"
+            style="
+              width: 90px;
+              height: 90px;
+              border-radius: 50%;
+              background: #e0e7ff;
+              color: #2563eb;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 2.5em;
+              font-weight: 700;
+              box-shadow: 0 2px 8px #2563eb22;
+            "
+          >
+            U
           </div>
+          <div style="flex: 1">
+            <div
+              style="font-size: 1.4em; font-weight: 700; color: #222"
+              id="profileName"
+            >
+              User
+            </div>
+            <div
+              style="color: #2563eb; font-size: 1.05em; margin-top: 0.2em"
+              id="profileEmail"
+            >
+              user@email.com
+            </div>
+            <div
+              style="
+                margin-top: 0.5em;
+                display: flex;
+                gap: 1.5em;
+                align-items: center;
+              "
+            >
+              <span
+                style="
+                  background: #e0e7ff;
+                  color: #2563eb;
+                  font-weight: 600;
+                  border-radius: 12px;
+                  padding: 0.2em 1em;
+                  font-size: 1em;
+                "
+                >Gold Member</span
+              >
+            </div>
+          </div>
+          <button
+            style="
+              background: #2563eb;
+              color: #fff;
+              border: none;
+              border-radius: 18px;
+              padding: 0.7em 1.5em;
+              font-size: 1em;
+              font-weight: 600;
+              cursor: pointer;
+            "
+          >
+            Redeem Points
+          </button>
         </div>
-        <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;cursor:pointer;">Redeem Points</button>
-      </div>
-      <div class="profile-tabs" style="max-width:700px;margin:0 auto;">
-        <div class="tab-buttons" style="display:flex;gap:0.5em;margin-bottom:1.2em;">
-          <button class="tab-btn active" data-tab="personal">Personal Info</button>
-          <button class="tab-btn" data-tab="address">Address</button>
-          <button class="tab-btn" data-tab="preferences">Preferences</button>
-          <button class="tab-btn" data-tab="payment">Payment</button>
-          <button class="tab-btn" data-tab="privacy">Privacy & Security</button>
-          <button class="tab-btn" data-tab="notifications">Notifications</button>
-          <button class="tab-btn" data-tab="social">Social</button>
-          <button class="tab-btn" data-tab="social">Social</button>
-          <button class="tab-btn" data-tab="support">Support</button>
-        </div>
-        <div class="tab-content" id="tab-personal">
-          <h3>Personal Information</h3>
-          <form class="profile-form">
-            <label>Full Name:</label>
-            <div style="display:flex;gap:1em;margin-bottom:1em;">
-              <input type="text" placeholder="First Name" style="flex:1;" />
-              <input type="text" placeholder="Last Name" style="flex:1;" />
-            </div>
-            <label>Email Address:</label>
-            <div style="display:flex;gap:1em;margin-bottom:1em;align-items:center;">
-              <input type="email" placeholder="Email" style="flex:2;" />
-              <button type="button" style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:12px;padding:0.4em 1em;">Verify</button>
-            </div>
-            <label>Phone Number:</label>
-            <div style="display:flex;gap:1em;margin-bottom:1em;align-items:center;">
-              <input type="tel" placeholder="Mobile Number" style="flex:2;" />
-              <button type="button" style="background:#fff;color:#2563eb;border:1.5px solid #2563eb;border-radius:12px;padding:0.4em 1em;">Verify</button>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem;margin-bottom:1em;">
-              <label style="margin:0;white-space:nowrap;">Profile Picture:</label>
-              <input type="file" accept="image/*" style="width:240px;" />
+        <div class="profile-tabs" style="max-width: 700px; margin: 0 auto">
+          <div
+            class="tab-buttons"
+            style="display: flex; gap: 0.5em; margin-bottom: 1.2em"
+          >
+            <button class="tab-btn active" data-tab="personal">
+              Personal Info
+            </button>
+            <button class="tab-btn" data-tab="address">Address</button>
+            <button class="tab-btn" data-tab="preferences">Preferences</button>
+            <button class="tab-btn" data-tab="payment">Payment</button>
+            <button class="tab-btn" data-tab="privacy">
+              Privacy & Security
+            </button>
+            <button class="tab-btn" data-tab="notifications">
+              Notifications
+            </button>
+            <button class="tab-btn" data-tab="social">Social</button>
+            <button class="tab-btn" data-tab="social">Social</button>
+            <button class="tab-btn" data-tab="support">Support</button>
+          </div>
+          <div class="tab-content" id="tab-personal">
+            <h3>Personal Information</h3>
+            <form class="profile-form">
+              <label>Full Name:</label>
+              <div style="display: flex; gap: 1em; margin-bottom: 1em">
+                <input type="text" placeholder="First Name" style="flex: 1" />
+                <input type="text" placeholder="Last Name" style="flex: 1" />
+              </div>
+              <label>Email Address:</label>
+              <div
+                style="
+                  display: flex;
+                  gap: 1em;
+                  margin-bottom: 1em;
+                  align-items: center;
+                "
+              >
+                <input type="email" placeholder="Email" style="flex: 2" />
+                <button
+                  type="button"
+                  style="
+                    background: #fff;
+                    color: #2563eb;
+                    border: 1.5px solid #2563eb;
+                    border-radius: 12px;
+                    padding: 0.4em 1em;
+                  "
+                >
+                  Verify
+                </button>
+              </div>
+              <label>Phone Number:</label>
+              <div
+                style="
+                  display: flex;
+                  gap: 1em;
+                  margin-bottom: 1em;
+                  align-items: center;
+                "
+              >
+                <input type="tel" placeholder="Mobile Number" style="flex: 2" />
+                <button
+                  type="button"
+                  style="
+                    background: #fff;
+                    color: #2563eb;
+                    border: 1.5px solid #2563eb;
+                    border-radius: 12px;
+                    padding: 0.4em 1em;
+                  "
+                >
+                  Verify
+                </button>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  flex-wrap: wrap;
+                  align-items: center;
+                  gap: 0.8rem;
+                  margin-bottom: 1em;
+                "
+              >
+                <label style="margin: 0; white-space: nowrap"
+                  >Profile Picture:</label
+                >
+                <input type="file" accept="image/*" style="width: 240px" />
 
-              <label style="margin:0 0 0 0.6rem;white-space:nowrap;">Date of Birth:</label>
-              <input type="date" style="width:150px;padding:0.35rem;border-radius:8px;border:1px solid #e6e9ef;" />
+                <label style="margin: 0 0 0 0.6rem; white-space: nowrap"
+                  >Date of Birth:</label
+                >
+                <input
+                  type="date"
+                  style="
+                    width: 150px;
+                    padding: 0.35rem;
+                    border-radius: 8px;
+                    border: 1px solid #e6e9ef;
+                  "
+                />
+              </div>
+              <div style="text-align: right">
+                <button
+                  type="submit"
+                  style="
+                    background: #2563eb;
+                    color: #fff;
+                    border: none;
+                    border-radius: 18px;
+                    padding: 0.7em 1.5em;
+                    font-size: 1em;
+                    font-weight: 600;
+                  "
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="tab-content" id="tab-address" style="display: none">
+            <h3>Address Information</h3>
+            <form class="profile-form">
+              <label>Home Address:</label>
+              <input
+                type="text"
+                placeholder="Street Address"
+                style="margin-bottom: 1em"
+              />
+              <div style="display: flex; gap: 1em; margin-bottom: 1em">
+                <input type="text" placeholder="City" style="flex: 1" />
+                <input
+                  type="text"
+                  placeholder="State / Region"
+                  style="flex: 1"
+                />
+              </div>
+              <div style="display: flex; gap: 1em; margin-bottom: 1em">
+                <input type="text" placeholder="Postal Code" style="flex: 1" />
+                <input type="text" placeholder="Country" style="flex: 1" />
+              </div>
+              <label><input type="checkbox" /> Add another address</label>
+              <h4 style="margin-top: 1.5em">Billing Address</h4>
+              <label
+                ><input type="checkbox" /> Use different billing address</label
+              >
+              <input
+                type="text"
+                placeholder="Billing Street Address"
+                style="margin-bottom: 1em"
+              />
+              <div style="display: flex; gap: 1em; margin-bottom: 1em">
+                <input type="text" placeholder="City" style="flex: 1" />
+                <input
+                  type="text"
+                  placeholder="State / Region"
+                  style="flex: 1"
+                />
+              </div>
+              <div style="display: flex; gap: 1em; margin-bottom: 1em">
+                <input type="text" placeholder="Postal Code" style="flex: 1" />
+                <input type="text" placeholder="Country" style="flex: 1" />
+              </div>
+              <div style="text-align: right">
+                <button
+                  type="submit"
+                  style="
+                    background: #2563eb;
+                    color: #fff;
+                    border: none;
+                    border-radius: 18px;
+                    padding: 0.7em 1.5em;
+                    font-size: 1em;
+                    font-weight: 600;
+                  "
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="tab-content" id="tab-preferences" style="display: none">
+            <h3>Booking Preferences</h3>
+            <form class="profile-form">
+              <label>Preferred Travel Class:</label>
+              <select style="margin-bottom: 1em">
+                <option>Economy</option>
+                <option>Business</option>
+                <option>First Class</option>
+              </select>
+              <label>Seat Type Preferences:</label>
+              <input
+                type="text"
+                placeholder="e.g., Window, Aisle, Extra Legroom"
+                style="margin-bottom: 1em"
+              />
+              <label>Hotel Preferences:</label>
+              <select style="margin-bottom: 1em">
+                <option>1 Star</option>
+                <option>2 Stars</option>
+                <option>3 Stars</option>
+                <option>4 Stars</option>
+                <option>5 Stars</option>
+              </select>
+              <label>Room Preferences:</label>
+              <input
+                type="text"
+                placeholder="e.g., Double, Suite, Twin beds"
+                style="margin-bottom: 1em"
+              />
+              <label>Special Amenities:</label>
+              <input
+                type="text"
+                placeholder="e.g., Pool, Gym, Free Wi-Fi"
+                style="margin-bottom: 1em"
+              />
+              <label>Preferred Bus Seat:</label>
+              <input
+                type="text"
+                placeholder="e.g., Front, Middle, Window, Aisle"
+                style="margin-bottom: 1em"
+              />
+              <label>Special Requests:</label>
+              <input
+                type="text"
+                placeholder="e.g., Dietary, Accessibility"
+                style="margin-bottom: 1.5em"
+              />
+              <div style="text-align: right">
+                <button
+                  type="submit"
+                  style="
+                    background: #2563eb;
+                    color: #fff;
+                    border: none;
+                    border-radius: 18px;
+                    padding: 0.7em 1.5em;
+                    font-size: 1em;
+                    font-weight: 600;
+                  "
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="tab-content" id="tab-payment" style="display: none">
+            <h3>Payment Information</h3>
+            <div style="margin-bottom: 1.5em">
+              <strong>Saved Payment Methods</strong>
+              <div style="margin: 0.7em 0">
+                <span
+                  style="
+                    background: #f1f5ff;
+                    color: #2563eb;
+                    padding: 0.3em 1em;
+                    border-radius: 12px;
+                    margin-right: 1em;
+                  "
+                  >Visa **** 1234</span
+                >
+                <button
+                  style="
+                    background: #fff;
+                    color: #ef4444;
+                    border: 1.5px solid #ef4444;
+                    border-radius: 12px;
+                    padding: 0.3em 1em;
+                  "
+                >
+                  Remove
+                </button>
+              </div>
+              <button
+                style="
+                  background: #2563eb;
+                  color: #fff;
+                  border: none;
+                  border-radius: 18px;
+                  padding: 0.7em 1.5em;
+                  font-size: 1em;
+                  font-weight: 600;
+                "
+              >
+                Add Card
+              </button>
+            </div>
+            <div style="margin-bottom: 1.5em">
+              <strong>Payment Platforms</strong>
+              <div style="margin: 0.7em 0; display: flex; gap: 1em">
+                <button
+                  style="
+                    background: #fff;
+                    color: #222;
+                    border: 1.5px solid #2563eb;
+                    border-radius: 12px;
+                    padding: 0.3em 1em;
+                  "
+                >
+                  PayPal
+                </button>
+                <button
+                  style="
+                    background: #fff;
+                    color: #222;
+                    border: 1.5px solid #2563eb;
+                    border-radius: 12px;
+                    padding: 0.3em 1em;
+                  "
+                >
+                  Apple Pay
+                </button>
+                <button
+                  style="
+                    background: #fff;
+                    color: #222;
+                    border: 1.5px solid #2563eb;
+                    border-radius: 12px;
+                    padding: 0.3em 1em;
+                  "
+                >
+                  Google Pay
+                </button>
+              </div>
+            </div>
+            <div style="margin-bottom: 1.5em">
+              <strong>Billing Information</strong>
+              <input
+                type="text"
+                placeholder="Billing Name"
+                style="margin-bottom: 1em"
+              />
+              <input
+                type="text"
+                placeholder="Billing Address"
+                style="margin-bottom: 1em"
+              />
+              <button
+                style="
+                  background: #2563eb;
+                  color: #fff;
+                  border: none;
+                  border-radius: 18px;
+                  padding: 0.7em 1.5em;
+                  font-size: 1em;
+                  font-weight: 600;
+                "
+              >
+                Update Billing
+              </button>
+            </div>
+            <div style="margin-bottom: 1.5em">
+              <strong>Saved Payment Preferences</strong>
+              <select style="margin-bottom: 1em">
+                <option>Visa **** 1234</option>
+                <option>PayPal</option>
+              </select>
+              <label
+                ><input type="checkbox" /> Set as default for one-click
+                bookings</label
+              >
+            </div>
+          </div>
+          <div class="tab-content" id="tab-privacy" style="display: none">
+            <h3>Privacy & Security Settings</h3>
+            <form
+              class="profile-form"
+              id="profileForm"
+              onsubmit="handleProfileUpdate(event)"
+            >
+              <label>Full Name:</label>
+              <div style="display: flex; gap: 1em; margin-bottom: 1em">
+                <input
+                  type="text"
+                  id="editFirstName"
+                  placeholder="First Name"
+                  style="flex: 1"
+                />
+                <input
+                  type="text"
+                  id="editLastName"
+                  placeholder="Last Name"
+                  style="flex: 1"
+                />
+              </div>
 
-             
+              <label>Email Address:</label>
+              <input
+                type="email"
+                id="editEmail"
+                placeholder="Email"
+                style="margin-bottom: 1em"
+              />
+
+              <label>Phone Number:</label>
+              <input
+                type="tel"
+                id="editPhone"
+                placeholder="Phone Number"
+                style="margin-bottom: 1em"
+              />
+
+              <label>Date of Birth:</label>
+              <input
+                type="date"
+                id="editBirthDate"
+                style="
+                  margin-bottom: 1.5em;
+                  padding: 0.6em;
+                  border-radius: 8px;
+                  border: 1px solid #e6e9ef;
+                "
+              />
+
+              <div style="text-align: right; margin-bottom: 2em">
+                <button
+                  type="submit"
+                  style="
+                    background: #2563eb;
+                    color: #fff;
+                    border: none;
+                    border-radius: 18px;
+                    padding: 0.7em 1.5em;
+                    font-size: 1em;
+                    font-weight: 600;
+                  "
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+
+            <div
+              style="
+                border-top: 1px solid #e5e7eb;
+                padding-top: 1.5em;
+                margin-top: 1.5em;
+              "
+            >
+              <label style="font-weight: 600">Password Management:</label>
+              <div style="margin-top: 1em">
+                <button
+                  type="button"
+                  id="changePasswordBtn"
+                  onclick="handlePasswordChange()"
+                  style="
+                    background: #ef4444;
+                    color: #fff;
+                    border: none;
+                    border-radius: 18px;
+                    padding: 0.7em 1.5em;
+                    font-size: 1em;
+                    font-weight: 600;
+                    margin-bottom: 1.5em;
+                  "
+                >
+                  Change Password
+                </button>
+              </div>
             </div>
-            <div style="text-align:right;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
-          </form>
-        </div>
-        <div class="tab-content" id="tab-address" style="display:none;">
-          <h3>Address Information</h3>
-          <form class="profile-form">
-            <label>Home Address:</label>
-            <input type="text" placeholder="Street Address" style="margin-bottom:1em;" />
-            <div style="display:flex;gap:1em;margin-bottom:1em;">
-              <input type="text" placeholder="City" style="flex:1;" />
-              <input type="text" placeholder="State / Region" style="flex:1;" />
+
+            <div
+              style="
+                border-top: 1px solid #e5e7eb;
+                padding-top: 1.5em;
+                margin-top: 1.5em;
+              "
+            >
+              <label>Two-Factor Authentication:</label>
+              <label style="margin-left: 1em"
+                ><input type="checkbox" /> Enable 2FA</label
+              >
             </div>
-            <div style="display:flex;gap:1em;margin-bottom:1em;">
-              <input type="text" placeholder="Postal Code" style="flex:1;" />
-              <input type="text" placeholder="Country" style="flex:1;" />
+
+            <div
+              style="
+                border-top: 1px solid #e5e7eb;
+                padding-top: 1.5em;
+                margin-top: 1.5em;
+              "
+            >
+              <label>Two-Factor Authentication:</label>
+              <label style="margin-left: 1em"
+                ><input type="checkbox" /> Enable 2FA</label
+              >
             </div>
-            <label><input type="checkbox" /> Add another address</label>
-            <h4 style="margin-top:1.5em;">Billing Address</h4>
-            <label><input type="checkbox" /> Use different billing address</label>
-            <input type="text" placeholder="Billing Street Address" style="margin-bottom:1em;" />
-            <div style="display:flex;gap:1em;margin-bottom:1em;">
-              <input type="text" placeholder="City" style="flex:1;" />
-              <input type="text" placeholder="State / Region" style="flex:1;" />
+
+            <div
+              style="
+                border-top: 1px solid #e5e7eb;
+                padding-top: 1.5em;
+                margin-top: 1.5em;
+              "
+            >
+              <div style="margin-bottom: 1em">
+                <strong>Privacy Preferences</strong>
+              </div>
+              <label
+                ><input type="checkbox" /> Allow others to see my booking
+                history</label
+              ><br />
+              <label
+                ><input type="checkbox" /> Allow others to see my reviews</label
+              ><br />
+              <label
+                ><input type="checkbox" /> Allow others to see my profile
+                details</label
+              ><br />
             </div>
-            <div style="display:flex;gap:1em;margin-bottom:1em;">
-              <input type="text" placeholder="Postal Code" style="flex:1;" />
-              <input type="text" placeholder="Country" style="flex:1;" />
+
+            <div
+              style="
+                border-top: 1px solid #e5e7eb;
+                padding-top: 1.5em;
+                margin-top: 1.5em;
+              "
+            >
+              <div style="margin-bottom: 1em">
+                <strong>Marketing Communications</strong>
+              </div>
+              <label><input type="checkbox" /> Email</label>
+              <label style="margin-left: 1em"
+                ><input type="checkbox" /> SMS</label
+              >
             </div>
-            <div style="text-align:right;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
-          </form>
-        </div>
-        <div class="tab-content" id="tab-preferences" style="display:none;">
-          <h3>Booking Preferences</h3>
-          <form class="profile-form">
-            <label>Preferred Travel Class:</label>
-            <select style="margin-bottom:1em;">
-              <option>Economy</option>
-              <option>Business</option>
-              <option>First Class</option>
-            </select>
-            <label>Seat Type Preferences:</label>
-            <input type="text" placeholder="e.g., Window, Aisle, Extra Legroom" style="margin-bottom:1em;" />
-            <label>Hotel Preferences:</label>
-            <select style="margin-bottom:1em;">
-              <option>1 Star</option>
-              <option>2 Stars</option>
-              <option>3 Stars</option>
-              <option>4 Stars</option>
-              <option>5 Stars</option>
-            </select>
-            <label>Room Preferences:</label>
-            <input type="text" placeholder="e.g., Double, Suite, Twin beds" style="margin-bottom:1em;" />
-            <label>Special Amenities:</label>
-            <input type="text" placeholder="e.g., Pool, Gym, Free Wi-Fi" style="margin-bottom:1em;" />
-            <label>Preferred Bus Seat:</label>
-            <input type="text" placeholder="e.g., Front, Middle, Window, Aisle" style="margin-bottom:1em;" />
-            <label>Special Requests:</label>
-            <input type="text" placeholder="e.g., Dietary, Accessibility" style="margin-bottom:1.5em;" />
-            <div style="text-align:right;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
-          </form>
-        </div>
-        <div class="tab-content" id="tab-payment" style="display:none;">
-          <h3>Payment Information</h3>
-          <div style="margin-bottom:1.5em;">
-            <strong>Saved Payment Methods</strong>
-            <div style="margin:0.7em 0;">
-              <span style="background:#f1f5ff;color:#2563eb;padding:0.3em 1em;border-radius:12px;margin-right:1em;">Visa **** 1234</span>
-              <button style="background:#fff;color:#ef4444;border:1.5px solid #ef4444;border-radius:12px;padding:0.3em 1em;">Remove</button>
+
+            <div
+              style="
+                border-top: 1px solid #e5e7eb;
+                padding-top: 1.5em;
+                margin-top: 1.5em;
+              "
+            >
+              <div style="margin-bottom: 1em">
+                <strong>Data Sharing Preferences</strong>
+              </div>
+              <label
+                ><input type="checkbox" /> Share info with partners for
+                promotions</label
+              >
             </div>
-            <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Add Card</button>
           </div>
-          <div style="margin-bottom:1.5em;">
-            <strong>Payment Platforms</strong>
-            <div style="margin:0.7em 0;display:flex;gap:1em;">
-              <button style="background:#fff;color:#222;border:1.5px solid #2563eb;border-radius:12px;padding:0.3em 1em;">PayPal</button>
-              <button style="background:#fff;color:#222;border:1.5px solid #2563eb;border-radius:12px;padding:0.3em 1em;">Apple Pay</button>
-              <button style="background:#fff;color:#222;border:1.5px solid #2563eb;border-radius:12px;padding:0.3em 1em;">Google Pay</button>
+          <div class="tab-content" id="tab-notifications" style="display: none">
+            <h3>Notification Settings</h3>
+            <form class="profile-form">
+              <label><input type="checkbox" /> Booking Alerts</label><br />
+              <label><input type="checkbox" /> Promotional Notifications</label
+              ><br />
+              <label><input type="checkbox" /> Push Notifications</label><br />
+              <div style="text-align: right; margin-top: 1.5em">
+                <button
+                  type="submit"
+                  style="
+                    background: #2563eb;
+                    color: #fff;
+                    border: none;
+                    border-radius: 18px;
+                    padding: 0.7em 1.5em;
+                    font-size: 1em;
+                    font-weight: 600;
+                  "
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="tab-content" id="tab-social" style="display: none">
+            <h3>Social Connections</h3>
+            <form class="profile-form">
+              <label>Linked Accounts:</label>
+              <div style="margin-bottom: 1em">
+                <button
+                  style="
+                    background: #fff;
+                    color: #222;
+                    border: 1.5px solid #2563eb;
+                    border-radius: 12px;
+                    padding: 0.3em 1em;
+                    margin-right: 1em;
+                  "
+                >
+                  Connect Facebook
+                </button>
+                <button
+                  style="
+                    background: #fff;
+                    color: #222;
+                    border: 1.5px solid #2563eb;
+                    border-radius: 12px;
+                    padding: 0.3em 1em;
+                  "
+                >
+                  Connect Google
+                </button>
+              </div>
+              <label>Social Media Links:</label>
+              <input
+                type="text"
+                placeholder="Facebook URL"
+                style="margin-bottom: 1em"
+              />
+              <input
+                type="text"
+                placeholder="Instagram URL"
+                style="margin-bottom: 1em"
+              />
+              <input
+                type="text"
+                placeholder="Twitter URL"
+                style="margin-bottom: 1em"
+              />
+              <div style="text-align: right">
+                <button
+                  type="submit"
+                  style="
+                    background: #2563eb;
+                    color: #fff;
+                    border: none;
+                    border-radius: 18px;
+                    padding: 0.7em 1.5em;
+                    font-size: 1em;
+                    font-weight: 600;
+                  "
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="tab-content" id="tab-support" style="display: none">
+            <h3>Support & Help</h3>
+            <div style="margin-bottom: 1em">
+              <button
+                style="
+                  background: #2563eb;
+                  color: #fff;
+                  border: none;
+                  border-radius: 18px;
+                  padding: 0.7em 1.5em;
+                  font-size: 1em;
+                  font-weight: 600;
+                "
+              >
+                Contact Support
+              </button>
+            </div>
+            <div>
+              <a href="#" style="color: #2563eb; text-decoration: underline"
+                >FAQs</a
+              >
             </div>
           </div>
-          <div style="margin-bottom:1.5em;">
-            <strong>Billing Information</strong>
-            <input type="text" placeholder="Billing Name" style="margin-bottom:1em;" />
-            <input type="text" placeholder="Billing Address" style="margin-bottom:1em;" />
-            <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Update Billing</button>
-          </div>
-          <div style="margin-bottom:1.5em;">
-            <strong>Saved Payment Preferences</strong>
-            <select style="margin-bottom:1em;">
-              <option>Visa **** 1234</option>
-              <option>PayPal</option>
-            </select>
-            <label><input type="checkbox" /> Set as default for one-click bookings</label>
-          </div>
-        </div>
-        <div class="tab-content" id="tab-privacy" style="display:none;">
-          <h3>Privacy & Security Settings</h3>
-          <form class="profile-form">
-            <label>Password Management:</label>
-            <div style="display:flex;gap:1em;margin-bottom:1em;">
-              <input type="password" placeholder="Current Password" style="flex:1;" />
-              <input type="password" placeholder="New Password" style="flex:1;" />
-            </div>
-            <button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;margin-bottom:1.5em;">Change Password</button>
-            <label>Two-Factor Authentication:</label>
-            <label style="margin-left:1em;"><input type="checkbox" /> Enable 2FA</label>
-            <div style="margin:1.5em 0 1em 0;"><strong>Privacy Preferences</strong></div>
-            <label><input type="checkbox" /> Allow others to see my booking history</label><br/>
-            <label><input type="checkbox" /> Allow others to see my reviews</label><br/>
-            <label><input type="checkbox" /> Allow others to see my profile details</label><br/>
-            <div style="margin:1.5em 0 1em 0;"><strong>Marketing Communications</strong></div>
-            <label><input type="checkbox" /> Email</label>
-            <label style="margin-left:1em;"><input type="checkbox" /> SMS</label>
-            <div style="margin:1.5em 0 1em 0;"><strong>Data Sharing Preferences</strong></div>
-            <label><input type="checkbox" /> Share info with partners for promotions</label>
-            <div style="text-align:right;margin-top:1.5em;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
-          </form>
-        </div>
-        <div class="tab-content" id="tab-notifications" style="display:none;">
-          <h3>Notification Settings</h3>
-          <form class="profile-form">
-            <label><input type="checkbox" /> Booking Alerts</label><br/>
-            <label><input type="checkbox" /> Promotional Notifications</label><br/>
-            <label><input type="checkbox" /> Push Notifications</label><br/>
-            <div style="text-align:right;margin-top:1.5em;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
-          </form>
-        </div>
-        
-        <div class="tab-content" id="tab-social" style="display:none;">
-          <h3>Social Connections</h3>
-          <form class="profile-form">
-            <label>Linked Accounts:</label>
-            <div style="margin-bottom:1em;">
-              <button style="background:#fff;color:#222;border:1.5px solid #2563eb;border-radius:12px;padding:0.3em 1em;margin-right:1em;">Connect Facebook</button>
-              <button style="background:#fff;color:#222;border:1.5px solid #2563eb;border-radius:12px;padding:0.3em 1em;">Connect Google</button>
-            </div>
-            <label>Social Media Links:</label>
-            <input type="text" placeholder="Facebook URL" style="margin-bottom:1em;" />
-            <input type="text" placeholder="Instagram URL" style="margin-bottom:1em;" />
-            <input type="text" placeholder="Twitter URL" style="margin-bottom:1em;" />
-            <div style="text-align:right;"><button type="submit" style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Save Changes</button></div>
-          </form>
-        </div>
-        
-        <div class="tab-content" id="tab-support" style="display:none;">
-          <h3>Support & Help</h3>
-          <div style="margin-bottom:1em;"><button style="background:#2563eb;color:#fff;border:none;border-radius:18px;padding:0.7em 1.5em;font-size:1em;font-weight:600;">Contact Support</button></div>
-          <div><a href="#" style="color:#2563eb;text-decoration:underline;">FAQs</a></div>
         </div>
       </div>
     </div>
-  </div>
-  <script>
-    // Example: Fill user info from localStorage if available
-    const user = JSON.parse(localStorage.getItem('gotripUser'));
-    if (user) {
-      document.getElementById('profileName').textContent = user.firstName || 'User';
-      document.getElementById('profileAvatar').textContent = (user.firstName?.[0] || 'U').toUpperCase();
-      document.getElementById('profileEmail').textContent = user.email;
-    }
-    // Tab switching logic
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        tabContents.forEach(tc => tc.style.display = 'none');
-        document.getElementById('tab-' + btn.dataset.tab).style.display = '';
+    <script>
+      // Get auth token from localStorage
+      function getAuthToken() {
+        return localStorage.getItem("authToken");
+      }
+
+      // Get current user from localStorage
+      function getCurrentUser() {
+        const userStr = localStorage.getItem("user");
+        return userStr ? JSON.parse(userStr) : null;
+      }
+
+      // Load user data on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        const user = getCurrentUser();
+        if (user) {
+          // Display user info in header
+          document.getElementById(
+            "profileName"
+          ).textContent = `${user.first_name} ${user.last_name}`;
+          document.getElementById("profileAvatar").textContent = (
+            user.first_name?.[0] || "U"
+          ).toUpperCase();
+          document.getElementById("profileEmail").textContent = user.email;
+
+          // Fill edit form
+          document.getElementById("editFirstName").value =
+            user.first_name || "";
+          document.getElementById("editLastName").value = user.last_name || "";
+          document.getElementById("editEmail").value = user.email || "";
+          document.getElementById("editPhone").value = user.phone || "";
+          document.getElementById("editBirthDate").value =
+            user.birth_date || "";
+        } else {
+          // Redirect to login if no user
+          window.location.href = "../Login/login.html";
+        }
       });
-    });
-    // Log out functionality
-    document.getElementById('logoutBtn').onclick = function() {
-      localStorage.removeItem('gotripUser');
-      window.location.href = '../Login/login.html';
-    };
-  </script>
-</body>
+
+      // Handle profile update
+      async function handleProfileUpdate(event) {
+        event.preventDefault();
+
+        const formData = {
+          first_name: document.getElementById("editFirstName").value,
+          last_name: document.getElementById("editLastName").value,
+          email: document.getElementById("editEmail").value,
+          phone: document.getElementById("editPhone").value,
+          birth_date: document.getElementById("editBirthDate").value,
+        };
+
+        try {
+          const token = getAuthToken();
+          const response = await fetch(
+            "http://localhost:3000/api/auth/profile",
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify(formData),
+            }
+          );
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Update localStorage
+            localStorage.setItem("user", JSON.stringify(result.data.user));
+
+            // Update UI
+            document.getElementById(
+              "profileName"
+            ).textContent = `${result.data.user.first_name} ${result.data.user.last_name}`;
+            document.getElementById("profileAvatar").textContent =
+              result.data.user.first_name.charAt(0).toUpperCase();
+            document.getElementById("profileEmail").textContent =
+              result.data.user.email;
+
+            alert("Profile updated successfully!");
+          } else {
+            alert(`Error: ${result.message}`);
+          }
+        } catch (error) {
+          console.error("Error updating profile:", error);
+          alert("Error updating profile. Please try again.");
+        }
+      }
+
+      // Handle password change
+      function handlePasswordChange() {
+        const userConfirmed = confirm(
+          "You will be redirected to another page to edit the password. Are you sure you want to continue?"
+        );
+
+        if (userConfirmed) {
+          alert("Sorry, this feature is currently not available");
+          // When the feature is ready, redirect to:
+          // window.location.href = 'change-password.html';
+        }
+      }
+
+      // Tab switching logic
+      const tabBtns = document.querySelectorAll(".tab-btn");
+      const tabContents = document.querySelectorAll(".tab-content");
+      tabBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          tabBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          tabContents.forEach((tc) => (tc.style.display = "none"));
+          document.getElementById("tab-" + btn.dataset.tab).style.display = "";
+        });
+      });
+
+      // Log out functionality
+      document.getElementById("logoutBtn").onclick = function () {
+        const confirmed = confirm("Are you sure you want to log out?");
+        if (confirmed) {
+          localStorage.removeItem("user");
+          localStorage.removeItem("authToken");
+          window.location.href = "../Login/login.html";
+        }
+      };
+    </script>
+  </body>
 </html>

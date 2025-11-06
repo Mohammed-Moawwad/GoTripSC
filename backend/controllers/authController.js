@@ -1,0 +1,426 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const db = require("../config/database");
+
+// JWT Secret Key (In production, this should be in .env file)
+const JWT_SECRET =
+  process.env.JWT_SECRET || "your-secret-key-change-this-in-production";
+const JWT_EXPIRES_IN = "7d"; // Token expires in 7 days
+
+/**
+ * User Signup (Registration)
+ * Creates a new user account
+ */
+const signup = async (req, res) => {
+  try {
+    const { first_name, last_name, email, phone, birth_date, password } =
+      req.body;
+
+    // Validation: Check if all required fields are provided
+    if (!first_name || !last_name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Please provide all required fields: first_name, last_name, email, password",
+      });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid email address",
+      });
+    }
+
+    // Validate password strength (minimum 6 characters)
+    if (password.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long",
+      });
+    }
+
+    // Check if user already exists (case-insensitive)
+    const [existingUsers] = await db.execute(
+      "SELECT user_id FROM users WHERE LOWER(email) = LOWER(?)",
+      [email]
+    );
+
+    if (existingUsers.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message:
+          "Email already registered. Please use a different email or login.",
+      });
+    }
+
+    // Hash the password (10 salt rounds)
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert new user into database
+    const [result] = await db.execute(
+      `INSERT INTO users 
+       (first_name, last_name, email, phone, birth_date, password_hash, status, role) 
+       VALUES (?, ?, ?, ?, ?, ?, 'Active', 'user')`,
+      [
+        first_name,
+        last_name,
+        email,
+        phone || null,
+        birth_date || null,
+        hashedPassword,
+      ]
+    );
+
+    const userId = result.insertId;
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        userId: userId,
+        email: email,
+        role: "user",
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    // Return success response with token and user info
+    res.status(201).json({
+      success: true,
+      message: "Account created successfully!",
+      data: {
+        token: token,
+        user: {
+          user_id: userId,
+          first_name: first_name,
+          last_name: last_name,
+          email: email,
+          phone: phone,
+          birth_date: birth_date,
+          role: "user",
+          status: "Active",
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Signup Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error creating account. Please try again.",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * User Login
+ * Authenticates user and returns JWT token
+ */
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validation: Check if email and password are provided
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide email and password",
+      });
+    }
+
+    // Find user by email (case-insensitive)
+    const [users] = await db.execute(
+      `SELECT user_id, first_name, last_name, email, phone, birth_date, 
+              password_hash, status, role, registered_date 
+       FROM users 
+       WHERE LOWER(email) = LOWER(?)`,
+      [email]
+    );
+
+    // Check if user exists
+    if (users.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    const user = users[0];
+
+    // Check if account is active
+    if (user.status !== "Active") {
+      return res.status(403).json({
+        success: false,
+        message: "Your account is inactive. Please contact support.",
+      });
+    }
+
+    // Verify password
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // Update last_login timestamp
+    await db.execute("UPDATE users SET last_login = NOW() WHERE user_id = ?", [
+      user.user_id,
+    ]);
+
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        userId: user.user_id,
+        email: user.email,
+        role: user.role,
+      },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+
+    // Return success response with token and user info (without password)
+    res.status(200).json({
+      success: true,
+      message: "Login successful!",
+      data: {
+        token: token,
+        user: {
+          user_id: user.user_id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          phone: user.phone,
+          birth_date: user.birth_date,
+          role: user.role,
+          status: user.status,
+          registered_date: user.registered_date,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Login Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error logging in. Please try again.",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Get Current User Profile
+ * Returns the logged-in user's information
+ * (Requires authentication middleware)
+ */
+const getMe = async (req, res) => {
+  try {
+    const userId = req.user.userId; // Set by auth middleware
+
+    // Fetch user details
+    const [users] = await db.execute(
+      `SELECT user_id, first_name, last_name, email, phone, birth_date, 
+              status, role, registered_date, last_login
+       FROM users 
+       WHERE user_id = ?`,
+      [userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        user: users[0],
+      },
+    });
+  } catch (error) {
+    console.error("Get Me Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching user profile",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Update User Profile
+ * Allows user to update their own information
+ * (Requires authentication middleware)
+ */
+const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.userId; // Set by auth middleware
+    const { first_name, last_name, email, phone, birth_date } = req.body;
+
+    // Build dynamic update query
+    const updates = [];
+    const values = [];
+
+    if (first_name) {
+      updates.push("first_name = ?");
+      values.push(first_name);
+    }
+    if (last_name) {
+      updates.push("last_name = ?");
+      values.push(last_name);
+    }
+    if (email) {
+      // Check if email is already taken by another user
+      const [existingUsers] = await db.execute(
+        "SELECT user_id FROM users WHERE email = ? AND user_id != ?",
+        [email, userId]
+      );
+
+      if (existingUsers.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Email is already in use by another account",
+        });
+      }
+
+      updates.push("email = ?");
+      values.push(email);
+    }
+    if (phone !== undefined) {
+      updates.push("phone = ?");
+      values.push(phone);
+    }
+    if (birth_date !== undefined) {
+      updates.push("birth_date = ?");
+      values.push(birth_date);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields to update",
+      });
+    }
+
+    values.push(userId);
+
+    // Update user in database
+    await db.execute(
+      `UPDATE users SET ${updates.join(", ")} WHERE user_id = ?`,
+      values
+    );
+
+    // Fetch updated user data
+    const [users] = await db.execute(
+      `SELECT user_id, first_name, last_name, email, phone, birth_date, 
+              status, role, registered_date
+       FROM users 
+       WHERE user_id = ?`,
+      [userId]
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: {
+        user: users[0],
+      },
+    });
+  } catch (error) {
+    console.error("Update Profile Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error updating profile",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Change Password
+ * Allows user to change their password
+ * (Requires authentication middleware)
+ */
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { currentPassword, newPassword } = req.body;
+
+    // Validation
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide current password and new password",
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "New password must be at least 6 characters long",
+      });
+    }
+
+    // Get current password hash
+    const [users] = await db.execute(
+      "SELECT password_hash FROM users WHERE user_id = ?",
+      [userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Verify current password
+    const isPasswordValid = await bcrypt.compare(
+      currentPassword,
+      users[0].password_hash
+    );
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: "Current password is incorrect",
+      });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password
+    await db.execute("UPDATE users SET password_hash = ? WHERE user_id = ?", [
+      hashedPassword,
+      userId,
+    ]);
+
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    console.error("Change Password Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error changing password",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  signup,
+  login,
+  getMe,
+  updateProfile,
+  changePassword,
+};

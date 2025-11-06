@@ -4,23 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>GoTrip — Flights, Buses & Hotels</title>
-    <link rel="stylesheet" href="HomePage.css" />
+    <link rel="stylesheet" href="/HomePage/HomePage.css" />
   </head>
   <body>
     <!-- ====== Header ====== -->
     <header class="site-header" role="banner">
       <div class="container nav">
-        <a href="HomePage.html" class="brand" aria-label="GoTrip Home">
+        <a href="/" class="brand" aria-label="GoTrip Home">
           <span class="logo">
-            <img src="Photos/logo.jpg" alt="GoTrip Logo" class="logo-img" />
+            <img
+              src="/HomePage/Photos/logo.jpg"
+              alt="GoTrip Logo"
+              class="logo-img"
+            />
           </span>
           <span class="brand-name">GoTrip</span>
         </a>
 
         <nav class="primary-nav" aria-label="Primary">
-          <a class="nav-link active" href="HomePage.html">Flights</a>
-          <a class="nav-link" href="HomePageHotels.html">Hotels</a>
-          <a class="nav-link" href="HomePageBuses.html">Buses</a>
+          <a class="nav-link active" href="/">Flights</a>
+          <a class="nav-link" href="/HomePage/HomePageHotels.html">Hotels</a>
+          <a class="nav-link" href="/HomePage/HomePageBuses.html">Buses</a>
         </nav>
 
         <div class="actions">
@@ -58,18 +62,33 @@
             </ul>
           </div>
 
-          <button class="icon-btn" id="cartBtn" aria-label="Cart">
-            <svg viewBox="0 0 24 24" width="18" height="18">
-              <path
-                fill="currentColor"
-                d="M7 18a2 2 0 104 0 2 2 0 00-4 0zm8 0a2 2 0 104 0 2 2 0 00-4 0zM7.2 6h12.3l-1.5 7.5a2 2 0 01-2 1.5H9a2 2 0 01-2-1.5L5.3 4H3V3h3a1 1 0 01.98.8L7.2 6z"
-              />
-            </svg>
-            <span class="badge" id="cartCount">0</span>
-          </button>
+          <!-- Authentication Buttons -->
+          <!-- Show when NOT logged in -->
+          <a href="../Login/signin.html" class="btn" id="signupBtn">Sign up</a>
+          <a href="../Login/login.html" class="btn" id="loginBtn">Login</a>
 
-          <a href="../Login/signin.html" class="btn sign-in-btn">Sign in</a>
-          <a href="../Login/login.html" class="btn login-btn">Login</a>
+          <!-- Show when logged in -->
+          <span
+            class="user-welcome"
+            id="userNameDisplay"
+            style="display: none; margin-right: 10px; color: #333"
+            >Welcome!</span
+          >
+          <a
+            href="/User/dashboard.html"
+            class="btn my-trips-btn"
+            id="myTripsBtn"
+            style="display: none"
+            >My Trips</a
+          >
+          <button
+            class="btn logout-btn"
+            id="logoutBtn"
+            onclick="logoutWithConfirmation()"
+            style="display: none"
+          >
+            Logout
+          </button>
 
           <button
             class="menu-toggle"
@@ -91,8 +110,53 @@
           <button class="btn lang-inline" id="langBtnMobile">
             🌐 <span id="langLabelMobile">English</span>
           </button>
-          <a class="btn sign-in-inline" href="../Login/signin.html">Sign in</a>
-          <a class="btn login-inline" href="../Login/login.html">Login</a>
+
+          <!-- Mobile Authentication Buttons -->
+          <!-- Show when NOT logged in -->
+          <a
+            class="btn sign-in-inline"
+            href="../Login/signin.html"
+            id="loginBtnMobile"
+            >Sign in</a
+          >
+          <a
+            class="btn login-inline"
+            href="../Login/login.html"
+            id="signupBtnMobile"
+            >Login</a
+          >
+
+          <!-- Show when logged in -->
+          <div
+            id="userInfoMobile"
+            style="
+              display: none;
+              margin: 10px 0;
+              padding: 10px;
+              background: #f0f0f0;
+              border-radius: 8px;
+            "
+          >
+            <span
+              id="userNameDisplayMobile"
+              style="display: block; font-weight: 600; margin-bottom: 8px"
+              >Welcome!</span
+            >
+            <a
+              class="btn my-trips-inline"
+              href="/UserDashboard/user-dashboard.html"
+              id="myTripsBtnMobile"
+              >My Trips</a
+            >
+            <button
+              class="btn logout-inline"
+              onclick="logoutWithConfirmation()"
+              id="logoutBtnMobile"
+              style="margin-top: 8px; background: #ef4444; color: white"
+            >
+              Logout
+            </button>
+          </div>
         </nav>
       </div>
     </header>
@@ -208,7 +272,7 @@
         <div class="ideas-grid" id="ideasGrid">
           <article class="idea-card" data-tags="Nature,Family,Halal-friendly">
             <img
-              src="Photos/abha.jpg"
+              src="/HomePage/Photos/abha.jpg"
               alt="Abha, Saudi Arabia"
               loading="lazy"
             />
@@ -220,7 +284,7 @@
           </article>
           <article class="idea-card" data-tags="Beach,Family,Halal-friendly">
             <img
-              src="Photos/jazan.jpeg"
+              src="/HomePage/Photos/jazan.jpeg"
               alt="Jazan, Saudi Arabia"
               loading="lazy"
             />
@@ -232,7 +296,7 @@
           </article>
           <article class="idea-card" data-tags="Nature,Romantic,Halal-friendly">
             <img
-              src="Photos/taif.jpg"
+              src="/HomePage/Photos/taif.jpg"
               alt="Taif, Saudi Arabia"
               loading="lazy"
             />
@@ -244,7 +308,7 @@
           </article>
           <article class="idea-card" data-tags="Beach,Family">
             <img
-              src="Photos/Hurghada.webp"
+              src="/HomePage/Photos/Hurghada.webp"
               alt="Hurghada, Egypt"
               loading="lazy"
             />
@@ -256,7 +320,7 @@
           </article>
           <article class="idea-card" data-tags="Romantic,Nature">
             <img
-              src="Photos/Geneva.jpg"
+              src="/HomePage/Photos/Geneva.jpg"
               alt="Geneva, Switzerland"
               loading="lazy"
             />
@@ -267,7 +331,11 @@
             </div>
           </article>
           <article class="idea-card" data-tags="Beach,Romantic">
-            <img src="Photos/Bali.jpg" alt="Bali, Indonesia" loading="lazy" />
+            <img
+              src="/HomePage/Photos/Bali.jpg"
+              alt="Bali, Indonesia"
+              loading="lazy"
+            />
             <div class="idea-info">
               <h3>Bali</h3>
               <p class="country">Indonesia</p>
@@ -276,7 +344,7 @@
           </article>
           <article class="idea-card" data-tags="Nature,Halal-friendly">
             <img
-              src="Photos/imges/ooooooo.webp"
+              src="/HomePage/Photos/imges/ooooooo.webp"
               alt="Al-Ula, Saudi Arabia"
               loading="lazy"
             />
@@ -288,7 +356,7 @@
           </article>
           <article class="idea-card" data-tags="Beach,Romantic,Halal-friendly">
             <img
-              src="Photos/imges/gg.webp"
+              src="/HomePage/Photos/imges/gg.webp"
               alt="Jeddah, Saudi Arabia"
               loading="lazy"
             />
@@ -300,7 +368,7 @@
           </article>
           <article class="idea-card" data-tags="Nature,Family,Halal-friendly">
             <img
-              src="Photos/rr.jpg"
+              src="/HomePage/Photos/rr.jpg"
               alt="Riyadh, Saudi Arabia"
               loading="lazy"
             />
@@ -312,7 +380,7 @@
           </article>
           <article class="idea-card" data-tags="Beach,Family">
             <img
-              src="Photos/dd.webp"
+              src="/HomePage/Photos/dd.webp"
               alt="Dammam, Saudi Arabia"
               loading="lazy"
             />
@@ -324,7 +392,7 @@
           </article>
           <article class="idea-card" data-tags="Nature,Romantic">
             <img
-              src="Photos/tbtb.jpg"
+              src="/HomePage/Photos/tbtb.jpg"
               alt="Tabuk, Saudi Arabia"
               loading="lazy"
             />
@@ -335,7 +403,11 @@
             </div>
           </article>
           <article class="idea-card" data-tags="Beach,Romantic,Family">
-            <img src="Photos/dada.jpg" alt="Dubai, UAE" loading="lazy" />
+            <img
+              src="/HomePage/Photos/dada.jpg"
+              alt="Dubai, UAE"
+              loading="lazy"
+            />
             <div class="idea-info">
               <h3>Dubai</h3>
               <p class="country">UAE</p>
@@ -361,19 +433,19 @@
             </div>
           </a>
           <a class="popular-card" href="#">
-            <img src="Photos/طوكيو.webp" alt="Tokyo" />
+            <img src="/HomePage/Photos/طوكيو.webp" alt="Tokyo" />
             <div class="popular-info">
               <strong>Tokyo</strong><span>from $899</span>
             </div>
           </a>
           <a class="popular-card" href="#">
-            <img src="Photos/نيةيةرك.jpg" alt="New York" />
+            <img src="/HomePage/Photos/نيةيةرك.jpg" alt="New York" />
             <div class="popular-info">
               <strong>New York</strong><span>from $499</span>
             </div>
           </a>
           <a class="popular-card" href="#">
-            <img src="Photos/بالي.jpg" alt="Bali" />
+            <img src="/HomePage/Photos/بالي.jpg" alt="Bali" />
             <div class="popular-info">
               <strong>Bali</strong><span>from $599</span>
             </div>
@@ -706,7 +778,10 @@
               />
             </a>
             <a class="store" href="#" aria-label="Download on the App Store">
-              <img src="Photos/ableeeeeeeeeeeeee.png" alt="App Store" />
+              <img
+                src="/HomePage/Photos/ableeeeeeeeeeeeee.png"
+                alt="App Store"
+              />
             </a>
           </div>
         </div>
@@ -766,6 +841,38 @@
       </div>
     </footer>
 
-    <script src="HomePage.js"></script>
+    <!-- Authentication Helper Script -->
+    <script src="/auth-helper.js"></script>
+    <script src="/HomePage/HomePage.js"></script>
+
+    <!-- Update mobile navigation UI on load -->
+    <script>
+      // Additional mobile UI updates
+      document.addEventListener("DOMContentLoaded", function () {
+        const loggedIn = isLoggedIn();
+
+        // Mobile navigation updates
+        const loginBtnMobile = document.getElementById("loginBtnMobile");
+        const signupBtnMobile = document.getElementById("signupBtnMobile");
+        const userInfoMobile = document.getElementById("userInfoMobile");
+        const userNameDisplayMobile = document.getElementById(
+          "userNameDisplayMobile"
+        );
+
+        if (loggedIn) {
+          const user = getCurrentUser();
+          if (loginBtnMobile) loginBtnMobile.style.display = "none";
+          if (signupBtnMobile) signupBtnMobile.style.display = "none";
+          if (userInfoMobile) userInfoMobile.style.display = "block";
+          if (userNameDisplayMobile && user) {
+            userNameDisplayMobile.textContent = `Welcome, ${user.first_name}!`;
+          }
+        } else {
+          if (loginBtnMobile) loginBtnMobile.style.display = "block";
+          if (signupBtnMobile) signupBtnMobile.style.display = "block";
+          if (userInfoMobile) userInfoMobile.style.display = "none";
+        }
+      });
+    </script>
   </body>
 </html>

@@ -143,15 +143,15 @@ body {
   padding: 2px 6px;
 }
 .site-header .btn {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: #fff;
-  color: #007bff;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: transparent;
+  color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 .site-header .btn:hover {
-  background: #f0f8ff;
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 1);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
@@ -389,7 +389,7 @@ input[type="date"]:focus {
   overflow: hidden;
 }
 .search-btn::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -1020,4 +1020,99 @@ input[type="date"]:focus {
     gap: 10px;
     align-items: flex-start;
   }
+}
+
+/* ====================================
+   Authentication UI Styles
+   ==================================== */
+
+/* Base Authentication Button Styles */
+.site-header .btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+/* Sign Up Button */
+.site-header #signupBtn {
+  background: #fff !important;
+  color: #007bff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.site-header #signupBtn:hover {
+  background: #f0f8ff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Login Button */
+.site-header #loginBtn {
+  background: transparent !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+
+.site-header #loginBtn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* My Trips Button */
+.site-header .my-trips-btn,
+.my-trips-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.site-header .my-trips-btn:hover,
+.my-trips-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+/* Logout Button */
+.site-header .logout-btn,
+.logout-btn {
+  background: #ef4444 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.site-header .logout-btn:hover,
+.logout-btn:hover {
+  background: #dc2626 !important;
+  transform: translateY(-2px);
+}
+
+/* User Welcome Text */
+.user-welcome {
+  font-weight: 600;
+  color: #007bff;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }

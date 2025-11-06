@@ -75,16 +75,12 @@
       }
       .sidebar nav a.active,
       .sidebar nav a:focus {
-        background: linear-gradient(
-          90deg,
-          rgba(102, 126, 234, 0.1) 0%,
-          transparent 100%
-        );
-        color: #667eea;
+        background: #eef2ff;
+        color: #2563eb;
         font-weight: 600;
-        box-shadow: 0 6px 18px rgba(102, 126, 234, 0.08);
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.06);
       }
-      /* left gradient accent for active item */
+      /* left blue accent for active item */
       .sidebar nav a.active::before {
         content: "";
         position: absolute;
@@ -92,12 +88,12 @@
         top: 8px;
         bottom: 8px;
         width: 6px;
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        background: #2563eb;
         border-radius: 8px;
       }
       .sidebar nav a:hover {
         background: #f8fafc;
-        color: #667eea;
+        color: #2563eb;
         transform: translateY(-1px);
       }
       .sidebar .bottom-links {
@@ -124,26 +120,24 @@
         align-items: center;
         justify-content: center;
         gap: 0.6em;
-        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        background: #ef4444;
         color: #fff;
         font-weight: 700;
         padding: 0.55em 1.1em;
         border-radius: 12px;
-        box-shadow: 0 6px 18px rgba(239, 68, 68, 0.25);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
         text-decoration: none;
         width: calc(100% - 2.4rem);
         margin: 0.2rem auto 0.9rem;
         border: none;
-        cursor: pointer;
       }
       .sidebar .bottom-links a.logout i {
         font-size: 1.05em;
       }
       .sidebar .bottom-links a.logout:hover {
-        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        background: #dc2626;
         color: #fff;
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.35);
+        transform: translateY(-1px);
       }
       .main-content {
         flex: 1;
@@ -152,42 +146,41 @@
         flex-direction: column;
       }
       .navbar {
-        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-        padding: 1.2em 2.5em;
+        background: #fff;
+        border-bottom: 1.5px solid #e5e7eb;
+        padding: 1.1em 2.5em;
         display: flex;
         align-items: center;
         justify-content: space-between;
         position: sticky;
         top: 0;
         z-index: 10;
-        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
       }
       .navbar .welcome {
         font-size: 1.25em;
         font-weight: 600;
-        color: #fff;
+        color: #2563eb;
       }
       .navbar .profile {
         display: flex;
         align-items: center;
-        gap: 1.2em;
+        gap: 1em;
       }
       .navbar .profile .avatar {
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
-        background: #fff;
-        color: #007bff;
+        background: #e0e7ff;
+        color: #2563eb;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.1em;
         font-weight: 700;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
       }
       .navbar .profile .name {
         font-weight: 600;
-        color: #fff;
+        color: #222;
       }
       .navbar .profile .notifications {
         color: #2563eb;
@@ -612,22 +605,19 @@
         .main-content {
           padding: 0;
         }
-        .dashboard-overview {
+        .dashboard-overview,
+        .dashboard-sections {
           padding: 1em;
-        }
-        .site-footer {
-          margin-left: 0 !important;
         }
       }
       @media (max-width: 600px) {
-        .dashboard-overview {
+        .dashboard-section {
+          min-width: 100%;
+          padding: 1em 0.5em;
+        }
+        .dashboard-overview,
+        .dashboard-sections {
           padding: 0.5em;
-        }
-        .stats-grid {
-          grid-template-columns: 1fr;
-        }
-        .booking-details {
-          grid-template-columns: 1fr;
         }
       }
 
@@ -638,27 +628,27 @@
         gap: 1.5em;
         margin-bottom: 2em;
       }
-
+      
       .stat-card {
         background: #fff;
         border-radius: 12px;
         padding: 1.5em;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         border-left: 4px solid #2563eb;
         transition: transform 0.2s, box-shadow 0.2s;
       }
-
+      
       .stat-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       }
-
+      
       .stat-card .stat-icon {
         font-size: 2em;
         color: #2563eb;
         margin-bottom: 0.5em;
       }
-
+      
       .stat-card .stat-label {
         font-size: 0.9em;
         color: #6b7280;
@@ -666,25 +656,25 @@
         font-weight: 600;
         margin-bottom: 0.3em;
       }
-
+      
       .stat-card .stat-value {
         font-size: 2em;
         font-weight: 700;
         color: #111827;
       }
-
+      
       /* Tabs system */
       .tabs-container {
         margin-top: 2em;
       }
-
+      
       .tabs-header {
         display: flex;
         gap: 0.5em;
         border-bottom: 2px solid #e5e7eb;
         margin-bottom: 1.5em;
       }
-
+      
       .tab-btn {
         background: transparent;
         border: none;
@@ -696,53 +686,47 @@
         border-bottom: 3px solid transparent;
         transition: all 0.2s;
       }
-
+      
       .tab-btn.active {
         color: #2563eb;
         border-bottom-color: #2563eb;
       }
-
+      
       .tab-btn:hover {
         color: #2563eb;
         background: #f8fafc;
       }
-
+      
       .tab-content {
         display: none;
         animation: fadeIn 0.3s;
       }
-
+      
       .tab-content.active {
         display: block;
       }
-
+      
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
-
+      
       /* Booking card styles */
       .booking-card {
         background: #fff;
         border-radius: 12px;
         padding: 1.5em;
         margin-bottom: 1.5em;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         border: 1px solid #e5e7eb;
         transition: box-shadow 0.2s, transform 0.2s;
       }
-
+      
       .booking-card:hover {
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
         transform: translateY(-2px);
       }
-
+      
       .booking-header {
         display: flex;
         justify-content: space-between;
@@ -751,14 +735,14 @@
         padding-bottom: 1em;
         border-bottom: 1px solid #e5e7eb;
       }
-
+      
       .booking-hotel-name {
         font-size: 1.25em;
         font-weight: 700;
         color: #111827;
         margin: 0 0 0.3em 0;
       }
-
+      
       .booking-location {
         color: #6b7280;
         font-size: 0.95em;
@@ -766,14 +750,14 @@
         align-items: center;
         gap: 0.3em;
       }
-
+      
       .booking-status {
         display: flex;
         flex-direction: column;
         gap: 0.5em;
         align-items: flex-end;
       }
-
+      
       .status-badge,
       .payment-badge {
         padding: 0.4em 0.8em;
@@ -782,69 +766,48 @@
         font-weight: 600;
         text-transform: uppercase;
       }
-
-      .status-pending {
-        background: #fef3c7;
-        color: #92400e;
-      }
-      .status-confirmed {
-        background: #d1fae5;
-        color: #065f46;
-      }
-      .status-cancelled {
-        background: #fee2e2;
-        color: #991b1b;
-      }
-      .status-completed {
-        background: #dbeafe;
-        color: #1e40af;
-      }
-
-      .payment-pending {
-        background: #fef3c7;
-        color: #92400e;
-      }
-      .payment-paid {
-        background: #d1fae5;
-        color: #065f46;
-      }
-      .payment-refunded {
-        background: #fee2e2;
-        color: #991b1b;
-      }
-
+      
+      .status-pending { background: #fef3c7; color: #92400e; }
+      .status-confirmed { background: #d1fae5; color: #065f46; }
+      .status-cancelled { background: #fee2e2; color: #991b1b; }
+      .status-completed { background: #dbeafe; color: #1e40af; }
+      
+      .payment-pending { background: #fef3c7; color: #92400e; }
+      .payment-paid { background: #d1fae5; color: #065f46; }
+      .payment-refunded { background: #fee2e2; color: #991b1b; }
+      
       .booking-details {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         gap: 1.5em;
         margin: 1.5em 0;
       }
-
+      
       .detail-item {
         display: flex;
         gap: 0.8em;
         align-items: flex-start;
       }
-
+      
       .detail-item i {
         font-size: 1.3em;
         color: #2563eb;
         margin-top: 0.2em;
       }
-
+      
       .detail-item small {
         display: block;
         color: #6b7280;
         font-size: 0.85em;
         margin-bottom: 0.2em;
       }
-
+      
       .detail-item strong {
         display: block;
         color: #111827;
         font-size: 1.05em;
       }
-
+      
       .booking-footer {
         display: flex;
         justify-content: space-between;
@@ -852,26 +815,26 @@
         padding-top: 1em;
         border-top: 1px solid #e5e7eb;
       }
-
+      
       .booking-price small {
         display: block;
         color: #6b7280;
         font-size: 0.85em;
         margin-bottom: 0.2em;
       }
-
+      
       .booking-price strong {
         display: block;
         color: #2563eb;
         font-size: 1.5em;
         font-weight: 700;
       }
-
+      
       .booking-actions {
         display: flex;
         gap: 0.8em;
       }
-
+      
       .btn-view,
       .btn-cancel {
         padding: 0.6em 1.2em;
@@ -885,23 +848,23 @@
         transition: all 0.2s;
         border: none;
       }
-
+      
       .btn-view {
         background: #2563eb;
         color: #fff;
       }
-
+      
       .btn-view:hover {
         background: #1d4ed8;
         transform: translateY(-1px);
       }
-
+      
       .btn-cancel {
         background: #fff;
         color: #ef4444;
         border: 2px solid #ef4444;
       }
-
+      
       .btn-cancel:hover {
         background: #ef4444;
         color: #fff;
@@ -911,18 +874,18 @@
       .profile-form {
         max-width: 600px;
       }
-
+      
       .form-group {
         margin-bottom: 1.5em;
       }
-
+      
       .form-group label {
         display: block;
         font-weight: 600;
         color: #374151;
         margin-bottom: 0.5em;
       }
-
+      
       .form-group input {
         width: 100%;
         padding: 0.8em 1em;
@@ -931,13 +894,13 @@
         font-size: 1em;
         transition: border-color 0.2s;
       }
-
+      
       .form-group input:focus {
         outline: none;
         border-color: #2563eb;
         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
       }
-
+      
       .btn-save {
         background: #2563eb;
         color: #fff;
@@ -949,245 +912,11 @@
         cursor: pointer;
         transition: all 0.2s;
       }
-
+      
       .btn-save:hover {
         background: #1d4ed8;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-      }
-
-      /* Service View Styles */
-      .service-view {
-        display: none;
-      }
-
-      .service-view.active {
-        display: block;
-      }
-
-      .view-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2em;
-      }
-
-      .view-header h2 {
-        font-size: 1.8em;
-        color: #111827;
-        margin: 0;
-      }
-
-      .btn-book {
-        background: #2563eb;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        padding: 0.8em 1.8em;
-        font-size: 1em;
-        font-weight: 600;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5em;
-        transition: all 0.2s;
-      }
-
-      .btn-book:hover {
-        background: #1d4ed8;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-      }
-
-      /* Service-specific booking cards */
-      .booking-card-hotel {
-        background: #f5f5dc;
-        border-left: 4px solid #d4af37;
-      }
-
-      .booking-card-flight {
-        background: #e3f2fd;
-        border-left: 4px solid #3b82f6;
-      }
-
-      .booking-card-bus {
-        background: #e8f5e9;
-        border-left: 4px solid #10b981;
-      }
-
-      .service-badge {
-        display: inline-block;
-        padding: 0.3em 0.8em;
-        border-radius: 12px;
-        font-size: 0.85em;
-        font-weight: 600;
-        margin-bottom: 0.5em;
-      }
-
-      .service-badge-hotel {
-        background: #d4af37;
-        color: #fff;
-      }
-
-      .service-badge-flight {
-        background: #3b82f6;
-        color: #fff;
-      }
-
-      .service-badge-bus {
-        background: #10b981;
-        color: #fff;
-      }
-
-      .empty-state {
-        text-align: center;
-        padding: 3em 2em;
-        background: #fff;
-        border-radius: 12px;
-        border: 2px dashed #e5e7eb;
-      }
-
-      .empty-state i {
-        font-size: 3em;
-        color: #d1d5db;
-        margin-bottom: 0.5em;
-      }
-
-      .empty-state h3 {
-        color: #6b7280;
-        font-size: 1.2em;
-        margin: 0.5em 0;
-      }
-
-      .empty-state p {
-        color: #9ca3af;
-        margin-bottom: 1.5em;
-      }
-
-      /* Modal Styles */
-      .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-        animation: fadeIn 0.2s ease;
-      }
-
-      .modal-overlay.active {
-        display: flex;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateY(-20px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-
-      .modal-content {
-        background: #fff;
-        border-radius: 16px;
-        padding: 2em;
-        max-width: 450px;
-        width: 90%;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        animation: slideIn 0.3s ease;
-      }
-
-      .modal-header {
-        display: flex;
-        align-items: center;
-        gap: 1em;
-        margin-bottom: 1.5em;
-      }
-
-      .modal-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5em;
-      }
-
-      .modal-icon.warning {
-        background: #fef3c7;
-        color: #f59e0b;
-      }
-
-      .modal-icon.info {
-        background: #dbeafe;
-        color: #3b82f6;
-      }
-
-      .modal-title {
-        font-size: 1.3em;
-        font-weight: 700;
-        color: #111827;
-        margin: 0;
-      }
-
-      .modal-body {
-        color: #6b7280;
-        font-size: 1em;
-        line-height: 1.6;
-        margin-bottom: 2em;
-      }
-
-      .modal-actions {
-        display: flex;
-        gap: 1em;
-        justify-content: flex-end;
-      }
-
-      .modal-btn {
-        padding: 0.7em 1.5em;
-        border-radius: 8px;
-        font-size: 1em;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-        transition: all 0.2s;
-      }
-
-      .modal-btn-primary {
-        background: #2563eb;
-        color: #fff;
-      }
-
-      .modal-btn-primary:hover {
-        background: #1d4ed8;
-        transform: translateY(-1px);
-      }
-
-      .modal-btn-secondary {
-        background: #f3f4f6;
-        color: #6b7280;
-      }
-
-      .modal-btn-secondary:hover {
-        background: #e5e7eb;
-        color: #374151;
       }
     </style>
   </head>
@@ -1195,50 +924,38 @@
     <div class="dashboard-layout">
       <aside class="sidebar">
         <div class="logo">
-          <a href="../HomePage/HomePage.html" style="text-decoration: none">
-            <div class="logo-box">
+          <a href="../HomePage/HomePage.html"
+            ><div class="logo-box">
               <img
-                src="/HomePage/Photos/logo.jpg"
+                src="/HomePage/Photos/logo-bg removed.png"
                 alt="GoTrip Logo"
-                style="cursor: pointer; object-fit: cover; border-radius: 12px"
-              />
-            </div>
-          </a>
+                style="cursor: pointer; object-fit: contain"
+              /></div
+          ></a>
         </div>
         <nav>
           <a href="../HomePage/HomePage.html" class="nav-item"
             ><i class="bi bi-house-door"></i><span class="label">Home</span></a
           >
-          <a
-            href="#"
-            class="nav-item"
-            onclick="switchView('flights'); return false;"
+          <a href="../Services/FlightsPage.html" class="nav-item"
             ><i class="bi bi-airplane"></i><span class="label">Flights</span></a
           >
-          <a
-            href="#"
-            class="nav-item"
-            onclick="switchView('buses'); return false;"
+          <a href="../HomePage/HomePageBuses.html" class="nav-item"
             ><i class="bi bi-bus-front"></i><span class="label">Buses</span></a
           >
-          <a
-            href="#"
-            class="nav-item"
-            onclick="switchView('hotels'); return false;"
+          <a href="../HomePage/HomePageHotels.html" class="nav-item"
             ><i class="bi bi-building"></i><span class="label">Hotels</span></a
           >
-          <a
-            href="#"
-            class="nav-item active"
-            onclick="switchView('allBookings'); return false;"
+          <a href="dashboard.html" class="nav-item active"
             ><i class="bi bi-calendar-check"></i
             ><span class="label">My Bookings</span></a
           >
-          <a
-            href="#"
-            class="nav-item"
-            onclick="switchView('profile'); return false;"
+          <a href="profile.html" class="nav-item"
             ><i class="bi bi-person"></i><span class="label">Profile</span></a
+          >
+          <a href="UserDashboard.html" class="nav-item"
+            ><i class="bi bi-speedometer2"></i
+            ><span class="label">Dashboard</span></a
           >
           <a href="#support" class="nav-item"
             ><i class="bi bi-question-circle"></i
@@ -1286,411 +1003,432 @@
           </div>
         </div>
         <div class="dashboard-overview">
-          <!-- Hotels View -->
-          <div id="hotelsView" class="service-view">
-            <div class="view-header">
-              <h2><i class="bi bi-building"></i> My Hotel Bookings</h2>
-              <button
-                class="btn-book"
-                onclick="window.location.href='../Services/Hotels/HotelsPage.html'"
-              >
-                <i class="bi bi-plus-circle"></i> Book a Hotel
+          <h2 style="font-size: 1.8em; color: #111827; margin-bottom: 1em;">My Hotel Bookings</h2>
+          
+          <!-- Statistics Cards -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
+              <div class="stat-label">Total Bookings</div>
+              <div class="stat-value" id="totalBookings">0</div>
+            </div>
+            
+            <div class="stat-card" style="border-left-color: #10b981;">
+              <div class="stat-icon" style="color: #10b981;"><i class="bi bi-hourglass-split"></i></div>
+              <div class="stat-label">Active Bookings</div>
+              <div class="stat-value" id="activeBookings">0</div>
+            </div>
+            
+            <div class="stat-card" style="border-left-color: #8b5cf6;">
+              <div class="stat-icon" style="color: #8b5cf6;"><i class="bi bi-check-circle"></i></div>
+              <div class="stat-label">Completed</div>
+              <div class="stat-value" id="completedBookings">0</div>
+            </div>
+            
+            <div class="stat-card" style="border-left-color: #f59e0b;">
+              <div class="stat-icon" style="color: #f59e0b;"><i class="bi bi-cash-coin"></i></div>
+              <div class="stat-label">Total Spent</div>
+              <div class="stat-value" id="totalSpent">$0.00</div>
+            </div>
+          </div>
+          
+          <!-- Tabs for Active and History -->
+          <div class="tabs-container">
+            <div class="tabs-header">
+              <button class="tab-btn active" onclick="switchTab('active')">
+                <i class="bi bi-calendar-event"></i> Active Bookings
+              </button>
+              <button class="tab-btn" onclick="switchTab('history')">
+                <i class="bi bi-clock-history"></i> Booking History
+              </button>
+              <button class="tab-btn" onclick="switchTab('profile')">
+                <i class="bi bi-person-circle"></i> Edit Profile
               </button>
             </div>
-
-            <!-- Statistics Cards -->
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-icon">
-                  <i class="bi bi-calendar-check"></i>
-                </div>
-                <div class="stat-label">Total Bookings</div>
-                <div class="stat-value" id="totalBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #10b981">
-                <div class="stat-icon" style="color: #10b981">
-                  <i class="bi bi-hourglass-split"></i>
-                </div>
-                <div class="stat-label">Active Bookings</div>
-                <div class="stat-value" id="activeBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #8b5cf6">
-                <div class="stat-icon" style="color: #8b5cf6">
-                  <i class="bi bi-check-circle"></i>
-                </div>
-                <div class="stat-label">Completed</div>
-                <div class="stat-value" id="completedBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #f59e0b">
-                <div class="stat-icon" style="color: #f59e0b">
-                  <i class="bi bi-cash-coin"></i>
-                </div>
-                <div class="stat-label">Total Spent</div>
-                <div class="stat-value" id="totalSpent">$0.00</div>
-              </div>
+            
+            <!-- Active Bookings Tab -->
+            <div id="activeTab" class="tab-content active">
+              <div id="activeBookingsList"></div>
             </div>
-
-            <!-- Tabs for Active and History -->
-            <div class="tabs-container">
-              <div class="tabs-header">
-                <button class="tab-btn active" onclick="switchTab('active')">
-                  <i class="bi bi-calendar-event"></i> Active Bookings
-                </button>
-                <button class="tab-btn" onclick="switchTab('history')">
-                  <i class="bi bi-clock-history"></i> Booking History
-                </button>
-              </div>
-
-              <!-- Active Bookings Tab -->
-              <div id="activeTab" class="tab-content active">
-                <div id="activeBookingsList"></div>
-              </div>
-
-              <!-- History Tab -->
-              <div id="historyTab" class="tab-content">
-                <div id="historyBookingsList"></div>
-              </div>
+            
+            <!-- History Tab -->
+            <div id="historyTab" class="tab-content">
+              <div id="historyBookingsList"></div>
             </div>
-          </div>
-
-          <!-- Flights View -->
-          <div id="flightsView" class="service-view">
-            <div class="view-header">
-              <h2><i class="bi bi-airplane"></i> My Flight Bookings</h2>
-              <button
-                class="btn-book"
-                onclick="window.location.href='../Services/Flights/FlightsPage.html'"
-              >
-                <i class="bi bi-plus-circle"></i> Book a Flight
-              </button>
-            </div>
-
-            <!-- Statistics Cards -->
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-icon">
-                  <i class="bi bi-calendar-check"></i>
-                </div>
-                <div class="stat-label">Total Bookings</div>
-                <div class="stat-value" id="totalFlightBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #10b981">
-                <div class="stat-icon" style="color: #10b981">
-                  <i class="bi bi-hourglass-split"></i>
-                </div>
-                <div class="stat-label">Active Bookings</div>
-                <div class="stat-value" id="activeFlightBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #8b5cf6">
-                <div class="stat-icon" style="color: #8b5cf6">
-                  <i class="bi bi-check-circle"></i>
-                </div>
-                <div class="stat-label">Completed</div>
-                <div class="stat-value" id="completedFlightBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #f59e0b">
-                <div class="stat-icon" style="color: #f59e0b">
-                  <i class="bi bi-cash-coin"></i>
-                </div>
-                <div class="stat-label">Total Spent</div>
-                <div class="stat-value" id="totalFlightSpent">$0.00</div>
-              </div>
-            </div>
-
-            <!-- Tabs for Active and History -->
-            <div class="tabs-container">
-              <div class="tabs-header">
-                <button
-                  class="tab-btn active"
-                  onclick="switchFlightTab('active')"
-                >
-                  <i class="bi bi-calendar-event"></i> Active Bookings
-                </button>
-                <button class="tab-btn" onclick="switchFlightTab('history')">
-                  <i class="bi bi-clock-history"></i> Booking History
-                </button>
-              </div>
-
-              <!-- Active Bookings Tab -->
-              <div id="activeFlightTab" class="tab-content active">
-                <div id="activeFlightsList"></div>
-              </div>
-
-              <!-- History Tab -->
-              <div id="historyFlightTab" class="tab-content">
-                <div id="historyFlightsList"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Buses View -->
-          <div id="busesView" class="service-view">
-            <div class="view-header">
-              <h2><i class="bi bi-bus-front"></i> My Bus Bookings</h2>
-              <button
-                class="btn-book"
-                onclick="window.location.href='../Services/Buses/BusesSearchResults.html'"
-              >
-                <i class="bi bi-plus-circle"></i> Book a Bus
-              </button>
-            </div>
-
-            <!-- Statistics Cards -->
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-icon">
-                  <i class="bi bi-calendar-check"></i>
-                </div>
-                <div class="stat-label">Total Bookings</div>
-                <div class="stat-value" id="totalBusBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #10b981">
-                <div class="stat-icon" style="color: #10b981">
-                  <i class="bi bi-hourglass-split"></i>
-                </div>
-                <div class="stat-label">Active Bookings</div>
-                <div class="stat-value" id="activeBusBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #8b5cf6">
-                <div class="stat-icon" style="color: #8b5cf6">
-                  <i class="bi bi-check-circle"></i>
-                </div>
-                <div class="stat-label">Completed</div>
-                <div class="stat-value" id="completedBusBookings">0</div>
-              </div>
-
-              <div class="stat-card" style="border-left-color: #f59e0b">
-                <div class="stat-icon" style="color: #f59e0b">
-                  <i class="bi bi-cash-coin"></i>
-                </div>
-                <div class="stat-label">Total Spent</div>
-                <div class="stat-value" id="totalBusSpent">$0.00</div>
-              </div>
-            </div>
-
-            <!-- Tabs for Active and History -->
-            <div class="tabs-container">
-              <div class="tabs-header">
-                <button class="tab-btn active" onclick="switchBusTab('active')">
-                  <i class="bi bi-calendar-event"></i> Active Bookings
-                </button>
-                <button class="tab-btn" onclick="switchBusTab('history')">
-                  <i class="bi bi-clock-history"></i> Booking History
-                </button>
-              </div>
-
-              <!-- Active Bookings Tab -->
-              <div id="activeBusTab" class="tab-content active">
-                <div id="activeBusesList"></div>
-              </div>
-
-              <!-- History Tab -->
-              <div id="historyBusTab" class="tab-content">
-                <div id="historyBusesList"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- All Bookings View -->
-          <div id="allBookingsView" class="service-view active">
-            <div class="view-header">
-              <h2><i class="bi bi-calendar-check"></i> All My Bookings</h2>
-            </div>
-            <div id="allBookingsList"></div>
-          </div>
-
-          <!-- Profile View -->
-          <div id="profileView" class="service-view">
-            <div class="view-header">
-              <h2><i class="bi bi-person-circle"></i> My Profile</h2>
-            </div>
-
-            <div
-              style="
-                background: #fff;
-                border-radius: 12px;
-                padding: 2em;
-                max-width: 700px;
-                margin: 0 auto;
-              "
-            >
-              <form
-                class="profile-form"
-                id="profileForm"
-                onsubmit="updateProfile(event)"
-              >
+            
+            <!-- Profile Edit Tab -->
+            <div id="profileTab" class="tab-content">
+              <form class="profile-form" onsubmit="updateProfile(event)">
                 <div class="form-group">
                   <label for="profileFirstName">First Name</label>
                   <input type="text" id="profileFirstName" required />
                 </div>
-
+                
                 <div class="form-group">
                   <label for="profileLastName">Last Name</label>
                   <input type="text" id="profileLastName" required />
                 </div>
-
+                
                 <div class="form-group">
                   <label for="profileEmail">Email</label>
                   <input type="email" id="profileEmail" required />
                 </div>
-
+                
                 <div class="form-group">
                   <label for="profilePhone">Phone Number</label>
                   <input type="tel" id="profilePhone" />
                 </div>
-
+                
                 <div class="form-group">
                   <label for="profileBirthDate">Birth Date</label>
                   <input type="date" id="profileBirthDate" />
                 </div>
-
+                
                 <button type="submit" class="btn-save">
                   <i class="bi bi-save"></i> Save Changes
                 </button>
               </form>
-
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 1em; flex-wrap: wrap;">
+            <button style="background: #2563eb; color: #fff; border: none; border-radius: 24px; padding: 0.9em 2.2em; font-size: 1.1em; font-weight: 600; cursor: pointer;" onclick="window.location.href='../HomePage/HomePageHotels.html'">
+              <i class="bi bi-building"></i> Book a Hotel
+            </button>
+            <button style="background: #fff; color: #2563eb; border: 2px solid #2563eb; border-radius: 24px; padding: 0.9em 2.2em; font-size: 1.1em; font-weight: 600; cursor: pointer;" onclick="window.location.href='../Services/FlightsPage.html'">
+              <i class="bi bi-airplane"></i> Book a Flight
+            </button>
+            <button style="background: #fff; color: #2563eb; border: 2px solid #2563eb; border-radius: 24px; padding: 0.9em 2.2em; font-size: 1.1em; font-weight: 600; cursor: pointer;" onclick="window.location.href='../HomePage/HomePageBuses.html'">
+              <i class="bi bi-bus-front"></i> Book a Bus
+            </button>
+          </div>
+        </div>
+        
+        <!-- End of dashboard overview -->
+        
+        <div class="footer">
+          &copy; 2025 GoTrip. <a href="#about">About Us</a> |
+          <a href="#terms">Terms & Conditions</a> |
+          <a href="#privacy">Privacy Policy</a> | <a href="#">Facebook</a> |
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Load our dashboard JavaScript -->
+    <script src="dashboard.js"></script>
+    <script src="../auth-helper.js"></script>
+  </body>
+</html>
+                <option value="all">All Types</option>
+                <option value="flight">Flights</option>
+                <option value="bus">Buses</option>
+                <option value="hotel">Hotels</option>
+              </select>
+              <select id="filterStatus">
+                <option value="all">All Statuses</option>
+                <option value="completed">Completed</option>
+                <option value="pending">Pending</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button id="clearFilters" class="clear-filters">Clear</button>
+            </div>
+            <div class="results" id="historyResults">
               <div
-                style="
-                  border-top: 2px solid #e5e7eb;
-                  margin-top: 2em;
-                  padding-top: 2em;
-                "
+                class="result-card"
+                data-type="flight"
+                data-status="completed"
               >
-                <h3 style="margin-bottom: 1em; color: #374151">
-                  Password Management
-                </h3>
-                <button
-                  type="button"
-                  onclick="handlePasswordChange()"
-                  class="btn-save"
-                  style="background: #ef4444"
-                >
-                  <i class="bi bi-key"></i> Change Password
-                </button>
+                <span class="icon"><i class="bi bi-airplane"></i></span>
+                <div class="details">
+                  <div style="font-size: 1.13em; font-weight: 700; color: #222">
+                    Flight:
+                    <span style="font-weight: 700">Jeddah → Istanbul</span>
+                  </div>
+                  <div style="color: #2563eb; font-size: 1em; font-weight: 600">
+                    2025-09-10
+                  </div>
+                  <span class="history-status completed">Completed</span>
+                </div>
+                <div class="actions">
+                  <button onclick="rebook('h1')">Re-book</button>
+                  <button
+                    onclick="preview('h1')"
+                    style="
+                      background: #fff;
+                      color: #2563eb;
+                      border: 1.5px solid #2563eb;
+                      margin-left: 0.5em;
+                    "
+                  >
+                    Preview
+                  </button>
+                </div>
+              </div>
+              <div class="result-card" data-type="bus" data-status="completed">
+                <span class="icon"><i class="bi bi-bus-front"></i></span>
+                <div class="details">
+                  <div style="font-size: 1.13em; font-weight: 700; color: #222">
+                    Bus: <span style="font-weight: 700">Riyadh → Dammam</span>
+                  </div>
+                  <div style="color: #2563eb; font-size: 1em; font-weight: 600">
+                    2025-08-15
+                  </div>
+                  <span class="history-status completed">Completed</span>
+                </div>
+                <div class="actions">
+                  <button onclick="rebook('h2')">Re-book</button>
+                  <button
+                    onclick="preview('h2')"
+                    style="
+                      background: #fff;
+                      color: #2563eb;
+                      border: 1.5px solid #2563eb;
+                      margin-left: 0.5em;
+                    "
+                  >
+                    Preview
+                  </button>
+                </div>
+              </div>
+              <div
+                class="result-card"
+                data-type="hotel"
+                data-status="completed"
+              >
+                <span class="icon"><i class="bi bi-building"></i></span>
+                <div class="details">
+                  <div style="font-size: 1.13em; font-weight: 700; color: #222">
+                    Hotel: <span style="font-weight: 700">Hilton, Mecca</span>
+                  </div>
+                  <div style="color: #2563eb; font-size: 1em; font-weight: 600">
+                    2025-08-20
+                  </div>
+                  <span class="history-status completed">Completed</span>
+                </div>
+                <div class="actions">
+                  <button onclick="rebook('h3')">Re-book</button>
+                  <button
+                    onclick="preview('h3')"
+                    style="
+                      background: #fff;
+                      color: #2563eb;
+                      border: 1.5px solid #2563eb;
+                      margin-left: 0.5em;
+                    "
+                  >
+                    Preview
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Password Change Modal -->
-    <div id="passwordModal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-icon warning">
-            <i class="bi bi-exclamation-triangle"></i>
+          <div class="dashboard-section" id="profile">
+            <h4>Profile & Account Settings</h4>
+            <div class="results">
+              <div class="profile-photo-upload">
+                <img
+                  id="profilePreview"
+                  src=""
+                  alt="Profile"
+                  onerror="this.src='https://via.placeholder.com/64?text=U'"
+                />
+                <div>
+                  <div>Name: <span id="profileName">User</span></div>
+                  <div>
+                    Email: <span id="profileEmail">user@email.com</span>
+                  </div>
+                  <div>Phone: <span id="profilePhone">+966-555-5555</span></div>
+                  <div>
+                    Preferences:
+                    <span id="profilePrefs">Window seat, 4-star hotels</span>
+                  </div>
+                  <div>
+                    Payment Methods:
+                    <span id="profilePayment">Visa **** 1234</span>
+                  </div>
+                  <div style="margin-top: 0.4rem">
+                    <label
+                      style="
+                        cursor: pointer;
+                        background: #2563eb;
+                        color: #fff;
+                        padding: 0.45em 0.8em;
+                        border-radius: 10px;
+                      "
+                      >Upload Photo<input
+                        id="profilePhotoInput"
+                        type="file"
+                        accept="image/*"
+                        style="display: none"
+                    /></label>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top: 0.6rem">
+                <button>Edit Profile</button>
+              </div>
+            </div>
           </div>
-          <h3 class="modal-title">Change Password</h3>
-        </div>
-        <div class="modal-body">
-          You will be redirected to another page to edit the password. Are you
-          sure you want to continue?
-        </div>
-        <div class="modal-actions">
-          <button
-            class="modal-btn modal-btn-secondary"
-            onclick="closePasswordModal()"
-          >
-            Cancel
-          </button>
-          <button
-            class="modal-btn modal-btn-primary"
-            onclick="confirmPasswordChange()"
-          >
-            Yes, Continue
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Feature Not Available Modal -->
-    <div id="notAvailableModal" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-icon info">
-            <i class="bi bi-info-circle"></i>
+          <div class="dashboard-section" id="support">
+            <h4>Support & Help</h4>
+            <div class="results">
+              <div><a href="#">FAQs</a></div>
+              <div><a href="#">Live Chat</a></div>
+              <div><a href="#">Contact Us</a></div>
+            </div>
           </div>
-          <h3 class="modal-title">Feature Coming Soon</h3>
         </div>
-        <div class="modal-body">
-          Sorry, this feature is currently not available. We're working hard to
-          bring it to you soon!
-        </div>
-        <div class="modal-actions">
-          <button
-            class="modal-btn modal-btn-primary"
-            onclick="closeNotAvailableModal()"
-          >
-            Got it
-          </button>
+        <div class="footer">
+          &copy; 2025 GoTrip. <a href="#about">About Us</a> |
+          <a href="#terms">Terms & Conditions</a> |
+          <a href="#privacy">Privacy Policy</a> | <a href="#">Facebook</a> |
+          <a href="#">Instagram</a>
         </div>
       </div>
     </div>
+    <script>
+      // Example: Fill user info from localStorage if available
+      const user = JSON.parse(localStorage.getItem("gotripUser"));
+      if (user) {
+        document.getElementById("userName").textContent =
+          user.firstName || "User";
+        document.getElementById("userAvatar").textContent = (
+          user.firstName?.[0] || "U"
+        ).toUpperCase();
+        document.getElementById("userEmail").textContent = user.email;
+        document.getElementById("profileName").textContent =
+          user.firstName || "User";
+        document.getElementById("profileEmail").textContent = user.email;
+      }
 
-    <!-- ====== Footer ====== -->
-    <footer class="site-footer" style="margin-left: 0; width: 100%">
-      <div class="container footer-grid">
-        <div class="f-col">
-          <div class="f-brand">GoTrip</div>
-          <p class="muted">
-            Your trusted travel partner for flights, hotels, and buses
-            worldwide.
-          </p>
-        </div>
+      // Logout helper: clears stored user and redirects to sign-in page
+      function logout() {
+        try {
+          localStorage.removeItem("gotripUser");
+          // optionally clear other session-related keys if used
+        } catch (e) {
+          console.warn("Error clearing localStorage during logout", e);
+        }
+        // Redirect to signin (adjust path if your sign-in page is elsewhere)
+        window.location.href = "../Login/signin.html";
+      }
 
-        <div class="f-col">
-          <h4>About GoTrip</h4>
-          <ul class="f-links">
-            <li><a href="#">Our Story</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Press</a></li>
-            <li><a href="#">Partnerships</a></li>
-          </ul>
-        </div>
+      // --- Booking history filters and helpers ---
+      const filterType = document.getElementById("filterType");
+      const filterStatus = document.getElementById("filterStatus");
+      const clearFilters = document.getElementById("clearFilters");
+      const historyResults = document.getElementById("historyResults");
 
-        <div class="f-col">
-          <h4>Support</h4>
-          <ul class="f-links">
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">FAQs</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-          </ul>
-        </div>
+      function applyHistoryFilters() {
+        const t = filterType.value;
+        const s = filterStatus.value;
+        const cards = historyResults.querySelectorAll(".result-card");
+        cards.forEach((c) => {
+          const ct = c.dataset.type || "all";
+          const cs = c.dataset.status || "all";
+          const typeMatch = t === "all" || ct === t;
+          const statusMatch = s === "all" || cs === s;
+          c.style.display = typeMatch && statusMatch ? "" : "none";
+        });
+      }
+      filterType?.addEventListener("change", applyHistoryFilters);
+      filterStatus?.addEventListener("change", applyHistoryFilters);
+      clearFilters?.addEventListener("click", () => {
+        filterType.value = "all";
+        filterStatus.value = "all";
+        applyHistoryFilters();
+      });
 
-        <div class="f-col">
-          <h4>Connect</h4>
-          <ul class="f-links">
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Newsletter</a></li>
-            <li><a href="#">Travel Guides</a></li>
-            <li><a href="#">Help Center</a></li>
-          </ul>
-        </div>
-      </div>
+      function rebook(id) {
+        alert("Re-book demo: " + id);
+      }
+      function preview(id) {
+        alert("Preview demo: " + id);
+      }
 
-      <div class="container footer-bottom">
-        <div class="copy">© 2025 GoTrip. All rights reserved.</div>
-        <div class="social">
-          <a href="#" aria-label="Facebook">f</a>
-          <a href="#" aria-label="Instagram">◎</a>
-          <a href="#" aria-label="X">𝕏</a>
-          <a href="#" aria-label="LinkedIn">in</a>
-        </div>
-      </div>
-    </footer>
+      // --- Reminders ---
+      function setReminder(tripId, remindOn) {
+        // store a simple reminder flag (in a real app you'd schedule a push/email)
+        const reminders = JSON.parse(
+          localStorage.getItem("gotripReminders") || "{}"
+        );
+        reminders[tripId] = { remindOn };
+        localStorage.setItem("gotripReminders", JSON.stringify(reminders));
+        alert("Reminder set for " + remindOn);
+        // update button text visually
+        const btn = document.querySelector(`[onclick*="${tripId}"]`);
+        if (btn) btn.textContent = "Reminder set";
+      }
 
-    <!-- Load our dashboard JavaScript -->
-    <script src="dashboard.js"></script>
+      // --- Search auto-suggestions (simple demo) ---
+      const searchInput = document.querySelector(".search-bar");
+      const suggestions = [
+        "Jeddah",
+        "Istanbul",
+        "Riyadh",
+        "Dammam",
+        "Mecca",
+        "Hilton",
+        "Riyadh → Dammam",
+        "Jeddah → Istanbul",
+      ];
+      // create suggestion container
+      const sugWrap = document.createElement("div");
+      sugWrap.className = "search-suggestions";
+      const sugList = document.createElement("ul");
+      sugWrap.appendChild(sugList);
+      searchInput.parentNode.insertBefore(sugWrap, searchInput.nextSibling);
+
+      function showSuggestions(q) {
+        sugList.innerHTML = "";
+        if (!q) {
+          sugList.style.display = "none";
+          return;
+        }
+        const matches = suggestions
+          .filter((s) => s.toLowerCase().includes(q.toLowerCase()))
+          .slice(0, 6);
+        if (matches.length === 0) {
+          sugList.style.display = "none";
+          return;
+        }
+        matches.forEach((m) => {
+          const li = document.createElement("li");
+          li.textContent = m;
+          li.addEventListener("click", () => {
+            searchInput.value = m;
+            sugList.style.display = "none";
+          });
+          sugList.appendChild(li);
+        });
+        sugList.style.display = "block";
+      }
+      searchInput?.addEventListener("input", (e) =>
+        showSuggestions(e.target.value)
+      );
+      document.addEventListener("click", (e) => {
+        if (!sugWrap.contains(e.target) && e.target !== searchInput)
+          sugList.style.display = "none";
+      });
+
+      // --- Profile photo upload preview ---
+      const photoInput = document.getElementById("profilePhotoInput");
+      const previewImg = document.getElementById("profilePreview");
+      photoInput?.addEventListener("change", (e) => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          previewImg.src = ev.target.result;
+          localStorage.setItem("gotripProfilePhoto", ev.target.result);
+        };
+        reader.readAsDataURL(f);
+      });
+      // load existing photo if saved
+      const savedPhoto = localStorage.getItem("gotripProfilePhoto");
+      if (savedPhoto) previewImg.src = savedPhoto;
+    </script>
     <script src="../auth-helper.js"></script>
   </body>
 </html>

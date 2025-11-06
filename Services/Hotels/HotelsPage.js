@@ -184,8 +184,100 @@ document.querySelectorAll(".site-nav .nav-left a.nav-link").forEach((a) => {
   });
 });
 
-// Fake hotel data for testing (Saudi Arabia hotels)
-const hotelData = [
+// ====================================
+// FETCH HOTELS FROM BACKEND API
+// ====================================
+
+// Store all hotels from database
+let hotelData = [];
+
+// API Base URL
+const API_BASE_URL = "http://localhost:3000/api";
+
+// Function to fetch hotels from backend
+async function fetchHotelsFromAPI() {
+  try {
+    console.log("Fetching hotels from API...");
+
+    // Show loading message
+    const hotelGrid = document.getElementById("hotelsGrid");
+    if (hotelGrid) {
+      hotelGrid.innerHTML =
+        '<div style="text-align: center; padding: 40px; color: #666;">Loading hotels...</div>';
+    }
+
+    // Fetch hotels from your backend
+    const response = await fetch(`${API_BASE_URL}/hotels`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log("API Response:", result);
+
+    if (result.success && result.data) {
+      // Transform database hotels to match your frontend format
+      hotelData = result.data.map((hotel) => ({
+        id: hotel.hotel_id,
+        name: hotel.hotel_name,
+        stars: 5, // You can add stars to database or calculate from rating
+        location: `${hotel.location}, ${hotel.city} • ${hotel.country}`,
+        image:
+          hotel.image_url ||
+          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop",
+        price: parseFloat(hotel.price_per_night),
+        rating: hotel.rating || 8.5,
+        ratingText:
+          hotel.rating >= 9
+            ? "Excellent"
+            : hotel.rating >= 8
+            ? "Very Good"
+            : "Good",
+        reviews: Math.floor(Math.random() * 1000) + 500, // Random for now
+        amenities: hotel.amenities
+          ? hotel.amenities.split(",").map((a) => a.trim())
+          : ["WiFi", "Pool"],
+        freeCancel: true,
+        payAtProperty: true,
+        available: hotel.available_rooms > 0,
+        instantBooking: true,
+        totalRooms: hotel.total_rooms,
+        availableRooms: hotel.available_rooms,
+        description: hotel.description,
+        city: hotel.city,
+      }));
+
+      console.log("Hotels loaded:", hotelData.length);
+      return hotelData;
+    } else {
+      throw new Error("Invalid API response format");
+    }
+  } catch (error) {
+    console.error("Error fetching hotels:", error);
+
+    // Show error message
+    const hotelGrid = document.getElementById("hotelsGrid");
+    if (hotelGrid) {
+      hotelGrid.innerHTML = `
+        <div style="text-align: center; padding: 40px; color: #d93025;">
+          <h3>⚠️ Error Loading Hotels</h3>
+          <p>Could not connect to the server. Please make sure the backend is running.</p>
+          <p style="font-size: 14px; color: #666;">Error: ${error.message}</p>
+          <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Try Again
+          </button>
+        </div>
+      `;
+    }
+
+    return [];
+  }
+}
+
+// OLD FAKE DATA (Commented out - keeping for reference)
+/*
+const hotelDataOLD = [
   {
     id: 1,
     name: "Fairmont Riyadh",
@@ -442,6 +534,17 @@ const hotelData = [
     instantBooking: true,
   },
 ];
+*/
+// END OF OLD FAKE DATA
+
+// ====================================
+// INITIALIZE: Fetch hotels when page loads
+// ====================================
+fetchHotelsFromAPI().then(() => {
+  // After hotels are loaded, display them
+  let filteredHotels = filterHotelsByCity(destination);
+  displayHotels(filteredHotels);
+});
 
 // Function to create hotel card HTML
 function createHotelCard(hotel) {
@@ -482,6 +585,13 @@ function createHotelCard(hotel) {
             }
           </div>
         </div>
+        <div class="hotel-card-actions">
+          <button class="book-now-btn" data-hotel-id="${
+            hotel.id
+          }" style="width: 100%; padding: 12px; background: #1ea1ff; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 12px; transition: all 0.3s ease;">
+            Book Now
+          </button>
+        </div>
       </div>
     </div>
   `;
@@ -510,17 +620,18 @@ function displayHotels(hotels) {
 
 // Function to filter hotels by city
 function filterHotelsByCity(cityName) {
-  if (!cityName) return hotelData;
+  if (!cityName || !hotelData.length) return hotelData;
 
   const searchCity = cityName.toLowerCase().trim();
-  return hotelData.filter((hotel) =>
-    hotel.location.toLowerCase().includes(searchCity)
+  return hotelData.filter(
+    (hotel) =>
+      hotel.location.toLowerCase().includes(searchCity) ||
+      hotel.city.toLowerCase().includes(searchCity)
   );
 }
 
-// Initial display - filter by current destination
-let filteredHotels = filterHotelsByCity(destination);
-displayHotels(filteredHotels);
+// Global variable to store currently displayed hotels
+let filteredHotels = [];
 
 // Sorting functionality
 document.querySelectorAll(".tab").forEach((tab) => {
@@ -556,16 +667,18 @@ function applyFilters() {
     document.querySelectorAll('input[data-filter="stars"]:checked')
   ).map((cb) => parseInt(cb.value));
 
-  const freeWifi = document.getElementById("freeWifi").checked;
-  const pool = document.getElementById("pool").checked;
-  const parking = document.getElementById("parking").checked;
-  const restaurant = document.getElementById("restaurant").checked;
-  const gym = document.getElementById("gym").checked;
+  // Get selected amenities
+  const selectedAmenities = Array.from(
+    document.querySelectorAll(".amenity-filter:checked")
+  ).map((cb) => cb.value);
 
-  const freeCancel = document.getElementById("freeCancel").checked;
-  const payAtProperty = document.getElementById("payAtProperty").checked;
-  const availableNow = document.getElementById("availableNow").checked;
-  const instantBooking = document.getElementById("instantBooking").checked;
+  const freeCancel = document.getElementById("freeCancel")?.checked || false;
+  const payAtProperty =
+    document.getElementById("payAtProperty")?.checked || false;
+  const availableNow =
+    document.getElementById("availableNow")?.checked || false;
+  const instantBooking =
+    document.getElementById("instantBooking")?.checked || false;
 
   // Get current city from search form
   const currentCity = document.getElementById("dest")
@@ -583,12 +696,18 @@ function applyFilters() {
     if (selectedStars.length > 0 && !selectedStars.includes(hotel.stars))
       return false;
 
-    // Amenities filters
-    if (freeWifi && !hotel.amenities.includes("Free WiFi")) return false;
-    if (pool && !hotel.amenities.includes("Pool")) return false;
-    if (parking && !hotel.amenities.includes("Free Parking")) return false;
-    if (restaurant && !hotel.amenities.includes("Restaurant")) return false;
-    if (gym && !hotel.amenities.includes("Gym")) return false;
+    // Amenities filters - check if hotel has ALL selected amenities
+    if (selectedAmenities.length > 0) {
+      const hotelAmenities = hotel.amenities || [];
+      const hasAllAmenities = selectedAmenities.every((amenity) =>
+        hotelAmenities.some(
+          (hotelAmenity) =>
+            hotelAmenity.trim().toLowerCase().includes(amenity.toLowerCase()) ||
+            amenity.toLowerCase().includes(hotelAmenity.trim().toLowerCase())
+        )
+      );
+      if (!hasAllAmenities) return false;
+    }
 
     // Cancellation filters
     if (freeCancel && !hotel.freeCancel) return false;
@@ -662,24 +781,10 @@ document.querySelectorAll('input[data-filter="stars"]').forEach((checkbox) => {
 });
 
 // Auto-apply filters when amenities checkboxes change
-document.getElementById("freeWifi")?.addEventListener("change", () => {
-  applyFilters();
-});
-
-document.getElementById("pool")?.addEventListener("change", () => {
-  applyFilters();
-});
-
-document.getElementById("parking")?.addEventListener("change", () => {
-  applyFilters();
-});
-
-document.getElementById("restaurant")?.addEventListener("change", () => {
-  applyFilters();
-});
-
-document.getElementById("gym")?.addEventListener("change", () => {
-  applyFilters();
+document.querySelectorAll(".amenity-filter").forEach((checkbox) => {
+  checkbox.addEventListener("change", () => {
+    applyFilters();
+  });
 });
 
 // Pre-fill the search form with current values and handle submission
@@ -746,4 +851,234 @@ if (searchForm) {
     filteredHotels = filterHotelsByCity(newDestination);
     displayHotels(filteredHotels);
   });
+}
+
+// ====================================
+// BOOKING FUNCTIONALITY
+// ====================================
+
+// Helper function to check if user is logged in
+function isUserLoggedIn() {
+  const token = localStorage.getItem("authToken"); // Changed from "token" to "authToken"
+  console.log("Checking if user is logged in...");
+  console.log("Token found:", token ? "YES" : "NO");
+  console.log("Token value:", token);
+  return !!token;
+}
+
+// Handle "Book Now" button clicks using event delegation
+document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("book-now-btn")) {
+    const hotelId = e.target.getAttribute("data-hotel-id");
+    console.log("Book Now clicked for hotel:", hotelId);
+    handleBooking(hotelId);
+  }
+});
+
+// Handle booking process
+function handleBooking(hotelId) {
+  const loggedIn = isUserLoggedIn();
+  console.log("User is logged in:", loggedIn);
+
+  if (!loggedIn) {
+    console.log("Showing auth required modal");
+    showAuthRequiredModal();
+  } else {
+    console.log("Showing booking confirmation modal");
+    showBookingConfirmationModal(hotelId);
+  }
+}
+
+// Show authentication required modal
+function showAuthRequiredModal() {
+  console.log(
+    "showAuthRequiredModal called - This should NOT happen if logged in!"
+  );
+
+  // Double check if user is actually logged in (safety check)
+  if (isUserLoggedIn()) {
+    console.log("ERROR: User IS logged in but auth modal was called!");
+    console.log("Token exists:", localStorage.getItem("token"));
+    alert("Debug: You ARE logged in. There's a bug. Check console.");
+    return;
+  }
+
+  // Create modal if it doesn't exist
+  if (!document.getElementById("authRequiredModal")) {
+    const modalHTML = `
+      <div id="authRequiredModal" class="booking-modal">
+        <div class="booking-modal-overlay" onclick="closeAuthModal()"></div>
+        <div class="booking-modal-content">
+          <h2 style="margin-top: 0; color: #0f1720;">🔐 Account Required</h2>
+          <p style="color: #6b7280; line-height: 1.6;">You must have an account to book a hotel.</p>
+          <p style="color: #6b7280; line-height: 1.6;">Please log in or create an account to continue.</p>
+          <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <button onclick="closeAuthModal()" style="flex: 1; padding: 12px; background: #e5e7eb; color: #374151; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Not now</button>
+            <button onclick="redirectToLogin()" style="flex: 1; padding: 12px; background: #1ea1ff; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Log in Now!</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+  }
+  document.getElementById("authRequiredModal").style.display = "flex";
+}
+
+function closeAuthModal() {
+  document.getElementById("authRequiredModal").style.display = "none";
+}
+
+function redirectToLogin() {
+  sessionStorage.setItem("returnUrl", window.location.href);
+  window.location.href = "../../Login/login.html";
+}
+
+// Show booking confirmation modal
+async function showBookingConfirmationModal(hotelId) {
+  // Find hotel in hotelData
+  const hotel = hotelData.find((h) => h.id === hotelId);
+  if (!hotel) {
+    alert("Hotel not found");
+    return;
+  }
+
+  // Get search parameters
+  const checkIn = document.getElementById("checkin").value;
+  const checkOut = document.getElementById("checkout").value;
+
+  if (!checkIn || !checkOut) {
+    alert("Please select check-in and check-out dates");
+    return;
+  }
+
+  // Calculate nights and total price
+  const checkInDate = new Date(checkIn);
+  const checkOutDate = new Date(checkOut);
+  const nights = Math.ceil(
+    (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
+  );
+  const rooms = 1; // Default, you can add room selector
+  const guests = 2; // Default, you can parse from guests selector
+  const totalPrice = hotel.price * nights * rooms;
+
+  // Create modal if it doesn't exist
+  if (!document.getElementById("bookingConfirmModal")) {
+    const modalHTML = `
+      <div id="bookingConfirmModal" class="booking-modal">
+        <div class="booking-modal-overlay" onclick="closeBookingModal()"></div>
+        <div class="booking-modal-content booking-modal-large">
+          <h2 style="margin-top: 0; color: #0f1720;">📋 Confirm Your Booking</h2>
+          <div id="bookingSummaryContent" style="background: #f9fafb; padding: 20px; border-radius: 12px; margin: 16px 0;"></div>
+          <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <button onclick="closeBookingModal()" style="flex: 1; padding: 12px; background: #ef4444; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Close</button>
+            <button onclick="confirmBooking()" style="flex: 1; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Book</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+  }
+
+  // Populate summary
+  document.getElementById("bookingSummaryContent").innerHTML = `
+    <h3 style="margin: 0 0 8px 0;">${hotel.name}</h3>
+    <p style="margin: 4px 0; color: #6b7280;">${hotel.location}</p>
+    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;">
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+      <div style="padding: 8px; background: white; border-radius: 6px;"><strong>Check-in:</strong> ${checkIn}</div>
+      <div style="padding: 8px; background: white; border-radius: 6px;"><strong>Check-out:</strong> ${checkOut}</div>
+      <div style="padding: 8px; background: white; border-radius: 6px;"><strong>Nights:</strong> ${nights}</div>
+      <div style="padding: 8px; background: white; border-radius: 6px;"><strong>Rooms:</strong> ${rooms}</div>
+      <div style="padding: 8px; background: white; border-radius: 6px;"><strong>Guests:</strong> ${guests}</div>
+      <div style="padding: 8px; background: white; border-radius: 6px;"><strong>Price/Night:</strong> SAR ${hotel.price}</div>
+    </div>
+    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border-radius: 8px;">
+      <strong style="font-size: 18px;">Total Price:</strong>
+      <span style="color: #10b981; font-weight: 700; font-size: 24px;">SAR ${totalPrice}</span>
+    </div>
+  `;
+
+  // Store booking data for confirmation
+  window.currentBookingData = {
+    hotel_id: hotelId,
+    check_in_date: checkIn,
+    check_out_date: checkOut,
+    number_of_rooms: rooms,
+    number_of_guests: guests,
+    total_price: totalPrice,
+  };
+
+  document.getElementById("bookingConfirmModal").style.display = "flex";
+}
+
+function closeBookingModal() {
+  document.getElementById("bookingConfirmModal").style.display = "none";
+}
+
+// Confirm booking and send to API
+async function confirmBooking() {
+  const bookingData = window.currentBookingData;
+
+  try {
+    const token = localStorage.getItem("authToken"); // Changed from "token" to "authToken"
+
+    console.log("Sending booking data:", bookingData);
+    console.log("Token:", token);
+
+    const response = await fetch(`${API_BASE_URL}/bookings/hotels`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(bookingData),
+    });
+
+    console.log("Response status:", response.status);
+    const result = await response.json();
+    console.log("Response data:", result);
+
+    if (result.success) {
+      closeBookingModal();
+      showSuccessModal();
+      setTimeout(() => {
+        window.location.href = "../../User/dashboard.html";
+      }, 2500);
+    } else {
+      console.error("Booking failed:", result);
+      alert("❌ " + (result.message || "Failed to create booking"));
+    }
+  } catch (error) {
+    console.error("Booking Error:", error);
+    alert("❌ Failed to create booking. Please try again.");
+  }
+}
+
+// Show success modal after booking
+function showSuccessModal() {
+  const modal = document.createElement("div");
+  modal.className = "booking-modal";
+  modal.innerHTML = `
+    <div class="booking-modal-overlay"></div>
+    <div class="booking-modal-content" style="max-width: 450px; text-align: center;">
+      <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2 style="color: #10b981; margin: 0 0 10px; font-size: 28px; font-weight: 700;">Booking Confirmed!</h2>
+      <p style="color: #6b7280; font-size: 16px; margin: 0 0 24px; line-height: 1.6;">
+        Your hotel reservation has been successfully confirmed. 
+        <br><br>
+        <strong style="color: #374151;">Redirecting to your dashboard...</strong>
+      </p>
+      <div style="display: flex; gap: 3px; justify-content: center; margin-top: 20px;">
+        <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: bounce 1s infinite;"></div>
+        <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: bounce 1s infinite 0.2s;"></div>
+        <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; animation: bounce 1s infinite 0.4s;"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
 }

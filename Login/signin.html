@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GoTrip - Login</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -177,35 +177,9 @@
         });
 
       // Handle form submission with admin check
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value;
-          const loginError = document.getElementById("loginError");
-
-          // Hide error message initially
-          loginError.classList.add("hidden");
-
-          // Check if admin credentials
-          if (email === "Admin@gmail.com" && password === "Admin!123") {
-            // Redirect to admin dashboard
-            window.location.href = "../Admin/admin-dashboard.html";
-          } else {
-            // Show error message for incorrect credentials
-            loginError.classList.remove("hidden");
-
-            // Optional: Auto-hide error after 5 seconds
-            setTimeout(function () {
-              loginError.classList.add("hidden");
-            }, 5000);
-          }
-        });
     </script>
 
-    <script src="script.js"></script>
+    <script src="login.js"></script>
     <script src="randomImage.js"></script>
     <script src="https://huggingface.co/deepsite/deepsite-badge.js"></script>
   </body>
