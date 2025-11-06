@@ -449,7 +449,7 @@ select:focus {
 .meta {
   display: flex;
   gap: 8px;
-  color: #6a748b;
+  color: #ffffff;
   font-size: 0.9rem;
 }
 .stars {

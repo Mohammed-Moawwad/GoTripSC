@@ -159,7 +159,7 @@ document.getElementById("supportLink")?.addEventListener("click", (e) => {
 });
 document.getElementById("myTripsLink")?.addEventListener("click", (e) => {
   e.preventDefault();
-  alert("Open My Trips (implement link)");
+  window.location.href = "../../User/my-trips.html";
 });
 
 // NAV selection: make nav-left items selectable and optionally navigate

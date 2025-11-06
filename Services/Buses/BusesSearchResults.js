@@ -1148,6 +1148,14 @@ function setupEventListeners() {
     );
   });
 
+  // ===== My Trips Link =====
+  const myTripsLink = document.getElementById("myTripsLink");
+  
+  myTripsLink?.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.location.href = "../../User/my-trips.html";
+  });
+
   // ===== Prevent navigation on active Buses link =====
   const busesLink = document.querySelector('a[data-page="buses"]');
   busesLink?.addEventListener("click", (e) => {

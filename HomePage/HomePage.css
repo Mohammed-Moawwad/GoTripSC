@@ -1,6 +1,13 @@
 /* ===== Base / Header / Hero / Booking / Ideas / Popular / Why / Testimonials (unchanged structure) ===== */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 :root {
   --header: #fff;
@@ -14,19 +21,28 @@
   --footer: #0f1a2b;
   --footer-ink: #dbe3f5;
 }
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
 html,
 body {
   margin: 0;
   height: 100%;
+  width: 100%;
 }
 body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   color: var(--ink);
+  overflow-x: hidden;
+  min-width: 320px;
 }
 .container {
   max-width: var(--container);
   margin-inline: auto;
   padding-inline: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .btn {
   display: inline-flex;
@@ -75,6 +91,8 @@ body {
   border-bottom: none;
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
   backdrop-filter: blur(10px);
+  width: 100%;
+  box-sizing: border-box;
 }
 .nav {
   display: flex;
@@ -82,6 +100,8 @@ body {
   justify-content: space-between;
   height: 70px;
   gap: 15px;
+  flex-wrap: nowrap;
+  width: 100%;
 }
 .brand {
   display: flex;
@@ -115,6 +135,7 @@ body {
 .primary-nav {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 .nav-link {
   padding: 10px 16px;
@@ -125,6 +146,7 @@ body {
   font-size: 0.95rem;
   transition: all 0.3s ease;
   position: relative;
+  white-space: nowrap;
 }
 .nav-link:hover {
   background: rgba(255, 255, 255, 0.2);
@@ -150,6 +172,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
 }
 .site-header .icon-btn {
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -326,7 +350,11 @@ body {
   border-radius: 16px;
   box-shadow: var(--shadow);
   width: min(980px, 92%);
+  max-width: 980px;
   padding: 18px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
 .booking-head {
   display: flex;
@@ -360,11 +388,15 @@ body {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .field {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
+  box-sizing: border-box;
 }
 label {
   color: var(--muted);
@@ -378,6 +410,9 @@ select {
   padding: 0 12px;
   outline: none;
   background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
 }
 input:focus,
 select:focus {
@@ -390,6 +425,12 @@ select:focus {
   align-items: center;
   gap: 8px;
   color: #475069;
+}
+.checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #007bff;
 }
 .search-btn {
   grid-column: 1 / -1;
@@ -409,6 +450,8 @@ select:focus {
 .ideas-section {
   padding: 36px 0 60px;
   background: #fff;
+  width: 100%;
+  overflow: hidden;
 }
 .ideas-head {
   display: flex;
@@ -416,6 +459,7 @@ select:focus {
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 .ideas-head h2 {
   font-size: 1.4rem;
@@ -951,8 +995,8 @@ select:focus {
   .ideas-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .popular-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .popular-card {
+    min-width: 280px;
   }
   .why-grid {
     grid-template-columns: 1fr;
@@ -977,8 +1021,8 @@ select:focus {
   .ideas-grid {
     grid-template-columns: 1fr;
   }
-  .popular-grid {
-    grid-template-columns: 1fr;
+  .popular-card {
+    min-width: 250px;
   }
   .logos-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1112,4 +1156,30 @@ select:focus {
   .user-welcome {
     display: none !important; /* Hide on mobile, show in mobile panel instead */
   }
+}
+
+/* Enhanced zoom-out handling */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1280px;
+  }
+  .booking-card {
+    max-width: 1100px;
+  }
+}
+
+@media (min-width: 1800px) {
+  .container {
+    max-width: 1400px;
+  }
+  .booking-card {
+    max-width: 1200px;
+  }
+}
+
+/* Prevent horizontal overflow on all screen sizes */
+section {
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
