@@ -7,6 +7,164 @@ menuToggle?.addEventListener('click', () => {
   menuToggle.setAttribute('aria-expanded', String(!open));
 });
 
+// ===== Load Locations and Initialize Autocomplete =====
+let allLocations = [];
+
+async function loadLocations() {
+  try {
+    const response = await fetch('../Services/Buses/data/locations.json');
+    if (!response.ok) return [];
+    allLocations = await response.json();
+    return allLocations;
+  } catch (error) {
+    console.error('Error loading locations:', error);
+    return [];
+  }
+}
+
+function initAutocomplete(inputElement, listElement) {
+  let currentFocus = -1;
+  let isValidCity = false;
+  
+  inputElement.addEventListener('input', function() {
+    const val = this.value.trim();
+    isValidCity = false;
+    
+    // Mark input as invalid if not empty and not matching
+    if (val) {
+      const exactMatch = allLocations.find(loc => 
+        loc.nameEn.toLowerCase() === val.toLowerCase()
+      );
+      if (exactMatch) {
+        isValidCity = true;
+        inputElement.classList.remove('invalid-city');
+      } else {
+        inputElement.classList.add('invalid-city');
+      }
+    } else {
+      inputElement.classList.remove('invalid-city');
+    }
+    
+    closeAllLists();
+    if (!val) return;
+    currentFocus = -1;
+    
+    const matches = allLocations.filter(loc => 
+      loc.nameEn.toLowerCase().startsWith(val.toLowerCase()) ||
+      loc.nameEn.toLowerCase().includes(val.toLowerCase())
+    ).slice(0, 8);
+    
+    if (matches.length === 0) return;
+    
+    listElement.innerHTML = '';
+    listElement.style.display = 'block';
+    
+    matches.forEach((loc) => {
+      const item = document.createElement('div');
+      item.className = 'autocomplete-item';
+      item.innerHTML = `<strong>${loc.nameEn}</strong>`;
+      item.addEventListener('click', function() {
+        inputElement.value = loc.nameEn;
+        isValidCity = true;
+        inputElement.classList.remove('invalid-city');
+        closeAllLists();
+      });
+      listElement.appendChild(item);
+    });
+  });
+  
+  // Validate on blur
+  inputElement.addEventListener('blur', function() {
+    setTimeout(() => {
+      const val = this.value.trim();
+      if (val) {
+        const exactMatch = allLocations.find(loc => 
+          loc.nameEn.toLowerCase() === val.toLowerCase()
+        );
+        if (!exactMatch) {
+          inputElement.classList.add('invalid-city');
+          isValidCity = false;
+        } else {
+          inputElement.classList.remove('invalid-city');
+          isValidCity = true;
+        }
+      }
+    }, 200);
+  });
+  
+  inputElement.addEventListener('keydown', function(e) {
+    const items = listElement.querySelectorAll('.autocomplete-item');
+    if (e.keyCode === 40) {
+      currentFocus++;
+      addActive(items);
+      e.preventDefault();
+    } else if (e.keyCode === 38) {
+      currentFocus--;
+      addActive(items);
+      e.preventDefault();
+    } else if (e.keyCode === 13) {
+      e.preventDefault();
+      if (currentFocus > -1 && items[currentFocus]) {
+        items[currentFocus].click();
+      }
+    } else if (e.keyCode === 27) {
+      closeAllLists();
+    }
+  });
+  
+  function addActive(items) {
+    if (!items || items.length === 0) return;
+    removeActive(items);
+    if (currentFocus >= items.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = items.length - 1;
+    items[currentFocus].classList.add('autocomplete-active');
+  }
+  
+  function removeActive(items) {
+    items.forEach(item => item.classList.remove('autocomplete-active'));
+  }
+  
+  function closeAllLists() {
+    listElement.style.display = 'none';
+    listElement.innerHTML = '';
+    currentFocus = -1;
+  }
+  
+  document.addEventListener('click', function(e) {
+    if (e.target !== inputElement) {
+      closeAllLists();
+    }
+  });
+  
+  // Return validation function
+  return () => isValidCity || inputElement.value.trim() === '';
+}
+
+// Initialize on page load
+loadLocations().then(() => {
+  const fromInput = document.getElementById('from');
+  const toInput = document.getElementById('to');
+  
+  if (fromInput && toInput) {
+    // Create autocomplete lists
+    const fromList = document.createElement('div');
+    fromList.id = 'fromAutocomplete';
+    fromList.className = 'autocomplete-list';
+    fromInput.parentNode.style.position = 'relative';
+    fromInput.parentNode.appendChild(fromList);
+    
+    const toList = document.createElement('div');
+    toList.id = 'toAutocomplete';
+    toList.className = 'autocomplete-list';
+    toInput.parentNode.style.position = 'relative';
+    toInput.parentNode.appendChild(toList);
+    
+    // Initialize autocomplete
+    initAutocomplete(fromInput, fromList);
+    initAutocomplete(toInput, toList);
+  }
+});
+
 // ===== Language dropdown
 const langBtn = document.getElementById('langBtn');
 const langMenu = document.getElementById('langMenu');
@@ -86,10 +244,35 @@ form?.addEventListener('submit', (e)=>{
     return;
   }
   
+  // Validate cities exist in location list
+  const fromValue = from.value.trim();
+  const toValue = to.value.trim();
+  
+  const fromCity = allLocations.find(loc => 
+    loc.nameEn.toLowerCase() === fromValue.toLowerCase()
+  );
+  const toCity = allLocations.find(loc => 
+    loc.nameEn.toLowerCase() === toValue.toLowerCase()
+  );
+  
+  if (!fromCity) {
+    from.classList.add('invalid-city');
+    alert('⚠️ Please select a valid departure city from the dropdown list.');
+    from.focus();
+    return;
+  }
+  
+  if (!toCity) {
+    to.classList.add('invalid-city');
+    alert('⚠️ Please select a valid destination city from the dropdown list.');
+    to.focus();
+    return;
+  }
+  
   // Build search URL with parameters (matching BusesSearchResults parameter names)
   const params = new URLSearchParams();
-  params.set('from', from.value.trim());
-  params.set('to', to.value.trim());
+  params.set('from', fromValue);
+  params.set('to', toValue);
   params.set('depart', depart.value); // This is the key parameter for date-based generation
   if(ret.value) params.set('return', ret.value);
   

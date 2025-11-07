@@ -1,0 +1,212 @@
+[
+  {
+    "id": "riyadh",
+    "nameEn": "Riyadh",
+    "nameAr": "الرياض",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "jeddah",
+    "nameEn": "Jeddah",
+    "nameAr": "جدة",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "makkah",
+    "nameEn": "Makkah",
+    "nameAr": "مكة المكرمة",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "madinah",
+    "nameEn": "Madinah",
+    "nameAr": "المدينة المنورة",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "dammam",
+    "nameEn": "Dammam",
+    "nameAr": "الدمام",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "taif",
+    "nameEn": "Taif",
+    "nameAr": "الطائف",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "tabuk",
+    "nameEn": "Tabuk",
+    "nameAr": "تبوك",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "buraidah",
+    "nameEn": "Buraidah",
+    "nameAr": "بريدة",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "khamis-mushait",
+    "nameEn": "Khamis Mushait",
+    "nameAr": "خميس مشيط",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "hail",
+    "nameEn": "Hail",
+    "nameAr": "حائل",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-hofuf",
+    "nameEn": "Al Hofuf",
+    "nameAr": "الهفوف",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-mubarraz",
+    "nameEn": "Al Mubarraz",
+    "nameAr": "المبرز",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-khobar",
+    "nameEn": "Al Khobar",
+    "nameAr": "الخبر",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "jubail",
+    "nameEn": "Jubail",
+    "nameAr": "الجبيل",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "najran",
+    "nameEn": "Najran",
+    "nameAr": "نجران",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "abha",
+    "nameEn": "Abha",
+    "nameAr": "أبها",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "yanbu",
+    "nameEn": "Yanbu",
+    "nameAr": "ينبع",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-qatif",
+    "nameEn": "Al Qatif",
+    "nameAr": "القطيف",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "jizan",
+    "nameEn": "Jizan",
+    "nameAr": "جازان",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "dhahran",
+    "nameEn": "Dhahran",
+    "nameAr": "الظهران",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-ula",
+    "nameEn": "Al-Ula",
+    "nameAr": "العلا",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "sakaka",
+    "nameEn": "Sakaka",
+    "nameAr": "سكاكا",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "arar",
+    "nameEn": "Arar",
+    "nameAr": "عرعر",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-baha",
+    "nameEn": "Al Baha",
+    "nameAr": "الباحة",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-qunfudhah",
+    "nameEn": "Al Qunfudhah",
+    "nameAr": "القنفذة",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-majmaah",
+    "nameEn": "Al Majmaah",
+    "nameAr": "المجمعة",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-kharj",
+    "nameEn": "Al Kharj",
+    "nameAr": "الخرج",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-dawadmi",
+    "nameEn": "Al Dawadmi",
+    "nameAr": "الدوادمي",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "unaizah",
+    "nameEn": "Unaizah",
+    "nameAr": "عنيزة",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "rabigh",
+    "nameEn": "Rabigh",
+    "nameAr": "رابغ",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-rass",
+    "nameEn": "Al Rass",
+    "nameAr": "الرس",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-zulfi",
+    "nameEn": "Al Zulfi",
+    "nameAr": "الزلفي",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "al-ahsa",
+    "nameEn": "Al Ahsa",
+    "nameAr": "الأحساء",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "safwa",
+    "nameEn": "Safwa",
+    "nameAr": "صفوى",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "ras-tanura",
+    "nameEn": "Ras Tanura",
+    "nameAr": "رأس تنورة",
+    "country": "Saudi Arabia"
+  }
+]

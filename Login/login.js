@@ -237,6 +237,11 @@ async function handleLogin(email, password) {
       // Save token and user data to localStorage
       localStorage.setItem("authToken", result.data.token);
       localStorage.setItem("user", JSON.stringify(result.data.user));
+      localStorage.setItem("isLoggedIn", "true");
+
+      // Check for return URL in query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnUrl = urlParams.get('next');
 
       // Check if user is admin and redirect accordingly
       if (result.data.user.role === "admin") {
@@ -246,6 +251,15 @@ async function handleLogin(email, password) {
         );
         setTimeout(() => {
           window.location.href = "/Admin/admin-dashboard.html";
+        }, 1500);
+      } else if (returnUrl) {
+        // Redirect to the return URL (e.g., booking page)
+        showSuccessMessage(
+          `Welcome back, ${result.data.user.first_name}!`,
+          "Redirecting..."
+        );
+        setTimeout(() => {
+          window.location.href = decodeURIComponent(returnUrl);
         }, 1500);
       } else {
         showSuccessMessage(
