@@ -6,18 +6,18 @@ async function testSignup() {
     first_name: "Test",
     last_name: "User",
     email: `test${Date.now()}@example.com`, // Unique email
-    password: "test123456"
+    password: "test123456",
   };
 
   try {
-    const response = await fetch('http://localhost:3000/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(testUser)
+    const response = await fetch("http://localhost:3000/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(testUser),
     });
-    
+
     const data = await response.json();
-    
+
     if (response.ok) {
       console.log("✅ Signup Successful!");
       console.log(`   User ID: ${data.data.user.user_id}`);
