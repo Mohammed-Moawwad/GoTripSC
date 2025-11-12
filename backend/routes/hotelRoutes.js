@@ -46,7 +46,7 @@ router.post("/", createHotel);
 router.put("/:id", updateHotel);
 
 // DELETE /api/hotels/:id - Delete hotel (Admin only)
-// This sets status to InActive
+// This permanently deletes the hotel from the database
 router.delete("/:id", deleteHotel);
 
 // Export the router

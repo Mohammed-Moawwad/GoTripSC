@@ -232,32 +232,55 @@ const updateHotel = async (req, res) => {
 // ====================================
 // 6. DELETE HOTEL (Admin only - later)
 // ====================================
-// This function deletes a hotel (sets status to InActive)
+// This function permanently deletes a hotel from the database
 // URL: DELETE /api/hotels/:id
 
 const deleteHotel = async (req, res) => {
   try {
     const hotelId = req.params.id;
+    console.log("🗑️ DELETE request received for hotel ID:", hotelId);
 
-    // Instead of deleting, we set status to InActive (soft delete)
-    const [result] = await db.query(
-      'UPDATE hotels SET status = "InActive" WHERE hotel_id = ?',
+    // Step 1: Delete all hotel bookings first (to avoid foreign key constraint)
+    const [bookingsDeleted] = await db.query(
+      "DELETE FROM hotel_bookings WHERE hotel_id = ?",
       [hotelId]
     );
+    console.log(`📋 Deleted ${bookingsDeleted.affectedRows} hotel booking(s)`);
+
+    // Step 2: Now delete the hotel
+    const [result] = await db.query("DELETE FROM hotels WHERE hotel_id = ?", [
+      hotelId,
+    ]);
+
+    console.log("📊 Delete query result:", result);
+    console.log("📈 Affected rows:", result.affectedRows);
 
     if (result.affectedRows === 0) {
+      console.log("❌ Hotel not found:", hotelId);
       return res.status(404).json({
         success: false,
         message: `Hotel with ID ${hotelId} not found`,
       });
     }
 
+    console.log("✅ Hotel deleted successfully:", hotelId);
     res.status(200).json({
       success: true,
-      message: "Hotel deleted successfully",
+      message:
+        "Hotel and all related bookings permanently deleted from database",
     });
   } catch (error) {
-    console.error("Error deleting hotel:", error);
+    console.error("💥 Error deleting hotel:", error);
+
+    // Check if it's a foreign key constraint error
+    if (error.code === "ER_ROW_IS_REFERENCED_2") {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Cannot delete hotel - it has existing references in other tables",
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Error deleting hotel",

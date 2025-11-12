@@ -877,3 +877,150 @@ footer {
 .modal-content {
   padding: 25px;
 }
+
+/* Delete Confirmation Modal */
+.delete-confirmation-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease;
+}
+
+.delete-confirmation-content {
+  background: white;
+  border-radius: 12px;
+  padding: 0;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.delete-confirmation-header {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  padding: 25px;
+  border-radius: 12px 12px 0 0;
+  text-align: center;
+  color: white;
+}
+
+.warning-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+  animation: pulse 2s infinite;
+}
+
+.delete-confirmation-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.delete-confirmation-body {
+  padding: 30px;
+  text-align: center;
+}
+
+.delete-confirmation-body p {
+  margin-bottom: 15px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.warning-text {
+  color: #ff6b6b;
+  font-weight: 500;
+  background-color: #fff5f5;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.delete-confirmation-actions {
+  padding: 20px 30px 30px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.cancel-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.cancel-btn:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.confirm-delete-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.confirm-delete-btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}

@@ -493,18 +493,65 @@ class HotelManagement {
   }
 
   // ====================================
-  // DELETE HOTEL (SOFT DELETE)
+  // DELETE HOTEL (PERMANENT DELETE)
   // ====================================
   async handleDeleteHotel(hotelId) {
-    if (
-      !confirm(
-        `Are you sure you want to delete hotel ${hotelId}?\n\nThis will set the hotel status to InActive.`
-      )
-    ) {
-      return;
-    }
+    // Show custom confirmation modal
+    this.showDeleteConfirmation(hotelId);
+  }
 
+  showDeleteConfirmation(hotelId) {
+    // Create modal overlay
+    const modal = document.createElement("div");
+    modal.className = "delete-confirmation-modal";
+    modal.innerHTML = `
+      <div class="delete-confirmation-content">
+        <div class="delete-confirmation-header">
+          <i class="fas fa-exclamation-triangle warning-icon"></i>
+          <h2>Delete Hotel Permanently?</h2>
+        </div>
+        <div class="delete-confirmation-body">
+          <p>Are you sure you want to <strong>permanently delete</strong> hotel <strong>${hotelId}</strong>?</p>
+          <p class="warning-text">⚠️ This action cannot be undone! The hotel will be removed from the database.</p>
+        </div>
+        <div class="delete-confirmation-actions">
+          <button class="cancel-btn" id="cancelDeleteBtn">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button class="confirm-delete-btn" id="confirmDeleteBtn">
+            <i class="fas fa-trash"></i> Yes, Delete Permanently
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Add event listeners
+    document.getElementById("cancelDeleteBtn").addEventListener("click", () => {
+      modal.remove();
+    });
+
+    document
+      .getElementById("confirmDeleteBtn")
+      .addEventListener("click", async () => {
+        modal.remove();
+        await this.deleteHotelConfirmed(hotelId);
+      });
+
+    // Close on overlay click
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.remove();
+      }
+    });
+  }
+
+  async deleteHotelConfirmed(hotelId) {
     try {
+      console.log("🗑️ Attempting to delete hotel:", hotelId);
+      console.log("📡 API URL:", `${API_BASE_URL}/hotels/${hotelId}`);
+
       this.showNotification("Deleting hotel...", "info");
 
       const response = await fetch(`${API_BASE_URL}/hotels/${hotelId}`, {
@@ -514,19 +561,25 @@ class HotelManagement {
         },
       });
 
+      console.log("📥 Response status:", response.status);
       const result = await response.json();
+      console.log("📦 Response result:", result);
 
       if (result.success) {
         this.showNotification(
-          `Hotel ${hotelId} deleted successfully!`,
+          `Hotel ${hotelId} permanently deleted!`,
           "success"
         );
         this.fetchHotels(); // Refresh the table
       } else {
-        this.showNotification("Error deleting hotel", "error");
+        console.error("❌ Delete failed:", result.message);
+        this.showNotification(
+          `Error: ${result.message || "Error deleting hotel"}`,
+          "error"
+        );
       }
     } catch (error) {
-      console.error("Error deleting hotel:", error);
+      console.error("💥 Error deleting hotel:", error);
       this.showNotification("Error deleting hotel from database", "error");
     }
   }
