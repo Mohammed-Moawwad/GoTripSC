@@ -103,7 +103,7 @@ Allows admin to add a new hotel to the database.
 ### Frontend Flow (hotel-management.js)
 
 ```javascript
-// 1. Admin clicks "Add New Hotel" button
+// 1. Admin clicks "Add New Hotel" button 
 document.querySelector('.add-hotel-btn').addEventListener('click', () => {
   this.showAddHotelModal();
 });
@@ -122,6 +122,12 @@ showAddHotelModal() {
   // - Description
   // - Status (Active/InActive)
 }
+
+//When an admin wants to add a new hotel, they fill in a form with hotel information like the name, city, 
+// price, number of rooms, and rating.
+
+//  After clicking "Add Hotel," the handleAddHotel() function changes 
+// the form data into JSON format using JSON.stringify() and sends it to the backend server using a POST request. 
 
 // 3. Admin fills form and clicks "Add Hotel"
 async handleAddHotel(hotelData) {
@@ -142,11 +148,22 @@ async handleAddHotel(hotelData) {
     this.fetchHotels();
   }
 }
+
 ```
 
 ### Backend Implementation (hotelController.js)
 
+
+
 ```javascript
+// On the backend, the createHotel() function gets the data, creates a unique hotel ID (like HTL006) by finding the last ID number and adding one, then saves the hotel into the MySQL database using a safe query method.
+
+// The backend sends back a message saying { success: true, hotel_id: "HTL006" }. 
+
+// The frontend checks if result.success is true—if yes, it shows a green success message and automatically updates the hotel table by calling fetchHotels() to get the new hotel list from the database.
+
+// This whole process happens very quickly and shows the new hotel in the table right away without reloading the page.
+
 const createHotel = async (req, res) => {
   try {
     // 1. Extract data from request body
@@ -277,6 +294,10 @@ Retrieves hotel data from database and displays it to admin.
 **Frontend (hotel-management.js):**
 
 ```javascript
+// When an admin opens the hotel management page, the fetchHotels() function automatically runs to get all hotels from the database.
+
+//  This function sends a GET request to the backend at /api/hotels?includeInactive=true, which means the admin can see both active and inactive hotels
+
 async fetchHotels() {
   // Admin sees ALL hotels (Active + InActive)
   const response = await fetch(
@@ -306,6 +327,12 @@ async fetchHotels() {
 **Backend (hotelController.js):**
 
 ```javascript
+// The backend receives this request and the getAllHotels() function checks if the request includes inactive hotels.
+//  Then it runs a SQL query SELECT * FROM hotels to get all hotel records from the database and sends them back to the frontend as a JSON array.
+//  The frontend waits for the response using await and receives a list of hotels like { success: true, count: 10, data: [...] }. Next, the frontend uses .map() to change the data format—it converts hotel_id to id, combines city and country into one location field, adds a dollar sign to the price, and formats the rating to one decimal place.
+//  After transforming the data, it saves it in this.hotels and calls renderHotelTable().
+//  This function finds the table body in the HTML, clears old data, then creates a new row for each hotel showing the ID, name, location, rooms, price, rating, status, and action buttons (view, edit, delete).
+//  The result is a complete table that displays all hotels from the database in an easy-to-read format.
 const getAllHotels = async (req, res) => {
   try {
     // 1. Check if admin wants to see inactive hotels
