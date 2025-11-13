@@ -2,7 +2,7 @@
 
 ## GoTrip Project - Database Management
 
-**Student:** [Mohammed] && [Ibrahim] 
+**Student:** [Mohammed] && [Ibrahim]
 **Professor:** [Abo Baker]  
 **Course:** Web development
 **Date:** November 12, 2025
@@ -505,15 +505,45 @@ renderHotelTable() {
 
 ### Overview
 
-Modifies existing hotel informa tion in the database.
+Modifies existing hotel information in the database.
 
+
+
+```javascript
+async fetchHotels() {
+  // 1. Call backend API to get hotels from database
+  const response = await fetch(`${API_BASE_URL}/hotels?includeInactive=true`);
+
+  // 2. Parse JSON response
+  const result = await response.json();
+
+  // 3. Store ALL hotels in memory (this.hotels array)
+  this.hotels = result.data.map((hotel) => ({
+    id: hotel.hotel_id,
+    name: hotel.hotel_name,
+    location: `${hotel.city}, ${hotel.country}`,
+    rooms: hotel.total_rooms,
+    pricePerNight: `$${hotel.price_per_night}`,
+    rating: parseFloat(hotel.rating).toFixed(1),
+    status: hotel.status,
+  }));
+
+  // Now this.hotels contains all hotels in browser memory
+  // We can search it instantly without calling the database!
+}
+```
 ### Frontend Flow
 
 ```javascript
 // 1. Admin clicks Edit button
 handleEditHotel(hotelId) {
-  // Fetch current hotel data
+  // Search in memory (this.hotels array) - NOT database!
+  // Uses .find() to locate the hotel with matching ID
   const hotel = this.hotels.find(h => h.id === hotelId);
+
+  // Example: If hotelId = "HTL002"
+  // Searches: [{id:"HTL001",...}, {id:"HTL002",...}, {id:"HTL003",...}]
+  // Returns: {id:"HTL002", name:"Beach Resort", price:650, ...}
 
   // Show modal with pre-filled form
   this.showEditHotelModal(hotel);
@@ -568,12 +598,24 @@ async handleUpdateHotel(hotelId, updates) {
 ```javascript
 const updateHotel = async (req, res) => {
   try {
-    // 1. Get hotel ID from URL
+    // 1. Get hotel ID from URL // If URL is: PUT /api/hotels/HTL005
     const hotelId = req.params.id;
 
     // 2. Get updates from request body
     const updates = req.body;
-    // Example: { hotel_name: "New Name", price_per_night: 950 }
+    // Frontend sent this JSON:
+/*{
+  "hotel_name": "Grand Palace Hotel",
+  "price_per_night": 950,
+  "rating": 4.8
+}
+
+// Backend receives it as:
+updates = {
+  hotel_name: "Grand Palace Hotel",
+  price_per_night: 950,
+  rating: 4.8
+} */
 
     // 3. Build dynamic SQL UPDATE query
     // Why dynamic? Admin might update 1 field or 10 fields
@@ -584,13 +626,21 @@ const updateHotel = async (req, res) => {
       .join(", ");
 
     // Extract values: ["New Name", 950]
-    const values = [...Object.values(updates), hotelId];
+    const values = [Object.values(updates), hotelId];
 
     // 4. Execute UPDATE query
     const [result] = await db.query(
       `UPDATE hotels SET ${fields} WHERE hotel_id = ?`,
       values
-    );
+    ); 
+    // The template string becomes:
+"UPDATE hotels SET hotel_name = ?, price_per_night = ?, rating = ? WHERE hotel_id = ?"
+
+// The values array:
+["Grand Palace", 950, 4.8, "HTL005"]
+
+// MySQL replaces ? with values:
+"UPDATE hotels SET hotel_name = 'Grand Palace', price_per_night = 950, rating = 4.8 WHERE hotel_id = 'HTL005'"
 
     // 5. Check if hotel existed
     if (result.affectedRows === 0) {
@@ -811,6 +861,16 @@ const deleteHotel = async (req, res) => {
       "DELETE FROM hotel_bookings WHERE hotel_id = ?",
       [hotelId]
     );
+    hotel_bookings table:
+| booking_id | hotel_id | user_id | ...
+| BK001      | HTL005   | USR123  | ...
+| BK002      | HTL005   | USR456  | ...
+| BK003      | HTL010   | USR789  | ...
+
+-- After DELETE FROM hotel_bookings WHERE hotel_id = 'HTL005':
+| booking_id | hotel_id | user_id | ...
+| BK003      | HTL010   | USR789  | ...
+
     console.log(`📋 Deleted ${bookingsDeleted.affectedRows} booking(s)`);
 
     // Step 2: Now safe to delete the hotel
