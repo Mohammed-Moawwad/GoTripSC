@@ -103,12 +103,13 @@ Allows admin to add a new hotel to the database.
 ### Frontend Flow (hotel-management.js)
 
 ```javascript
-// 1. Admin clicks "Add New Hotel" button 
+// 1. When an admin wants to add a new hotel, they fill in a form with hotel information like the name, city, 
+// price, number of rooms, and rating.  
 document.querySelector('.add-hotel-btn').addEventListener('click', () => {
   this.showAddHotelModal();
 });
 
-// 2. Modal opens with empty form
+//  Modal opens with empty form
 showAddHotelModal() {
   // Display modal with input fields:
   // - Hotel Name
@@ -123,13 +124,11 @@ showAddHotelModal() {
   // - Status (Active/InActive)
 }
 
-//When an admin wants to add a new hotel, they fill in a form with hotel information like the name, city, 
-// price, number of rooms, and rating.
 
+// 2 Admin fills form and clicks "Add Hotel"
 //  After clicking "Add Hotel," the handleAddHotel() function changes 
 // the form data into JSON format using JSON.stringify() and sends it to the backend server using a POST request. 
 
-// 3. Admin fills form and clicks "Add Hotel"
 async handleAddHotel(hotelData) {
   // Send POST request to backend
   const response = await fetch(`${API_BASE_URL}/hotels`, {
@@ -156,17 +155,15 @@ async handleAddHotel(hotelData) {
 
 
 ```javascript
-// On the backend, the createHotel() function gets the data, creates a unique hotel ID (like HTL006) by finding the last ID number and adding one, then saves the hotel into the MySQL database using a safe query method.
 
-// The backend sends back a message saying { success: true, hotel_id: "HTL006" }. 
 
-// The frontend checks if result.success is true—if yes, it shows a green success message and automatically updates the hotel table by calling fetchHotels() to get the new hotel list from the database.
 
-// This whole process happens very quickly and shows the new hotel in the table right away without reloading the page.
+
+// 1. On the backend, the createHotel() function gets the data, creates a unique hotel ID (like HTL006) by finding the last ID number and adding one, then saves the hotel into the MySQL database using a safe query method.
 
 const createHotel = async (req, res) => {
   try {
-    // 1. Extract data from request body
+    // Extract data from request body
     const {
       hotel_name,
       location,
@@ -181,7 +178,7 @@ const createHotel = async (req, res) => {
       status,
     } = req.body;
 
-    // 2. Auto-generate unique hotel_id
+    // Auto-generate unique hotel_id
     // Query: Get all existing hotel IDs
     const [allIds] = await db.query(`SELECT hotel_id FROM hotels`);
 
@@ -201,7 +198,7 @@ const createHotel = async (req, res) => {
       hotel_id = `HTL${String(maxNum + 1).padStart(3, "0")}`;
     }
 
-    // 3. Insert into database
+    //  Insert into database
     const [result] = await db.query(
       `INSERT INTO hotels 
       (hotel_id, hotel_name, location, city, country, rating, 
@@ -224,14 +221,17 @@ const createHotel = async (req, res) => {
       ]
     );
 
-    // 4. Send success response
+    // 2. Send success response
+    // The frontend checks if result.success is true—if yes, 
+    // it shows a green success message and automatically updates the hotel table by calling fetchHotels() to get the new hotel list from the database.
+
     res.status(201).json({
       success: true,
       message: "Hotel created successfully",
       data: { hotel_id },
     });
   } catch (error) {
-    // 5. Handle errors
+    // Handle errors
     console.error("Error creating hotel:", error);
     res.status(500).json({
       success: false,
@@ -287,8 +287,6 @@ INSERT INTO hotels VALUES
 
 Retrieves hotel data from database and displays it to admin.
 
-### Types of READ Operations
-
 #### A. GET ALL HOTELS
 
 **Frontend (hotel-management.js):**
@@ -327,15 +325,15 @@ async fetchHotels() {
 **Backend (hotelController.js):**
 
 ```javascript
-// The backend receives this request and the getAllHotels() function checks if the request includes inactive hotels.
-//  Then it runs a SQL query SELECT * FROM hotels to get all hotel records from the database and sends them back to the frontend as a JSON array.
-//  The frontend waits for the response using await and receives a list of hotels like { success: true, count: 10, data: [...] }. Next, the frontend uses .map() to change the data format—it converts hotel_id to id, combines city and country into one location field, adds a dollar sign to the price, and formats the rating to one decimal place.
-//  After transforming the data, it saves it in this.hotels and calls renderHotelTable().
+.
+
+
 //  This function finds the table body in the HTML, clears old data, then creates a new row for each hotel showing the ID, name, location, rooms, price, rating, status, and action buttons (view, edit, delete).
-//  The result is a complete table that displays all hotels from the database in an easy-to-read format.
 const getAllHotels = async (req, res) => {
   try {
-    // 1. Check if admin wants to see inactive hotels
+    // 1. Check if admin wants to see inactive hotels 
+
+    // The backend receives this request and the getAllHotels() function checks if the request includes inactive hotels
     const includeInactive = req.query.includeInactive === "true";
 
     // 2. Build SQL query conditionally
@@ -344,9 +342,15 @@ const getAllHotels = async (req, res) => {
       : 'SELECT * FROM hotels WHERE status = "Active"';
 
     // 3. Execute query
+
     const [hotels] = await db.query(query);
 
     // 4. Return results
+
+    //  The result is a complete table that displays all hotels from the database in an easy-to-read format.
+        //  After transforming the data, it saves it in this.hotels and calls renderHotelTable().
+
+
     res.status(200).json({
       success: true,
       count: hotels.length,
@@ -376,155 +380,7 @@ User view (active only):
 ```sql
 SELECT * FROM hotels WHERE status = "Active"
 ```
-
-#### B. GET SINGLE HOTEL BY ID
-
-**Purpose:** View or edit specific hotel details
-
-**Backend:**
-
-```javascript
-const getHotelById = async (req, res) => {
-  try {
-    // 1. Extract hotel ID from URL parameter
-    const hotelId = req.params.id; // e.g., "HTL001"
-
-    // 2. Query database for specific hotel
-    const [hotels] = await db.query("SELECT * FROM hotels WHERE hotel_id = ?", [
-      hotelId,
-    ]);
-
-    // 3. Check if hotel exists
-    if (hotels.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: `Hotel with ID ${hotelId} not found`,
-      });
-    }
-
-    // 4. Return hotel data
-    res.status(200).json({
-      success: true,
-      data: hotels[0], // Return first (and only) result
-    });
-  } catch (error) {
-    console.error("Error getting hotel:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error fetching hotel",
-      error: error.message,
-    });
-  }
-};
-```
-
-**SQL Query:**
-
-```sql
-SELECT * FROM hotels WHERE hotel_id = 'HTL001'
-```
-
-#### C. GET HOTELS BY CITY
-
-**Purpose:** Filter hotels by location
-
-**Backend:**
-
-```javascript
-const getHotelsByCity = async (req, res) => {
-  try {
-    // 1. Get city from URL parameter
-    const city = req.params.cityName;
-
-    // 2. Query hotels in that city
-    const [hotels] = await db.query(
-      'SELECT * FROM hotels WHERE city = ? AND status = "Active"',
-      [city]
-    );
-
-    // 3. Return filtered results
-    res.status(200).json({
-      success: true,
-      city: city,
-      count: hotels.length,
-      data: hotels,
-    });
-  } catch (error) {
-    console.error("Error getting hotels by city:", error);
-    res.status(500).json({
-      success: false,
-      message: "Error fetching hotels",
-      error: error.message,
-    });
-  }
-};
-```
-
-**SQL Query:**
-
-```sql
-SELECT * FROM hotels
-WHERE city = 'Riyadh' AND status = 'Active'
-```
-
-### Frontend Display (hotel-management.js)
-
-```javascript
-renderHotelTable() {
-  const tableBody = document.getElementById("hotel-table-body");
-  tableBody.innerHTML = ""; // Clear existing rows
-
-  // Create table row for each hotel
-  this.hotels.forEach((hotel) => {
-    const row = document.createElement("tr");
-
-    // Determine status styling
-    const statusClass = hotel.status === "Active"
-      ? "status-active"
-      : "status-inactive";
-
-    // Build table row HTML
-    row.innerHTML = `
-      <td>${hotel.id}</td>
-      <td>${hotel.name}</td>
-      <td>${hotel.location}</td>
-      <td>${hotel.rooms}</td>
-      <td>${hotel.pricePerNight}</td>
-      <td>⭐ ${hotel.rating}</td>
-      <td><span class="${statusClass}">${hotel.status}</span></td>
-      <td class="action-buttons">
-        <button class="action-btn view-btn"
-                data-id="${hotel.id}"
-                title="View">
-          <i class="fas fa-eye"></i>
-        </button>
-        <button class="action-btn edit-btn"
-                data-id="${hotel.id}"
-                title="Edit">
-          <i class="fas fa-edit"></i>
-        </button>
-        <button class="action-btn delete-btn"
-                data-id="${hotel.id}"
-                title="Delete">
-          <i class="fas fa-trash"></i>
-        </button>
-      </td>
-    `;
-
-    tableBody.appendChild(row);
-  });
-}
-```
-
-### Key Concepts
-
-1. **Parameterized Queries**: Prevent SQL injection
-2. **Conditional Logic**: Different queries for admin vs user
-3. **Error Handling**: Graceful failure with meaningful messages
-4. **Status Codes**: 200 (success), 404 (not found), 500 (server error)
-5. **Data Transformation**: Backend data → Display format
-
----
+`---
 
 <a name="update-operation"></a>
 
