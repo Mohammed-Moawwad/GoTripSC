@@ -450,7 +450,7 @@ async handleUpdateHotel(hotelId, updates) {
   try {
     // Send PUT request with changes
     const response = await fetch(
-      `${API_BASE_URL}/hotels/${hotelId}`,
+      `${API_BASE_URL}/hotels/${hotelId}`, //"http://localhost:3000/api/hotels/HTL005"
       {
         method: "PUT",
         headers: {
