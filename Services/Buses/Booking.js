@@ -733,28 +733,15 @@ function formatDuration(minutes) {
 
 // User menu navigation functions
 function goToProfile() {
-  alert('🧑 My Profile page - Coming soon!\n\nYou can view and edit your profile information here.');
-  // Future: window.location.href = '/profile.html';
+  window.location.href = '../../User/dashboard.html';
 }
 
 function goToBookings() {
-  // Check if user has any bookings
-  const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  
-  if (bookings.length === 0) {
-    alert('📋 You have no bookings yet.\n\nComplete your first booking to see it here!');
-  } else {
-    // Show bookings summary
-    const userBookings = bookings.filter(b => b.userId === user.id);
-    alert(`📋 My Bookings\n\nYou have ${userBookings.length} booking(s).\n\nBookings page coming soon!`);
-    // Future: window.location.href = '/my-bookings.html';
-  }
+  window.location.href = '../../User/dashboard.html';
 }
 
 function goToSettings() {
-  alert('⚙️ Settings page - Coming soon!\n\nYou can manage your preferences and account settings here.');
-  // Future: window.location.href = '/settings.html';
+  window.location.href = '../../User/dashboard.html';
 }
 
 // Make functions global

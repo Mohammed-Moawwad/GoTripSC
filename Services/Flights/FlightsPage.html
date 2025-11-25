@@ -1843,17 +1843,30 @@
 
       function selectFlight(id) {
         const f = sampleFlights.find((x) => x.id === id);
-        alert(
-          "Selected: " +
-            f.airline +
-            " • " +
-            from +
-            " → " +
-            to +
-            " • SAR " +
-            f.price
-        );
-        // navigate to booking page when available
+        
+        if (!f) {
+          console.error('Flight not found:', id);
+          return;
+        }
+        
+        // Create URL parameters for booking page
+        const urlParams = new URLSearchParams();
+        urlParams.set('flight_id', f.id);
+        urlParams.set('airline', f.airline);
+        urlParams.set('flight_number', `${f.airline}-${f.id}`);
+        urlParams.set('from', from);
+        urlParams.set('to', to);
+        urlParams.set('departure_time', f.dep);
+        urlParams.set('arrival_time', f.arr);
+        urlParams.set('departure_date', depart);
+        urlParams.set('duration', f.duration);
+        urlParams.set('stops', f.stops);
+        urlParams.set('price', f.price);
+        urlParams.set('class', cls);
+        
+        // Navigate to booking page
+        console.log('Navigating to booking page with params:', urlParams.toString());
+        window.location.href = 'FlightBooking.html?' + urlParams.toString();
       }
 
       // sorting tabs

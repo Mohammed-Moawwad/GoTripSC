@@ -1,0 +1,125 @@
+
+/* Enhanced Card Animations */
+.card-3d {
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% { 
+    transform: translateY(0px) rotateY(0deg); 
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  50% { 
+    transform: translateY(-10px) rotateY(0deg); 
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.card-3d.flipped {
+  animation: none;
+}
+
+/* Enhanced Form Field Focus */
+.payment-form-3d input:focus,
+.payment-form-3d select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Step Title Animation */
+.step-title {
+  animation: slideInLeft 0.6s ease;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Booking Form Enhancement */
+.booking-form {
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button Pulse Effect */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+  }
+  50% {
+    box-shadow: 0 6px 30px rgba(74, 144, 226, 0.6);
+  }
+}
+
+.btn-primary {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.btn-primary:hover {
+  animation: none;
+}
+
+/* Smooth Card Flip */
+.card-3d {
+  transform-style: preserve-3d;
+}
+
+.card-front-3d,
+.card-back-3d {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Enhanced Step Line */
+.step-line {
+  transition: all 0.5s ease;
+}
+
+.step.completed + .step-line {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+  height: 4px;
+}
+
+/* Form Field Labels */
+.payment-form-3d label {
+  font-weight: 600;
+  color: var(--dark);
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.payment-form-3d .form-field:focus-within label {
+  color: var(--primary);
+}
+
+/* Better Shadows */
+.booking-form,
+.booking-summary {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+}
+
+.booking-form:hover,
+.booking-summary:hover {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+}

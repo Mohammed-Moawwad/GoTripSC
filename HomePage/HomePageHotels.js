@@ -116,3 +116,43 @@ chips?.addEventListener("click", (e) => {
   btn.classList.contains("active") ? selected.add(tag) : selected.delete(tag);
   applyFilter();
 });
+
+// ===== Hotel Booking Function
+function bookHotel(hotelName, location, price, rating, image) {
+  console.log('Booking hotel:', hotelName);
+  
+  // Check if user is logged in
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    // Redirect to login
+    sessionStorage.setItem('returnUrl', window.location.href);
+    alert('Please log in to book a hotel');
+    window.location.href = '../Login/login.html';
+    return;
+  }
+  
+  // Get check-in and check-out dates from form
+  const checkIn = document.getElementById('checkin')?.value || new Date(Date.now() + 86400000).toISOString().split('T')[0];
+  const checkOut = document.getElementById('checkout')?.value || new Date(Date.now() + 172800000).toISOString().split('T')[0];
+  
+  // Build booking URL with parameters
+  const params = new URLSearchParams();
+  params.set('hotel', Math.floor(Math.random() * 10000)); // Random ID
+  params.set('name', hotelName);
+  params.set('location', location);
+  params.set('checkIn', checkIn);
+  params.set('checkOut', checkOut);
+  params.set('rooms', 1);
+  params.set('guests', 2);
+  params.set('price', price);
+  params.set('rating', rating);
+  params.set('image', image);
+  params.set('amenities', 'Free WiFi,Pool,Restaurant,Gym');
+  
+  // Navigate to booking page
+  window.location.href = `../Services/Hotels/HotelBooking.html?${params.toString()}`;
+}
+
+// Make bookHotel available globally
+window.bookHotel = bookHotel;
+

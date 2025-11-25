@@ -695,6 +695,127 @@ const createHotelBooking = async (req, res) => {
   }
 };
 
+/**
+ * Create a new flight booking
+ */
+const createFlightBooking = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const {
+      flight_id,
+      airline,
+      flight_number,
+      from_city,
+      to_city,
+      departure_date,
+      departure_time,
+      arrival_time,
+      number_of_passengers,
+      class_type,
+      total_price,
+      passengers,
+    } = req.body;
+
+    // Validate required fields
+    if (
+      !airline ||
+      !flight_number ||
+      !from_city ||
+      !to_city ||
+      !departure_date ||
+      !number_of_passengers ||
+      !total_price
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All booking details are required",
+      });
+    }
+
+    // Generate booking ID
+    const bookingId = `FLTBK${Date.now()}`;
+
+    // Get a connection from the pool for transaction
+    const connection = await db.getConnection();
+
+    try {
+      // Start transaction
+      await connection.beginTransaction();
+
+      // First, try to insert with extended fields if columns exist
+      // Otherwise fall back to basic schema
+      try {
+        await connection.execute(
+          `INSERT INTO flight_bookings 
+          (booking_id, user_id, flight_id, airline, flight_number, from_city, to_city, 
+           departure_date, departure_time, arrival_time, number_of_passengers, class_type, 
+           total_price, booking_status, payment_status, passengers_data)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Confirmed', 'Paid', ?)`,
+          [
+            bookingId,
+            userId,
+            flight_id || `FL${Date.now()}`,
+            airline,
+            flight_number,
+            from_city,
+            to_city,
+            departure_date,
+            departure_time || '00:00:00',
+            arrival_time || '00:00:00',
+            number_of_passengers,
+            class_type || 'Economy',
+            total_price,
+            passengers && Array.isArray(passengers) ? JSON.stringify(passengers) : null,
+          ]
+        );
+      } catch (insertError) {
+        // If extended schema doesn't exist, use basic schema
+        console.log('Using basic flight_bookings schema');
+        await connection.execute(
+          `INSERT INTO flight_bookings 
+          (booking_id, user_id, flight_id, number_of_passengers, total_price, 
+           booking_status, payment_status)
+          VALUES (?, ?, ?, ?, ?, 'Confirmed', 'Paid')`,
+          [
+            bookingId,
+            userId,
+            flight_id || `FL${Date.now()}`,
+            number_of_passengers,
+            total_price,
+          ]
+        );
+      }
+
+      // Commit transaction
+      await connection.commit();
+
+      res.status(201).json({
+        success: true,
+        message: "Flight booking created successfully",
+        data: {
+          bookingId,
+          booking_status: "Confirmed",
+          payment_status: "Paid",
+        },
+      });
+    } catch (error) {
+      // Rollback transaction on error
+      await connection.rollback();
+      throw error;
+    } finally {
+      // Release connection back to pool
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Create Flight Booking Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error creating flight booking",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getUserBookings,
   getActiveBookings,
@@ -706,4 +827,5 @@ module.exports = {
   getBusBookings,
   getAllBookings,
   createHotelBooking,
+  createFlightBooking,
 };

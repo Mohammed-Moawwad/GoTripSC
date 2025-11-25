@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Complete Your Flight Booking - GoTrip</title>
+  <link rel="stylesheet" href="FlightBooking.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand-wrap">
+      <a href="../../HomePage/HomePage.html" class="brand-link">
+        <div class="brand-badge">
+          <img src="../../HomePage/Photos/logo.jpg" alt="GoTrip" class="brand-logo">
+        </div>
+        <h1 class="brand-title">GoTrip</h1>
+      </a>
+    </div>
+    <nav class="site-nav">
+      <ul class="nav-links">
+        <li><a href="../../HomePage/HomePage.html" class="active"><i class="fas fa-plane"></i> Flights</a></li>
+      </ul>
+      <ul class="nav-actions">
+        <li>
+          <div class="user-menu" id="userMenu">
+            <button class="user-btn" id="userBtn">
+              <i class="fas fa-user-circle"></i>
+              <span id="userName">Account</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown" id="userDropdown">
+              <a href="javascript:void(0);" class="dropdown-item" onclick="goToProfile()">
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+              </a>
+              <a href="javascript:void(0);" class="dropdown-item" onclick="goToBookings()">
+                <i class="fas fa-ticket-alt"></i>
+                <span>My Bookings</span>
+              </a>
+              <a href="javascript:void(0);" class="dropdown-item" onclick="goToSettings()">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="javascript:void(0);" class="dropdown-item logout-item" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="booking-container">
+    <div class="progress-steps">
+      <div class="step active" data-step="1">
+        <div class="step-circle">1</div>
+        <div class="step-label">Flight Details</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" data-step="2">
+        <div class="step-circle">2</div>
+        <div class="step-label">Passenger Info</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" data-step="3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Payment</div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" data-step="4">
+        <div class="step-circle">4</div>
+        <div class="step-label">Confirmation</div>
+      </div>
+    </div>
+
+    <div class="booking-layout">
+      <div class="booking-form">
+        <!-- Step 1: Flight Details -->
+        <div id="step1" class="step-content active">
+          <h2 class="step-title"><i class="fas fa-plane"></i> Your Flight Details</h2>
+          
+          <div class="flight-card">
+            <div class="flight-header">
+              <div class="airline-info">
+                <img id="airlineLogo" src="" alt="Airline Logo" class="airline-logo">
+                <div>
+                  <h3 id="airlineName">Airline</h3>
+                  <p class="flight-number" id="flightNumber">Flight #</p>
+                </div>
+              </div>
+              <div class="flight-class">
+                <span class="class-badge" id="classType">Economy</span>
+              </div>
+            </div>
+
+            <div class="flight-route">
+              <div class="route-point">
+                <div class="time" id="departureTime">--:--</div>
+                <div class="airport" id="departureAirport">---</div>
+                <div class="date" id="departureDate">---</div>
+              </div>
+              
+              <div class="route-middle">
+                <i class="fas fa-plane"></i>
+                <div class="duration" id="flightDuration">-- h -- m</div>
+                <div class="stops" id="flightStops">Direct</div>
+              </div>
+              
+              <div class="route-point">
+                <div class="time" id="arrivalTime">--:--</div>
+                <div class="airport" id="arrivalAirport">---</div>
+                <div class="date" id="arrivalDate">---</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="passengers-section">
+            <h3><i class="fas fa-users"></i> Number of Passengers</h3>
+            <div class="counter-row">
+              <label>Passengers</label>
+              <div class="counter">
+                <button type="button" class="counter-btn" onclick="decrementPassengers()">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <input type="number" id="passengerCount" value="1" min="1" max="9" readonly>
+                <button type="button" class="counter-btn" onclick="incrementPassengers()">
+                  <i class="fas fa-plus"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="button" class="btn-secondary" onclick="window.history.back()">
+              <i class="fas fa-arrow-left"></i> Back to Search
+            </button>
+            <button type="button" class="btn-primary" onclick="goToStep(2)">
+              Continue <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Passenger Information -->
+        <div id="step2" class="step-content">
+          <h2 class="step-title"><i class="fas fa-user"></i> Passenger Information</h2>
+          
+          <div class="passenger-form" id="passengerForms">
+            <!-- Passenger forms will be generated dynamically -->
+          </div>
+
+          <div class="button-group">
+            <button type="button" class="btn-secondary" onclick="goToStep(1)">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn-primary" onclick="validateAndGoToStep(3)">
+              Continue <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Payment -->
+        <div id="step3" class="step-content">
+          <h2 class="step-title"><i class="fas fa-credit-card"></i> Payment Information</h2>
+          
+          <div class="payment-section">
+            <div class="card-container-3d">
+              <div class="card-3d" id="card3d">
+                <!-- Front Side -->
+                <div class="card-front-3d">
+                  <div class="card-chip-3d"></div>
+                  <div class="card-logo-3d" id="cardLogo3d"></div>
+                  <div class="card-number-3d" id="cardNumberDisplay3d">
+                    #### #### #### ####
+                  </div>
+                  <div class="card-info-3d">
+                    <div class="card-holder-3d">
+                      <div class="label-3d">Card Holder</div>
+                      <div class="value-3d" id="cardHolderDisplay3d">Full Name</div>
+                    </div>
+                    <div class="card-expiry-3d">
+                      <div class="label-3d">Expires</div>
+                      <div class="value-3d" id="cardExpiryDisplay3d">01 / 25</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Back Side -->
+                <div class="card-back-3d">
+                  <div class="card-stripe-3d"></div>
+                  <div class="card-cvv-container-3d">
+                    <div class="cvv-label-3d">CVV</div>
+                    <div class="cvv-value-3d" id="cardCvvDisplay3d"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Payment Form -->
+            <div class="payment-form-3d">
+              <div class="form-field">
+                <label>Card Number *</label>
+                <input type="text" id="cardNumber3d" placeholder="0000 0000 0000 0000" maxlength="19">
+              </div>
+
+              <div class="form-field">
+                <label>Card Holder Name *</label>
+                <input type="text" id="cardName3d" placeholder="Full Name on Card">
+              </div>
+
+              <div class="date-inputs-3d">
+                <div class="form-field">
+                  <label>Expiry Month *</label>
+                  <select id="expMonth3d">
+                    <option value="">MM</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </select>
+                </div>
+                <div class="form-field">
+                  <label>Expiry Year *</label>
+                  <select id="expYear3d">
+                    <option value="">YYYY</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label>CVV *</label>
+                <input type="text" id="cardCvv3d" placeholder="000" maxlength="4">
+              </div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="button" class="btn-secondary" onclick="goToStep(2)">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button type="button" class="btn-primary btn-pay" onclick="processPayment()">
+              <i class="fas fa-lock"></i> Pay Now
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Confirmation -->
+        <div id="step4" class="step-content">
+          <div class="confirmation-container">
+            <div class="confirmation-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="confirmation-title">Booking Confirmed!</h2>
+            <p class="confirmation-subtitle">Your flight reservation is confirmed</p>
+            
+            <div class="booking-reference">
+              <div class="reference-label">Booking Reference</div>
+              <div class="reference-number" id="bookingReference">GT-FLT-XXXXXXXX-XXXX</div>
+            </div>
+
+            <div class="confirmation-details" id="confirmationDetails">
+              <!-- Details will be populated by JavaScript -->
+            </div>
+
+            <div class="button-group">
+              <button type="button" class="btn-secondary" onclick="downloadTicket()">
+                <i class="fas fa-download"></i> Download Ticket
+              </button>
+              <button type="button" class="btn-primary" onclick="window.location.href='../../HomePage/HomePage.html'">
+                <i class="fas fa-home"></i> Return Home
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Summary Sidebar -->
+      <div class="booking-summary">
+        <h3><i class="fas fa-file-invoice"></i> Booking Summary</h3>
+        
+        <div class="summary-section">
+          <h4>Flight</h4>
+          <div class="summary-item">
+            <span>Route</span>
+            <span id="summaryRoute">--- → ---</span>
+          </div>
+          <div class="summary-item">
+            <span>Date</span>
+            <span id="summaryDate">---</span>
+          </div>
+          <div class="summary-item">
+            <span>Passengers</span>
+            <span id="summaryPassengers">1</span>
+          </div>
+          <div class="summary-item">
+            <span>Class</span>
+            <span id="summaryClass">Economy</span>
+          </div>
+        </div>
+
+        <div class="summary-section">
+          <h4>Price Details</h4>
+          <div class="summary-item">
+            <span>Base Fare</span>
+            <span id="baseFare">SAR 0</span>
+          </div>
+          <div class="summary-item">
+            <span>Taxes & Fees</span>
+            <span id="taxesFees">SAR 0</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-item summary-total">
+            <span>Total</span>
+            <span id="totalPrice">SAR 0</span>
+          </div>
+        </div>
+
+        <div class="summary-badges">
+          <div class="badge-item">
+            <i class="fas fa-check-circle"></i> Free cancellation
+          </div>
+          <div class="badge-item">
+            <i class="fas fa-shield-alt"></i> Secure payment
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-grid">
+        <div class="f-col">
+          <div class="f-brand">
+            <img src="../../HomePage/Photos/logo.jpg" alt="GoTrip Logo" class="footer-logo">
+            <span>GoTrip</span>
+          </div>
+          <p class="muted">Your trusted travel partner for flights, hotels, and bus bookings across Saudi Arabia.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="../../HomePage/HomePage.html"><i class="fas fa-plane"></i> Flights</a></li>
+            <li><a href="../../HomePage/HomePageHotels.html"><i class="fas fa-hotel"></i> Hotels</a></li>
+            <li><a href="../../HomePage/HomePageBuses.html"><i class="fas fa-bus"></i> Buses</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
+            <li><a href="#"><i class="fas fa-briefcase"></i> Careers</a></li>
+            <li><a href="#"><i class="fas fa-newspaper"></i> Press</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
+            <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+            <li><a href="#"><i class="fas fa-cookie-bite"></i> Cookie Policy</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 GoTrip. All rights reserved.</p>
+        <div class="payment-methods-footer">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-amex"></i>
+          <i class="fab fa-apple-pay"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="FlightBooking.js"></script>
+</body>
+</html>
