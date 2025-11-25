@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Payment Form</title>
+</head>
+<body>
+    <div class="container">
+        <!-- Card Display -->
+        <div class="card-container">
+            <div class="card" id="card">
+                <!-- Front Side -->
+                <div class="card-front">
+                    <div class="card-chip"></div>
+                    <div class="card-logo" id="card-logo"></div>
+                    <div class="card-number" id="card-number-display">
+                        #### #### #### ####
+                    </div>
+                    <div class="card-info">
+                        <div class="card-holder">
+                            <div class="label">Card Holder</div>
+                            <div class="value" id="card-holder-display">Full Name</div>
+                        </div>
+                        <div class="card-expiry">
+                            <div class="label">Expires</div>
+                            <div class="value" id="card-expiry-display">01 / 21</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Back Side -->
+                <div class="card-back">
+                    <div class="card-stripe"></div>
+                    <div class="card-cvv">
+                        <div class="cvv-label">CVV</div>
+                        <div class="cvv-value" id="card-cvv-display"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form -->
+        <div class="form-container">
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" maxlength="19" placeholder="0000 0000 0000 0000">
+                </div>
+                
+                <div class="form-group">
+                    <label for="card-holder">Card Holders</label>
+                    <input type="text" id="card-holder" maxlength="25" placeholder="Full Name">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiration Date</label>
+                        <div class="date-inputs">
+                            <select id="exp-month">
+                                <option value="">Months</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                            <select id="exp-year">
+                                <option value="">Years</option>
+                                <option value="21">2021</option>
+                                <option value="22">2022</option>
+                                <option value="23">2023</option>
+                                <option value="24">2024</option>
+                                <option value="25">2025</option>
+                                <option value="26">2026</option>
+                                <option value="27">2027</option>
+                                <option value="28">2028</option>
+                                <option value="29">2029</option>
+                                <option value="30">2030</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" maxlength="3" placeholder="000">
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">SUBMIT</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="my.js"></script>
+</body>
+</html>

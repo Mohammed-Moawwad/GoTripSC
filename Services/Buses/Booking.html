@@ -149,46 +149,85 @@
         </div>
         <div id="step3" class="step-content">
           <h2 class="step-title"><i class="fas fa-credit-card"></i> Payment</h2>
-          <div class="payment-methods">
-            <div class="payment-method active" data-method="card">
-              <input type="radio" name="paymentMethod" value="card" id="payCard" checked>
-              <label for="payCard">
-                <span class="method-icon"><i class="fas fa-credit-card"></i></span>
-                <span class="method-name">Credit Card</span>
-              </label>
-            </div>
-            <div class="payment-method" data-method="stc">
-              <input type="radio" name="paymentMethod" value="stc" id="payStc">
-              <label for="payStc">
-                <span class="method-icon"><i class="fas fa-mobile-alt"></i></span>
-                <span class="method-name">STC Pay</span>
-              </label>
-            </div>
-            <div class="payment-method" data-method="apple">
-              <input type="radio" name="paymentMethod" value="apple" id="payApple">
-              <label for="payApple">
-                <span class="method-icon"><i class="fab fa-apple"></i></span>
-                <span class="method-name">Apple Pay</span>
-              </label>
+          
+          <!-- Interactive 3D Card -->
+          <div class="card-container-3d">
+            <div class="card-3d" id="card3d">
+              <!-- Front Side -->
+              <div class="card-front-3d">
+                <div class="card-chip-3d"></div>
+                <div class="card-logo-3d" id="cardLogo3d"></div>
+                <div class="card-number-3d" id="cardNumberDisplay3d">
+                  #### #### #### ####
+                </div>
+                <div class="card-info-3d">
+                  <div class="card-holder-3d">
+                    <div class="label-3d">Card Holder</div>
+                    <div class="value-3d" id="cardHolderDisplay3d">Full Name</div>
+                  </div>
+                  <div class="card-expiry-3d">
+                    <div class="label-3d">Expires</div>
+                    <div class="value-3d" id="cardExpiryDisplay3d">01 / 25</div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Back Side -->
+              <div class="card-back-3d">
+                <div class="card-stripe-3d"></div>
+                <div class="card-cvv-container-3d">
+                  <div class="cvv-label-3d">CVV</div>
+                  <div class="cvv-value-3d" id="cardCvvDisplay3d"></div>
+                </div>
+              </div>
             </div>
           </div>
-          <div id="cardPaymentForm" class="payment-form">
+
+          <!-- Payment Form -->
+          <div id="cardPaymentForm" class="payment-form-3d">
             <div class="form-field">
               <label>Card Number *</label>
-              <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+              <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
             </div>
             <div class="form-field">
-              <label>Name *</label>
-              <input type="text" id="cardName" placeholder="JOHN DOE">
+              <label>Card Holder *</label>
+              <input type="text" id="cardName" placeholder="FULL NAME">
             </div>
             <div class="form-row">
               <div class="form-field">
-                <label>Expiry *</label>
-                <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                <label>Expiration Date *</label>
+                <div class="date-inputs-3d">
+                  <select id="expMonth">
+                    <option value="">Month</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </select>
+                  <select id="expYear">
+                    <option value="">Year</option>
+                    <option value="25">2025</option>
+                    <option value="26">2026</option>
+                    <option value="27">2027</option>
+                    <option value="28">2028</option>
+                    <option value="29">2029</option>
+                    <option value="30">2030</option>
+                    <option value="31">2031</option>
+                    <option value="32">2032</option>
+                  </select>
+                </div>
               </div>
               <div class="form-field">
                 <label>CVV *</label>
-                <input type="text" id="cardCvv" placeholder="123" maxlength="4">
+                <input type="text" id="cardCvv" placeholder="000" maxlength="3">
               </div>
             </div>
           </div>

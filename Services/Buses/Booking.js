@@ -425,56 +425,106 @@ function processPayment(event) {
   // Prevent any default behavior
   if (event) event.preventDefault();
   
+  console.log('🔄 processPayment called');
+  
   // Validate payment form
   const agreeTerms = document.getElementById('agreeTerms');
+  if (!agreeTerms) {
+    console.error('❌ agreeTerms checkbox not found');
+    alert('⚠️ Payment form error. Please refresh the page.');
+    return;
+  }
+  
   if (!agreeTerms.checked) {
     alert('⚠️ Please agree to the Terms & Conditions to continue');
     agreeTerms.focus();
     return;
   }
   
-  const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+  // Check for payment method (default to card if not found, since we removed payment method selection)
+  const paymentMethodInput = document.querySelector('input[name="paymentMethod"]:checked');
+  const paymentMethod = paymentMethodInput ? paymentMethodInput.value : 'card';
+  
+  console.log('💳 Payment method:', paymentMethod);
   
   // Validate based on payment method
   if (paymentMethod === 'card') {
-    const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-    const cardName = document.getElementById('cardName').value.trim();
-    const cardExpiry = document.getElementById('cardExpiry').value;
-    const cardCvv = document.getElementById('cardCvv').value;
+    console.log('✅ Validating card payment');
+    
+    const cardNumberInput = document.getElementById('cardNumber');
+    const cardNameInput = document.getElementById('cardName');
+    const expMonth = document.getElementById('expMonth');
+    const expYear = document.getElementById('expYear');
+    const cardCvvInput = document.getElementById('cardCvv');
+    
+    // Check if all fields exist
+    if (!cardNumberInput || !cardNameInput || !expMonth || !expYear || !cardCvvInput) {
+      console.error('❌ Some card form fields are missing:', {
+        cardNumber: !!cardNumberInput,
+        cardName: !!cardNameInput,
+        expMonth: !!expMonth,
+        expYear: !!expYear,
+        cardCvv: !!cardCvvInput
+      });
+      alert('⚠️ Payment form error. Please refresh the page.');
+      return;
+    }
+    
+    const cardNumber = cardNumberInput.value.replace(/\s/g, '');
+    const cardName = cardNameInput.value.trim();
+    const cardCvv = cardCvvInput.value;
+    
+    console.log('Card validation:', {
+      cardNumberLength: cardNumber.length,
+      hasCardName: !!cardName,
+      hasMonth: !!expMonth.value,
+      hasYear: !!expYear.value,
+      cvvLength: cardCvv.length
+    });
     
     if (!cardNumber || cardNumber.length < 13) {
       alert('⚠️ Please enter a valid card number (at least 13 digits)');
-      document.getElementById('cardNumber').focus();
+      cardNumberInput.focus();
       return;
     }
     
     if (!cardName) {
       alert('⚠️ Please enter the cardholder name');
-      document.getElementById('cardName').focus();
+      cardNameInput.focus();
       return;
     }
     
-    if (!cardExpiry || cardExpiry.length !== 5) {
-      alert('⚠️ Please enter a valid expiry date (MM/YY)');
-      document.getElementById('cardExpiry').focus();
+    // Check if expiry month and year are selected
+    if (!expMonth || !expMonth.value || expMonth.value === '') {
+      alert('⚠️ Please select expiration month');
+      expMonth.focus();
+      return;
+    }
+    
+    if (!expYear || !expYear.value || expYear.value === '') {
+      alert('⚠️ Please select expiration year');
+      expYear.focus();
       return;
     }
     
     // Validate expiry date is not in the past
-    const [month, year] = cardExpiry.split('/');
+    const month = expMonth.value;
+    const year = expYear.value;
     const expiryDate = new Date(`20${year}`, parseInt(month) - 1);
     const now = new Date();
     if (expiryDate < now) {
       alert('⚠️ Card has expired. Please use a valid card');
-      document.getElementById('cardExpiry').focus();
+      expMonth.focus();
       return;
     }
     
     if (!cardCvv || cardCvv.length < 3) {
-      alert('⚠️ Please enter a valid CVV (3 or 4 digits)');
-      document.getElementById('cardCvv').focus();
+      alert('⚠️ Please enter a valid CVV (3 digits)');
+      cardCvvInput.focus();
       return;
     }
+    
+    console.log('✅ All card validations passed');
   }
   
   // Get the pay button
@@ -489,27 +539,47 @@ function processPayment(event) {
   
   // Simulate payment processing with realistic delay
   setTimeout(() => {
-    // Generate unique booking reference
-    bookingReference = 'GT-' + Date.now().toString().slice(-8) + '-' + Math.random().toString(36).substr(2, 4).toUpperCase();
-    
-    // Save booking to localStorage
-    saveBooking();
-    
-    // Display confirmation details
-    displayConfirmation();
-    
-    // Go to confirmation step
-    goToStep(4);
-    
-    // Reset button (even though user won't see it)
-    payButton.disabled = false;
-    payButton.innerHTML = originalText;
-    payButton.style.opacity = '1';
-    payButton.style.cursor = 'pointer';
-    
-    // Show success notification
-    console.log('✅ Payment processed successfully!');
-    console.log('Booking Reference:', bookingReference);
+    try {
+      console.log('💰 Payment processing completed');
+      
+      // Generate unique booking reference
+      bookingReference = 'GT-' + Date.now().toString().slice(-8) + '-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+      console.log('📝 Booking reference:', bookingReference);
+      
+      // Save booking to localStorage
+      console.log('💾 Saving booking...');
+      saveBooking();
+      console.log('✅ Booking saved');
+      
+      // Display confirmation details
+      console.log('📋 Displaying confirmation...');
+      displayConfirmation();
+      console.log('✅ Confirmation displayed');
+      
+      // Go to confirmation step
+      console.log('➡️ Moving to step 4...');
+      goToStep(4);
+      
+      // Reset button (even though user won't see it)
+      payButton.disabled = false;
+      payButton.innerHTML = originalText;
+      payButton.style.opacity = '1';
+      payButton.style.cursor = 'pointer';
+      
+      // Show success notification
+      console.log('✅ Payment processed successfully!');
+      console.log('🎉 Booking Reference:', bookingReference);
+      
+    } catch (error) {
+      console.error('❌ Error processing payment:', error);
+      alert('⚠️ Error processing payment: ' + error.message + '\n\nPlease try again.');
+      
+      // Reset button
+      payButton.disabled = false;
+      payButton.innerHTML = originalText;
+      payButton.style.opacity = '1';
+      payButton.style.cursor = 'pointer';
+    }
     
   }, 2500); // 2.5 seconds for realistic payment processing
 }
@@ -526,8 +596,9 @@ function saveBooking() {
     });
   }
   
-  // Get payment method
-  const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+  // Get payment method (default to 'card' if not found since we removed payment method selection)
+  const paymentMethodInput = document.querySelector('input[name="paymentMethod"]:checked');
+  const paymentMethod = paymentMethodInput ? paymentMethodInput.value : 'card';
   
   const booking = {
     reference: bookingReference,
@@ -697,3 +768,126 @@ window.logout = logout;
 window.goToProfile = goToProfile;
 window.goToBookings = goToBookings;
 window.goToSettings = goToSettings;
+
+// ===== 3D CARD INTERACTIVE PAYMENT =====
+
+// Card type detection and logos
+const cardLogos = {
+  visa: `<svg viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="48" height="32" rx="4" fill="white" opacity="0.9"/>
+    <text x="24" y="20" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#1434CB" text-anchor="middle">VISA</text>
+  </svg>`,
+  
+  mastercard: `<svg viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="48" height="32" rx="4" fill="white" opacity="0.9"/>
+    <circle cx="18" cy="16" r="7" fill="#EB001B"/>
+    <circle cx="30" cy="16" r="7" fill="#F79E1B"/>
+    <path d="M 24 10 A 7 7 0 0 1 24 22 A 7 7 0 0 1 24 10" fill="#FF5F00"/>
+  </svg>`,
+  
+  amex: `<svg viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="48" height="32" rx="4" fill="white" opacity="0.9"/>
+    <rect x="4" y="10" width="40" height="12" fill="#006FCF"/>
+    <text x="24" y="18.5" font-family="Arial,sans-serif" font-size="7" font-weight="bold" fill="white" text-anchor="middle">AMEX</text>
+  </svg>`,
+  
+  discover: `<svg viewBox="0 0 48 32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="48" height="32" rx="4" fill="white" opacity="0.9"/>
+    <circle cx="38" cy="16" r="10" fill="#FF6000"/>
+    <text x="16" y="19" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#FF6000" text-anchor="middle">DISCOVER</text>
+  </svg>`
+};
+
+function detectCardType(number) {
+  const cleaned = number.replace(/\s/g, '');
+  
+  if (/^4/.test(cleaned)) return 'visa';
+  if (/^5[1-5]/.test(cleaned) || /^2(2[2-9]|[3-6]|7[0-1]|720)/.test(cleaned)) return 'mastercard';
+  if (/^3[47]/.test(cleaned)) return 'amex';
+  if (/^6011|^64[4-9]|^65/.test(cleaned)) return 'discover';
+  
+  return null;
+}
+
+// Initialize 3D card functionality
+function init3DCard() {
+  const cardNumberInput = document.getElementById('cardNumber');
+  const cardNameInput = document.getElementById('cardName');
+  const expMonthSelect = document.getElementById('expMonth');
+  const expYearSelect = document.getElementById('expYear');
+  const cvvInput = document.getElementById('cardCvv');
+  
+  const cardNumberDisplay = document.getElementById('cardNumberDisplay3d');
+  const cardHolderDisplay = document.getElementById('cardHolderDisplay3d');
+  const cardExpiryDisplay = document.getElementById('cardExpiryDisplay3d');
+  const cardCvvDisplay = document.getElementById('cardCvvDisplay3d');
+  const cardLogo = document.getElementById('cardLogo3d');
+  const card = document.getElementById('card3d');
+  
+  if (!cardNumberInput || !card) return;
+  
+  // Format and update card number
+  cardNumberInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s/g, '');
+    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+    e.target.value = formattedValue;
+    
+    if (formattedValue) {
+      cardNumberDisplay.textContent = formattedValue;
+    } else {
+      cardNumberDisplay.textContent = '#### #### #### ####';
+    }
+    
+    // Detect and display card type
+    const cardType = detectCardType(value);
+    if (cardType && cardLogos[cardType]) {
+      cardLogo.innerHTML = cardLogos[cardType];
+    } else {
+      cardLogo.innerHTML = '';
+    }
+  });
+  
+  // Update card holder name
+  cardNameInput.addEventListener('input', function(e) {
+    const value = e.target.value;
+    if (value) {
+      cardHolderDisplay.textContent = value.toUpperCase();
+    } else {
+      cardHolderDisplay.textContent = 'Full Name';
+    }
+  });
+  
+  // Update expiry date
+  function updateExpiry() {
+    const month = expMonthSelect.value || '01';
+    const year = expYearSelect.value || '25';
+    cardExpiryDisplay.textContent = `${month} / ${year}`;
+  }
+  
+  expMonthSelect.addEventListener('change', updateExpiry);
+  expYearSelect.addEventListener('change', updateExpiry);
+  
+  // Update CVV and flip card
+  cvvInput.addEventListener('input', function(e) {
+    const value = e.target.value.replace(/\D/g, '');
+    e.target.value = value;
+    cardCvvDisplay.textContent = value;
+  });
+  
+  cvvInput.addEventListener('focus', function() {
+    card.classList.add('flipped');
+  });
+  
+  cvvInput.addEventListener('blur', function() {
+    card.classList.remove('flipped');
+  });
+}
+
+// Initialize 3D card when step 3 is shown
+const originalGoToStep = window.goToStep;
+window.goToStep = function(step) {
+  originalGoToStep(step);
+  if (step === 3) {
+    setTimeout(init3DCard, 100);
+  }
+};
