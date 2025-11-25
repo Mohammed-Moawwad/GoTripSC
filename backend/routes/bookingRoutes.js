@@ -21,6 +21,9 @@ router.get("/history", bookingController.getBookingHistory);
 // Create new hotel booking
 router.post("/hotels", bookingController.createHotelBooking);
 
+// Create new flight booking
+router.post("/flights", bookingController.createFlightBooking);
+
 // Get all bookings (hotels, flights, buses combined)
 router.get("/all", bookingController.getAllBookings);
 

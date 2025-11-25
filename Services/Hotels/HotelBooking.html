@@ -1,16 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Complete Your Booking - GoTrip</title>
-  <link rel="stylesheet" href="Booking_new.css">
+  <title>Complete Your Hotel Booking - GoTrip</title>
+  <link rel="stylesheet" href="HotelBooking.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="topbar">
     <div class="brand-wrap">
-      <a href="../../HomePage/HomePageBuses.html" class="brand-link">
+      <a href="../../HomePage/HomePageHotels.html" class="brand-link">
         <div class="brand-badge">
           <img src="../../HomePage/Photos/logo.jpg" alt="GoTrip" class="brand-logo">
         </div>
@@ -19,7 +19,7 @@
     </div>
     <nav class="site-nav">
       <ul class="nav-links">
-        <li><a href="../../HomePage/HomePageBuses.html" class="active"><i class="fas fa-bus"></i> Buses</a></li>
+        <li><a href="../../HomePage/HomePageHotels.html" class="active"><i class="fas fa-hotel"></i> Hotels</a></li>
       </ul>
       <ul class="nav-actions">
         <li>
@@ -57,12 +57,12 @@
     <div class="progress-steps">
       <div class="step active" data-step="1">
         <div class="step-circle">1</div>
-        <div class="step-label">Trip Details</div>
+        <div class="step-label">Hotel Details</div>
       </div>
       <div class="step-line"></div>
       <div class="step" data-step="2">
         <div class="step-circle">2</div>
-        <div class="step-label">Passenger Info</div>
+        <div class="step-label">Guest Info</div>
       </div>
       <div class="step-line"></div>
       <div class="step" data-step="3">
@@ -78,68 +78,109 @@
     <div class="booking-layout">
       <div class="booking-form">
         <div id="step1" class="step-content active">
-          <h2 class="step-title"><i class="fas fa-bus"></i> Your Trip Details</h2>
-          <div class="trip-card">
-            <div class="route-info">
-              <div class="route-point">
-                <div class="route-time" id="departTime">08:00</div>
-                <div class="route-dot"></div>
-                <div class="route-city" id="fromCity">Riyadh</div>
-                <div class="route-date" id="departDate">Nov 8</div>
-              </div>
-              <div class="route-line-container">
-                <div class="route-duration" id="tripDuration">1h 30m</div>
-                <div class="route-line-visual"></div>
-                <div class="route-stops" id="tripStops">Nonstop</div>
-              </div>
-              <div class="route-point">
-                <div class="route-time" id="arriveTime">10:30</div>
-                <div class="route-dot"></div>
-                <div class="route-city" id="toCity">Jeddah</div>
-                <div class="route-date" id="arriveDate">Nov 8</div>
+          <h2 class="step-title"><i class="fas fa-hotel"></i> Your Hotel Details</h2>
+          <div class="hotel-card">
+            <div class="hotel-image">
+              <img id="hotelImage" src="" alt="Hotel">
+              <div class="hotel-rating">
+                <i class="fas fa-star"></i>
+                <span id="hotelRating">5.0</span>
               </div>
             </div>
-            <div class="trip-details-grid">
-              <div class="detail-item">
-                <span class="detail-label"> Operator</span>
-                <span class="detail-value" id="operatorName">SAPTCO</span>
+            <div class="hotel-info">
+              <h3 id="hotelName">Hotel Name</h3>
+              <div class="hotel-location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="hotelLocation">Location</span>
               </div>
-              <div class="detail-item">
-                <span class="detail-label"> Class</span>
-                <span class="detail-value" id="busClass">VIP</span>
+              <div class="booking-dates">
+                <div class="date-item">
+                  <span class="date-label">Check-in</span>
+                  <div class="date-value">
+                    <i class="fas fa-calendar-check"></i>
+                    <span id="checkInDate">Nov 25, 2025</span>
+                  </div>
+                </div>
+                <div class="date-divider">
+                  <i class="fas fa-arrow-right"></i>
+                  <span id="nightsCount">3 nights</span>
+                </div>
+                <div class="date-item">
+                  <span class="date-label">Check-out</span>
+                  <div class="date-value">
+                    <i class="fas fa-calendar-times"></i>
+                    <span id="checkOutDate">Nov 28, 2025</span>
+                  </div>
+                </div>
               </div>
-              <div class="detail-item">
-                <span class="detail-label"> Seats</span>
-                <span class="detail-value" id="seatsAvailable">15</span>
+              <div class="hotel-details-grid">
+                <div class="detail-item">
+                  <span class="detail-label">Rooms</span>
+                  <span class="detail-value" id="roomCount">1</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Guests</span>
+                  <span class="detail-value" id="guestCount">2</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Price/Night</span>
+                  <span class="detail-value" id="pricePerNight">500 SAR</span>
+                </div>
               </div>
+              <div class="amenities-list" id="amenitiesList"></div>
             </div>
-            <div class="amenities-list" id="amenitiesList"></div>
           </div>
-          <div class="passengers-selection">
-            <h3><i class="fas fa-users"></i> Passengers</h3>
-            <div class="passenger-counter">
-              <button type="button" class="counter-btn" onclick="decrementPassengers()"><i class="fas fa-minus"></i></button>
-              <input type="number" id="passengerCount" value="1" min="1" max="10" readonly>
-              <button type="button" class="counter-btn" onclick="incrementPassengers()"><i class="fas fa-plus"></i></button>
+          <div class="rooms-selection">
+            <h3><i class="fas fa-door-open"></i> Rooms & Guests</h3>
+            <div class="selection-row">
+              <div class="selection-item">
+                <label>Number of Rooms</label>
+                <div class="counter">
+                  <button type="button" class="counter-btn" onclick="decrementRooms()"><i class="fas fa-minus"></i></button>
+                  <input type="number" id="roomCountInput" value="1" min="1" max="10" readonly>
+                  <button type="button" class="counter-btn" onclick="incrementRooms()"><i class="fas fa-plus"></i></button>
+                </div>
+              </div>
+              <div class="selection-item">
+                <label>Number of Guests</label>
+                <div class="counter">
+                  <button type="button" class="counter-btn" onclick="decrementGuests()"><i class="fas fa-minus"></i></button>
+                  <input type="number" id="guestCountInput" value="2" min="1" max="20" readonly>
+                  <button type="button" class="counter-btn" onclick="incrementGuests()"><i class="fas fa-plus"></i></button>
+                </div>
+              </div>
             </div>
-            <p class="help-text">Max 10 passengers</p>
+            <p class="help-text">Max 10 rooms, 20 guests</p>
           </div>
           <button type="button" class="btn-next" onclick="goToStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
         </div>
         <div id="step2" class="step-content">
-          <h2 class="step-title"><i class="fas fa-user-edit"></i> Passenger Information</h2>
-          <div id="passengersContainer"></div>
-          <div class="contact-info">
-            <h3><i class="fas fa-address-book"></i> Contact Info</h3>
+          <h2 class="step-title"><i class="fas fa-user-edit"></i> Guest Information</h2>
+          <div class="guest-info-section">
+            <h3><i class="fas fa-user-tie"></i> Primary Guest</h3>
+            <div class="form-row">
+              <div class="form-field">
+                <label>First Name *</label>
+                <input type="text" id="guestFirstName" placeholder="First Name" required>
+              </div>
+              <div class="form-field">
+                <label>Last Name *</label>
+                <input type="text" id="guestLastName" placeholder="Last Name" required>
+              </div>
+            </div>
             <div class="form-row">
               <div class="form-field">
                 <label>Email *</label>
-                <input type="email" id="contactEmail" placeholder="your@email.com" required>
+                <input type="email" id="guestEmail" placeholder="your@email.com" required>
               </div>
               <div class="form-field">
                 <label>Phone *</label>
-                <input type="tel" id="contactPhone" placeholder="+966 5x xxx xxxx" required>
+                <input type="tel" id="guestPhone" placeholder="+966 5x xxx xxxx" required>
               </div>
+            </div>
+            <div class="form-field">
+              <label>Special Requests (Optional)</label>
+              <textarea id="specialRequests" rows="3" placeholder="Any special requirements or requests..."></textarea>
             </div>
           </div>
           <div class="form-actions">
@@ -243,31 +284,53 @@
         <div id="step4" class="step-content">
           <div class="confirmation-success">
             <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-            <h2>Confirmed!</h2>
-            <p>Your booking is confirmed</p>
+            <h2>Booking Confirmed!</h2>
+            <p>Your hotel reservation is confirmed</p>
             <div class="booking-reference">
-              <strong>Reference:</strong>
+              <strong>Confirmation Number:</strong>
               <span id="bookingReference">GT-XXXX</span>
             </div>
+            <div class="confirmation-details" id="confirmationDetails"></div>
             <div class="confirmation-actions">
-              <button class="btn-primary" onclick="downloadTicket()"><i class="fas fa-download"></i> Download Ticket</button>
-              <button class="btn-secondary" onclick="window.location.href='../../HomePage/HomePageBuses.html'"><i class="fas fa-home"></i> Home</button>
+              <button class="btn-primary" onclick="downloadConfirmation()"><i class="fas fa-download"></i> Download Confirmation</button>
+              <button class="btn-secondary" onclick="window.location.href='../../HomePage/HomePageHotels.html'"><i class="fas fa-home"></i> Home</button>
             </div>
           </div>
         </div>
       </div>
       <aside class="booking-summary">
         <h3><i class="fas fa-receipt"></i> Booking Summary</h3>
-        <div class="summary-item">
-          <span>Base Fare</span>
-          <span id="baseFare">0.00 SAR</span>
+        <div class="summary-hotel-info">
+          <div class="summary-hotel-name" id="summaryHotelName">Hotel Name</div>
+          <div class="summary-hotel-location" id="summaryHotelLocation">Location</div>
         </div>
         <div class="summary-item">
-          <span>Passengers</span>
-          <span id="passengerCountDisplay">1</span>
+          <span>Check-in</span>
+          <span id="summaryCheckIn">Nov 25</span>
         </div>
         <div class="summary-item">
-          <span>Fees</span>
+          <span>Check-out</span>
+          <span id="summaryCheckOut">Nov 28</span>
+        </div>
+        <div class="summary-item">
+          <span>Nights</span>
+          <span id="summaryNights">3</span>
+        </div>
+        <div class="summary-item">
+          <span>Rooms</span>
+          <span id="summaryRooms">1</span>
+        </div>
+        <div class="summary-item">
+          <span>Guests</span>
+          <span id="summaryGuests">2</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-item">
+          <span>Room Rate</span>
+          <span id="roomRate">0.00 SAR</span>
+        </div>
+        <div class="summary-item">
+          <span>Taxes & Fees</span>
           <span id="taxesFees">0.00 SAR</span>
         </div>
         <div class="summary-divider"></div>
@@ -335,7 +398,60 @@
         </div>
       </div>
     </div>
+  </
+    <div class="footer-content">
+      <div class="footer-grid">
+        <div class="f-col">
+          <div class="f-brand">
+            <img src="../../HomePage/Photos/logo.jpg" alt="GoTrip Logo" class="footer-logo">
+            <span>GoTrip</span>
+          </div>
+          <p class="muted">Your trusted travel partner for flights, hotels, and bus bookings across Saudi Arabia.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+        <div class="f-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="../../HomePage/HomePage.html"><i class="fas fa-plane"></i> Flights</a></li>
+            <li><a href="../../HomePage/HomePageHotels.html"><i class="fas fa-hotel"></i> Hotels</a></li>
+            <li><a href="../../HomePage/HomePageBuses.html"><i class="fas fa-bus"></i> Buses</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
+            <li><a href="#"><i class="fas fa-briefcase"></i> Careers</a></li>
+            <li><a href="#"><i class="fas fa-newspaper"></i> Press</a></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
+            <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+            <li><a href="#"><i class="fas fa-cookie-bite"></i> Cookie Policy</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 GoTrip. All rights reserved.</p>
+        <div class="payment-methods-footer">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-amex"></i>
+          <i class="fab fa-apple-pay"></i>
+        </div>
+      </div>
+    </div>
   </footer>
-  <script src="Booking.js"></script>
+  <script src="HotelBooking.js"></script>
 </body>
 </html>

@@ -327,16 +327,20 @@ async function handleSignup(userData) {
         window.location.href = "/HomePage/HomePage.html";
       }, 2000);
     } else {
-      // Show error message
-      showErrorMessage("Registration Failed", result.message);
+      // Show error message with more details
+      const errorMsg = result.message || "Unknown error occurred";
+      const detailedError = result.errorCode ? `\nError Code: ${result.errorCode}` : '';
+      const sqlError = result.sqlMessage ? `\nDetails: ${result.sqlMessage}` : '';
+      showErrorMessage("Registration Failed", errorMsg + detailedError + sqlError);
       submitBtn.disabled = false;
       submitBtn.textContent = originalText;
+      console.error("Full error response:", result);
     }
   } catch (error) {
     console.error("Signup error:", error);
     showErrorMessage(
       "Connection Error",
-      "Please make sure the server is running."
+      "Please make sure the server is running. " + (error.message || "")
     );
     const submitBtn = document.querySelector(
       '#registerForm button[type="submit"]'

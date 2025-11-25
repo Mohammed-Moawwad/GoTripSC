@@ -26,6 +26,15 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 // Serve static files from root directory
 app.use(express.static(__dirname));
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`\n📨 ${req.method} ${req.url}`);
+  if (req.body && Object.keys(req.body).length > 0) {
+    console.log('Body:', { ...req.body, password: req.body.password ? '***' : undefined });
+  }
+  next();
+});
+
 // Enable CORS (Cross-Origin Resource Sharing)
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -79,6 +88,13 @@ app.get("/api/db-test", async (req, res) => {
 // ====================================
 // API Routes
 // ====================================
+
+// Test endpoint
+app.post("/api/auth/test", (req, res) => {
+  console.log("✅ Test endpoint hit!");
+  console.log("Body:", req.body);
+  res.json({ success: true, message: "Test endpoint working", body: req.body });
+});
 
 // Authentication routes
 app.use("/api/auth", authRoutes);

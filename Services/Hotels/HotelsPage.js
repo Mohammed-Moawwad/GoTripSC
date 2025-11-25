@@ -881,12 +881,50 @@ function handleBooking(hotelId) {
   console.log("User is logged in:", loggedIn);
 
   if (!loggedIn) {
-    console.log("Showing auth required modal");
-    showAuthRequiredModal();
+    console.log("User not logged in, redirecting to login");
+    // Save return URL to come back after login
+    sessionStorage.setItem('returnUrl', window.location.href);
+    window.location.href = '../../Login/login.html';
   } else {
-    console.log("Showing booking confirmation modal");
-    showBookingConfirmationModal(hotelId);
+    console.log("Redirecting to booking page for hotel:", hotelId);
+    redirectToBookingPage(hotelId);
   }
+}
+
+// Redirect to HotelBooking.html with hotel data
+function redirectToBookingPage(hotelId) {
+  // Find hotel in hotelData
+  const hotel = hotelData.find(h => h.id == hotelId);
+  if (!hotel) {
+    alert('Hotel not found');
+    return;
+  }
+
+  // Get search parameters
+  const checkIn = document.getElementById('checkin')?.value || '';
+  const checkOut = document.getElementById('checkout')?.value || '';
+  const guestsValue = document.getElementById('guests')?.value || '2 Adults in 1 Room';
+  
+  // Parse guests and rooms from selection (simple parsing)
+  const rooms = 1; // Default
+  const guests = 2; // Default
+  
+  // Build booking URL with parameters
+  const params = new URLSearchParams();
+  params.set('hotel', hotel.id);
+  params.set('name', hotel.name);
+  params.set('location', hotel.location);
+  params.set('checkIn', checkIn);
+  params.set('checkOut', checkOut);
+  params.set('rooms', rooms);
+  params.set('guests', guests);
+  params.set('price', hotel.price);
+  params.set('rating', hotel.rating);
+  params.set('image', hotel.image);
+  params.set('amenities', hotel.amenities.join(','));
+  
+  // Navigate to booking page
+  window.location.href = `HotelBooking.html?${params.toString()}`;
 }
 
 // Show authentication required modal

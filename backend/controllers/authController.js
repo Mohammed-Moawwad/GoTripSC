@@ -108,11 +108,38 @@ const signup = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Signup Error:", error);
+    // Determine user-friendly error message
+    let userMessage = "Error creating account. Please try again.";
+    let errorDetails = error.message || error.toString() || 'Unknown error';
+    
+    // Check for common database errors
+    if (error.code === 'ER_DUP_ENTRY' || (error.message && error.message.includes('Duplicate entry'))) {
+      userMessage = "This email is already registered. Please use a different email or try logging in.";
+      errorDetails = "Duplicate email address";
+    } else if (error.code === 'ER_BAD_NULL_ERROR') {
+      userMessage = "Required fields are missing. Please fill in all required information.";
+      errorDetails = "Missing required database fields";
+    } else if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+      userMessage = "Database connection error. Please try again later.";
+      errorDetails = "Cannot connect to database";
+    }
+    
+    // Log error details to console
+    console.error("\n========== SIGNUP ERROR ==========");
+    console.error("Time:", new Date().toISOString());
+    console.error("Error object:", error);
+    console.error("Message:", error.message || 'No message');
+    console.error("Code:", error.code || 'No code');
+    console.error("SQL State:", error.sqlState || 'No SQL state');
+    console.error("SQL Message:", error.sqlMessage || 'No SQL message');
+    console.error("==================================\n");
+    
     res.status(500).json({
       success: false,
-      message: "Error creating account. Please try again.",
-      error: error.message,
+      message: userMessage,
+      error: errorDetails,
+      errorCode: error.code || 'UNKNOWN',
+      sqlMessage: error.sqlMessage || null
     });
   }
 };
