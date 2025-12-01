@@ -244,12 +244,12 @@ header {
 
 .filter-btn {
   padding: 10px 20px;
-  border: 2px solid #e5e7eb;
-  background: white;
+  border: 2px solid #1a73e8;
+  background: #1a73e8;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  color: #6b7280;
+  color: white;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -257,13 +257,14 @@ header {
 }
 
 .filter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: #1557b0;
+  background: #1557b0;
+  color: white;
 }
 
 .filter-btn.active {
-  background: #667eea;
-  border-color: #667eea;
+  background: #1a73e8;
+  border-color: #1a73e8;
   color: white;
 }
 
@@ -325,7 +326,7 @@ header {
 .bookings-table thead {
   position: sticky;
   top: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #1a73e8;
   color: white;
   z-index: 10;
 }
@@ -427,29 +428,29 @@ header {
 }
 
 .view-btn {
-  background: #3b82f6;
+  background: #1a73e8;
 }
 
 .view-btn:hover {
-  background: #2563eb;
+  background: #1557b0;
   transform: scale(1.1);
 }
 
 .edit-btn {
-  background: #10b981;
+  background: #1a73e8;
 }
 
 .edit-btn:hover {
-  background: #059669;
+  background: #1557b0;
   transform: scale(1.1);
 }
 
 .delete-btn {
-  background: #ef4444;
+  background: #1a73e8;
 }
 
 .delete-btn:hover {
-  background: #dc2626;
+  background: #1557b0;
   transform: scale(1.1);
 }
 

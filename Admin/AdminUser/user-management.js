@@ -1,112 +1,83 @@
 // User Management JavaScript for GoTrip
 // This file contains all interactive functionality for the user management page
 
+const API_BASE_URL = "http://localhost:3000/api";
+
 class UserManagement {
   constructor() {
-    this.users = [
-      {
-        id: "USR001",
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@email.com",
-        phone: "+966 55 123 4567",
-        birthDate: "1990-05-15",
-        password: "********",
-        registered: "2024-01-15",
-        lastLogin: "2025-11-01",
-        status: "Active",
-      },
-      {
-        id: "USR002",
-        firstName: "Sarah",
-        lastName: "Smith",
-        email: "sarah.smith@email.com",
-        phone: "+966 50 234 5678",
-        birthDate: "1988-08-22",
-        password: "********",
-        registered: "2024-02-20",
-        lastLogin: "2025-10-30",
-        status: "Active",
-      },
-      {
-        id: "USR003",
-        firstName: "Ahmed",
-        lastName: "Hassan",
-        email: "ahmed.hassan@email.com",
-        phone: "+966 54 345 6789",
-        birthDate: "1992-03-10",
-        password: "********",
-        registered: "2024-03-10",
-        lastLogin: "2025-10-28",
-        status: "Active",
-      },
-      {
-        id: "USR004",
-        firstName: "Fatima",
-        lastName: "Ali",
-        email: "fatima.ali@email.com",
-        phone: "+966 56 456 7890",
-        birthDate: "1995-11-30",
-        password: "********",
-        registered: "2024-04-05",
-        lastLogin: "2025-10-15",
-        status: "InActive",
-      },
-      {
-        id: "USR005",
-        firstName: "Mike",
-        lastName: "Jones",
-        email: "mike.jones@email.com",
-        phone: "+966 53 567 8901",
-        birthDate: "1987-07-18",
-        password: "********",
-        registered: "2024-05-12",
-        lastLogin: "Never",
-        status: "InActive",
-      },
-      {
-        id: "USR006",
-        firstName: "Nora",
-        lastName: "Ahmed",
-        email: "nora.ahmed@email.com",
-        phone: "+966 55 678 9012",
-        birthDate: "1993-12-05",
-        password: "********",
-        registered: "2024-06-18",
-        lastLogin: "2025-11-02",
-        status: "Active",
-      },
-      {
-        id: "USR007",
-        firstName: "David",
-        lastName: "Wilson",
-        email: "david.wilson@email.com",
-        phone: "+966 50 789 0123",
-        birthDate: "1991-04-25",
-        password: "********",
-        registered: "2024-07-22",
-        lastLogin: "2025-10-25",
-        status: "Active",
-      },
-      {
-        id: "USR008",
-        firstName: "Layla",
-        lastName: "Omar",
-        email: "layla.omar@email.com",
-        phone: "+966 54 890 1234",
-        birthDate: "1994-09-14",
-        password: "********",
-        registered: "2024-08-30",
-        lastLogin: "2025-09-10",
-        status: "InActive",
-      },
-    ];
-
+    this.users = [];
     this.init();
   }
 
+  // ====================================
+  // FETCH USERS FROM BACKEND
+  // ====================================
+  async fetchUsers() {
+    try {
+      console.log("🔍 Fetching users from backend...");
+      console.log("📍 API URL:", `${API_BASE_URL}/auth/users`);
+
+      const response = await fetch(`${API_BASE_URL}/auth/users`);
+
+      console.log("📞 Response status:", response.status);
+      console.log("📄 Response ok:", response.ok);
+
+      const result = await response.json();
+
+      console.log("📦 Response data:", result);
+      console.log("📦 Result.success:", result.success);
+      console.log("📦 Result.data:", result.data);
+
+      if (result.success && result.data && result.data.users) {
+        console.log("✅ Users array found, length:", result.data.users.length);
+
+        // Transform backend data to match admin table format
+        this.users = result.data.users.map((user) => ({
+          id: user.user_id,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          email: user.email,
+          phone: user.phone || "N/A",
+          birthDate: user.birth_date
+            ? new Date(user.birth_date).toISOString().split("T")[0]
+            : "N/A",
+          password: "********",
+          registered: user.registered_date
+            ? new Date(user.registered_date).toISOString().split("T")[0]
+            : "N/A",
+          lastLogin: user.last_login
+            ? new Date(user.last_login).toLocaleDateString("en-US")
+            : "Never",
+          status: user.status || "Active",
+          _fullData: user,
+        }));
+
+        console.log(`✅ Loaded ${this.users.length} users from database`);
+        this.renderUserTable();
+        this.updateStats(result.data.statistics);
+      } else {
+        console.error("❌ Invalid response structure");
+        console.error("Result success:", result.success);
+        console.error("Result data exists:", !!result.data);
+        console.error(
+          "Users array exists:",
+          result.data && !!result.data.users
+        );
+        this.showNotification("Invalid response from server", "error");
+      }
+    } catch (error) {
+      console.error("❌ Error fetching users:", error);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+      this.showNotification(
+        "Error loading users from server: " + error.message,
+        "error"
+      );
+    }
+  }
+
   init() {
-    this.renderUserTable();
+    this.fetchUsers();
     this.bindEvents();
     console.log("User Management initialized");
   }
@@ -141,26 +112,13 @@ class UserManagement {
                 <td>${user.password}</td>
                 <td>${user.registered}</td>
                 <td>${user.lastLogin}</td>
-                <td><span class="status-badge ${statusClass}">${
-        user.status
-      }</span></td>
+                <td><span class="status-badge ${statusClass}">${user.status}</span></td>
                 <td>
                     <div class="action-buttons">
-                        <button class="action-btn edit-btn" data-id="${
-                          user.id
-                        }" title="Edit User">
+                        <button class="action-btn edit-btn" data-id="${user.id}" title="Edit" style="background: #1a73e8;">
                             <i class="fas fa-edit"></i>
                         </button>
-                        ${
-                          user.status === "Active"
-                            ? `<button class="action-btn suspend-btn" data-id="${user.id}" title="Suspend User">
-                            <i class="fas fa-ban"></i>
-                        </button>`
-                            : ""
-                        }
-                        <button class="action-btn delete-btn" data-id="${
-                          user.id
-                        }" title="Delete User">
+                        <button class="action-btn delete-btn" data-id="${user.id}" title="Delete" style="background: #1a73e8;">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -169,6 +127,34 @@ class UserManagement {
 
       tableBody.appendChild(row);
     });
+  }
+
+  updateStats(statistics) {
+    if (statistics) {
+      // Update Total Users stat
+      const totalUsersElement = document.querySelector(
+        ".stat-card:nth-child(1) .stat-number"
+      );
+      if (totalUsersElement) {
+        totalUsersElement.textContent = statistics.totalUsers;
+      }
+
+      // Update Active Users stat
+      const activeUsersElement = document.querySelector(
+        ".stat-card:nth-child(2) .stat-number"
+      );
+      if (activeUsersElement) {
+        activeUsersElement.textContent = statistics.activeUsers;
+      }
+
+      // Update InActive Users stat
+      const inactiveUsersElement = document.querySelector(
+        ".stat-card:nth-child(3) .stat-number"
+      );
+      if (inactiveUsersElement) {
+        inactiveUsersElement.textContent = statistics.inactiveUsers;
+      }
+    }
   }
 
   bindEvents() {
@@ -271,10 +257,16 @@ class UserManagement {
         clearBtn.style.display = dateInput.value ? "inline-flex" : "none";
       };
       toggleClear();
-      dateInput.addEventListener("input", toggleClear);
+
+      dateInput.addEventListener("input", (e) => {
+        toggleClear();
+        this.handleDateFilter(e.target.value);
+      });
+
       clearBtn.addEventListener("click", () => {
         dateInput.value = "";
         toggleClear();
+        this.renderUserTable();
         this.showNotification("Date filter cleared", "info");
       });
     }
@@ -300,6 +292,8 @@ class UserManagement {
           if (dateInput) {
             dateInput.value = iso;
             if (clearBtn) clearBtn.style.display = "inline-flex";
+            // Trigger the date filter
+            this.handleDateFilter(iso);
           }
         });
       });
@@ -326,37 +320,186 @@ class UserManagement {
   }
 
   handleSearch(searchTerm) {
-    const rows = document.querySelectorAll("#user-table-body tr");
     const term = searchTerm.toLowerCase();
 
-    rows.forEach((row) => {
-      const text = row.textContent.toLowerCase();
-      if (text.includes(term)) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
+    if (!term) {
+      // If search is empty, show all users
+      this.renderUserTable();
+      console.log("🔍 Search cleared, showing all users");
+      return;
+    }
+
+    // Filter users based on search term
+    const filtered = this.users.filter((user) => {
+      const searchFields = [
+        user.firstName.toLowerCase(),
+        user.lastName.toLowerCase(),
+        user.email.toLowerCase(),
+        user.phone.toLowerCase(),
+        user.id.toLowerCase(),
+      ];
+
+      return searchFields.some((field) => field.includes(term));
     });
+
+    console.log(`🔍 Search found ${filtered.length} users matching "${term}"`);
+
+    // Render filtered results
+    const tableBody = document.getElementById("user-table-body");
+    if (!tableBody) return;
+
+    if (filtered.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="11" style="text-align: center; padding: 40px; color: #999;">
+            <i class="fas fa-search" style="font-size: 48px; margin-bottom: 20px; display: block; opacity: 0.3;"></i>
+            No users found matching "${term}"
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    this.renderFilteredUsers(filtered);
   }
 
   handleFilter(status) {
-    const rows = document.querySelectorAll("#user-table-body tr");
+    console.log(`📊 Filtering by status: ${status}`);
 
-    rows.forEach((row) => {
-      if (status === "all") {
-        row.style.display = "";
-      } else {
-        const statusBadge = row.querySelector(".status-badge");
-        const userStatus = statusBadge.textContent.toLowerCase();
-        if (userStatus === status) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
-        }
+    if (status === "all") {
+      // Show all users
+      this.renderUserTable();
+      return;
+    }
+
+    // Filter users based on status
+    const filtered = this.users.filter(
+      (user) => user.status.toLowerCase() === status.toLowerCase()
+    );
+
+    console.log(
+      `📊 Filter found ${filtered.length} users with status "${status}"`
+    );
+
+    // Render filtered results
+    const tableBody = document.getElementById("user-table-body");
+    if (!tableBody) return;
+
+    if (filtered.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="11" style="text-align: center; padding: 40px; color: #999;">
+            <i class="fas fa-filter" style="font-size: 48px; margin-bottom: 20px; display: block; opacity: 0.3;"></i>
+            No users found with status "${status}"
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    this.renderFilteredUsers(filtered);
+  }
+
+  renderFilteredUsers(filteredUsers) {
+    const tableBody = document.getElementById("user-table-body");
+
+    if (!tableBody) {
+      console.error("User table body not found");
+      return;
+    }
+
+    tableBody.innerHTML = "";
+
+    filteredUsers.forEach((user) => {
+      const row = document.createElement("tr");
+      let statusClass = "";
+
+      if (user.status === "Active") {
+        statusClass = "status-active";
+      } else if (user.status === "InActive") {
+        statusClass = "status-inactive";
       }
+
+      row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.firstName}</td>
+                <td>${user.lastName}</td>
+                <td>${user.email}</td>
+                <td>${user.phone}</td>
+                <td>${user.birthDate}</td>
+                <td>${user.password}</td>
+                <td>${user.registered}</td>
+                <td>${user.lastLogin}</td>
+                <td><span class="status-badge ${statusClass}">${user.status}</span></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="action-btn edit-btn" data-id="${user.id}" title="Edit" style="background: #1a73e8;">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${user.id}" title="Delete" style="background: #1a73e8;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+      tableBody.appendChild(row);
+    });
+  }
+
+  handleDateFilter(dateString) {
+    if (!dateString) {
+      // If no date selected, show all users
+      this.renderUserTable();
+      return;
+    }
+
+    console.log(`📅 Filtering by registration date: ${dateString}`);
+
+    // Convert the input date to a Date object (start of day)
+    const [year, month, day] = dateString.split("-");
+    const selectedDate = new Date(year, parseInt(month) - 1, day);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const nextDate = new Date(selectedDate);
+    nextDate.setDate(nextDate.getDate() + 1);
+
+    // Filter users registered on the selected date
+    const filtered = this.users.filter((user) => {
+      if (!user.registered) return false;
+
+      const [userYear, userMonth, userDay] = user.registered.split("-");
+      const userDate = new Date(userYear, parseInt(userMonth) - 1, userDay);
+      userDate.setHours(0, 0, 0, 0);
+
+      return userDate.getTime() === selectedDate.getTime();
     });
 
-    this.showNotification(`Filtered by: ${status}`, "info");
+    console.log(
+      `📅 Date filter found ${filtered.length} users registered on ${dateString}`
+    );
+
+    const tableBody = document.getElementById("user-table-body");
+    if (!tableBody) return;
+
+    if (filtered.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="11" style="text-align: center; padding: 40px; color: #999;">
+            <i class="fas fa-calendar" style="font-size: 48px; margin-bottom: 20px; display: block; opacity: 0.3;"></i>
+            No users registered on ${dateString}
+          </td>
+        </tr>
+      `;
+      this.showNotification(`No users registered on ${dateString}`, "info");
+      return;
+    }
+
+    this.renderFilteredUsers(filtered);
+    this.showNotification(
+      `Found ${filtered.length} user(s) registered on ${dateString}`,
+      "info"
+    );
   }
 
   handleSort(sortBy) {

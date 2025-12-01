@@ -14,24 +14,35 @@ document.addEventListener("DOMContentLoaded", () => {
 // Load all hotel bookings
 async function loadBookings() {
   try {
-    const response = await fetch(`${API_BASE_URL}/bookings/all`);
+    console.log("🔍 Loading bookings from database...");
+
+    const response = await fetch(`${API_BASE_URL}/bookings/admin/hotels`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("📞 Response status:", response.status);
     const result = await response.json();
+    console.log("📦 Response data:", result);
 
     if (result.success) {
-      // Filter only hotel bookings
-      allBookings = result.data.bookings.filter(
-        (booking) => booking.service_type === "hotel"
-      );
+      // Get hotel bookings from the database
+      allBookings = result.data.bookings;
+      console.log("✅ Loaded bookings:", allBookings.length);
       filteredBookings = [...allBookings];
 
       renderBookingsTable();
       updateStatistics();
     } else {
-      showError("Failed to load bookings");
+      showError(
+        "Failed to load bookings: " + (result.message || "Unknown error")
+      );
     }
   } catch (error) {
-    console.error("Error loading bookings:", error);
-    showError("Error connecting to server");
+    console.error("❌ Error loading bookings:", error);
+    showError("Error connecting to server: " + error.message);
   }
 }
 
@@ -60,8 +71,8 @@ function renderBookingsTable() {
     <tr>
       <td><strong>${booking.booking_id}</strong></td>
       <td>
-        <div>${booking.user_name || "N/A"}</div>
-        <small style="color: #6b7280;">${booking.user_email || ""}</small>
+        <div>${booking.user_email || "N/A"}</div>
+        <small style="color: #6b7280;">${booking.user_id || ""}</small>
       </td>
       <td>
         <div><strong>${booking.hotel_name}</strong></div>
@@ -360,6 +371,12 @@ async function updateBookingStatus(bookingId) {
   }
 
   try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in");
+      return;
+    }
+
     // You'll need to create this endpoint in your backend
     const response = await fetch(
       `${API_BASE_URL}/bookings/${bookingId}/status`,
@@ -367,6 +384,7 @@ async function updateBookingStatus(bookingId) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ status: newStatus }),
       }
@@ -391,10 +409,20 @@ async function cancelBooking(bookingId) {
   if (!confirm("Are you sure you want to cancel this booking?")) return;
 
   try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in");
+      return;
+    }
+
     const response = await fetch(
       `${API_BASE_URL}/bookings/${bookingId}/cancel`,
       {
         method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 

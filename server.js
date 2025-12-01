@@ -14,6 +14,9 @@ const hotelRoutes = require("./backend/routes/hotelRoutes");
 const authRoutes = require("./backend/routes/authRoutes");
 const bookingRoutes = require("./backend/routes/bookingRoutes");
 
+// Import scheduled jobs
+const { markInactiveUsers } = require("./backend/jobs/inactivityJob");
+
 // Create Express application
 const app = express();
 
@@ -30,7 +33,10 @@ app.use(express.static(__dirname));
 app.use((req, res, next) => {
   console.log(`\n📨 ${req.method} ${req.url}`);
   if (req.body && Object.keys(req.body).length > 0) {
-    console.log('Body:', { ...req.body, password: req.body.password ? '***' : undefined });
+    console.log("Body:", {
+      ...req.body,
+      password: req.body.password ? "***" : undefined,
+    });
   }
   next();
 });
@@ -40,12 +46,12 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  
+
   // Handle preflight requests
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }
-  
+
   next();
 });
 
@@ -148,3 +154,36 @@ app.listen(PORT, () => {
   console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
   console.log("=================================");
 });
+
+// ====================================
+// Scheduled Jobs
+// ====================================
+
+// Run inactivity check job immediately on startup and then daily at midnight
+markInactiveUsers();
+
+// Schedule the job to run every day at midnight
+const scheduleInactivityJob = () => {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+
+  const timeUntilMidnight = tomorrow - now;
+
+  console.log(`\n⏰ Inactivity job scheduled to run daily at midnight`);
+  console.log(
+    `⏱️  Next run in ${Math.floor(timeUntilMidnight / 1000 / 60)} minutes\n`
+  );
+
+  // Run at midnight every day
+  setTimeout(() => {
+    markInactiveUsers();
+    // Repeat every 24 hours
+    setInterval(() => {
+      markInactiveUsers();
+    }, 24 * 60 * 60 * 1000);
+  }, timeUntilMidnight);
+};
+
+scheduleInactivityJob();

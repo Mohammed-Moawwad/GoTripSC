@@ -106,8 +106,34 @@ class HotelManagement {
       totalHotelsElement.textContent = this.hotels.length;
     }
 
-    // For now, keep the other stats as placeholders
-    // Later you can add booking and revenue data from backend
+    // Calculate Average Price
+    if (this.hotels.length > 0) {
+      const totalPrice = this.hotels.reduce((sum, hotel) => {
+        const priceStr = hotel.pricePerNight.replace(/[$,]/g, "");
+        return sum + parseFloat(priceStr);
+      }, 0);
+      const avgPrice = (totalPrice / this.hotels.length).toFixed(2);
+
+      const avgPriceElement = document.querySelector(
+        ".stat-card:nth-child(2) .stat-number"
+      );
+      if (avgPriceElement) {
+        avgPriceElement.textContent = `$${avgPrice}`;
+      }
+
+      // Calculate Average Stars
+      const totalRating = this.hotels.reduce((sum, hotel) => {
+        return sum + parseFloat(hotel.rating);
+      }, 0);
+      const avgRating = (totalRating / this.hotels.length).toFixed(1);
+
+      const avgStarsElement = document.querySelector(
+        ".stat-card:nth-child(3) .stat-number"
+      );
+      if (avgStarsElement) {
+        avgStarsElement.textContent = avgRating;
+      }
+    }
   }
 
   bindEvents() {

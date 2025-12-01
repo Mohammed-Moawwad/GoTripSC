@@ -8,47 +8,139 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+  <!-- topbar with Home and GoTrip logo -->
   <div class="topbar">
+    <!-- Home button (click -> homepage) and logo placeholder -->
     <div class="brand-wrap">
-      <a href="../../HomePage/HomePageHotels.html" class="brand-link">
-        <div class="brand-badge">
-          <img src="../../HomePage/Photos/logo.jpg" alt="GoTrip" class="brand-logo">
-        </div>
-        <h1 class="brand-title">GoTrip</h1>
+      <a
+        id="homeBtn"
+        class="brand-link"
+        href="../../HomePage/HomePage.html"
+        title="GoTrip home"
+        aria-label="GoTrip home"
+      >
+        <span class="brand-badge" aria-hidden="true">
+          <img
+            id="siteLogoImg"
+            src="../../HomePage/Photos/logo.jpg"
+            alt="GoTrip logo"
+            onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect rx=%229%22 width=%2248%22 height=%2248%22 fill=%22%23ffffff%22/><path d=%22M8 34v-6c0-5 6-9 14-9s14 4 14 9v6%22 stroke=%22%231ea1ff%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 fill=%22none%22/></svg>'"
+          />
+        </span>
+        <span class="brand-title">GoTrip</span>
       </a>
     </div>
-    <nav class="site-nav">
-      <ul class="nav-links">
-        <li><a href="../../HomePage/HomePageHotels.html" class="active"><i class="fas fa-hotel"></i> Hotels</a></li>
-      </ul>
-      <ul class="nav-actions">
+
+    <!-- main navigation -->
+    <nav class="site-nav" aria-label="main navigation">
+      <ul class="nav-left">
         <li>
-          <div class="user-menu" id="userMenu">
-            <button class="user-btn" id="userBtn">
-              <i class="fas fa-user-circle"></i>
-              <span id="userName">Account</span>
-              <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="user-dropdown" id="userDropdown">
-              <a href="javascript:void(0);" class="dropdown-item" onclick="goToProfile()">
-                <i class="fas fa-user"></i>
-                <span>My Profile</span>
-              </a>
-              <a href="javascript:void(0);" class="dropdown-item" onclick="goToBookings()">
-                <i class="fas fa-ticket-alt"></i>
-                <span>My Bookings</span>
-              </a>
-              <a href="javascript:void(0);" class="dropdown-item" onclick="goToSettings()">
-                <i class="fas fa-cog"></i>
-                <span>Settings</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="javascript:void(0);" class="dropdown-item logout-item" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-              </a>
-            </div>
-          </div>
+          <a class="nav-link" href="../Flights/FlightsPage.html">Flights</a>
+        </li>
+        <li>
+          <a class="nav-link" href="../Buses/BusesSearchResults.html">Buses</a>
+        </li>
+        <li>
+          <a class="nav-link active" href="../../HomePage/HomePageHotels.html">Hotels</a>
+        </li>
+      </ul>
+
+      <ul class="nav-right">
+        <!-- language dropdown: hover on desktop, click to toggle on touch -->
+        <li class="lang-dropdown" aria-haspopup="true">
+          <button class="small lang-btn" type="button" aria-expanded="false">
+            EN ▾
+          </button>
+          <ul class="lang-menu" role="menu" aria-label="Select language">
+            <li class="lang-item" role="menuitem" data-value="EN">
+              EN — English
+            </li>
+            <li class="lang-item" role="menuitem" data-value="AR">
+              AR — العربية
+            </li>
+            <li class="lang-item" role="menuitem" data-value="FR">
+              FR — Français
+            </li>
+            <li class="lang-item" role="menuitem" data-value="TR">
+              TR — Türkçe
+            </li>
+            <li class="lang-item" role="menuitem" data-value="RU">
+              RU — Русский
+            </li>
+          </ul>
+        </li>
+        <!-- currency dropdown: hover on desktop, click to toggle on touch -->
+        <li class="cur-dropdown" aria-haspopup="true">
+          <button class="small cur-btn" type="button" aria-expanded="false">
+            SAR ▾
+          </button>
+          <ul class="cur-menu" role="menu" aria-label="Select currency">
+            <li class="cur-item" role="menuitem" data-value="SAR">
+              SAR — Saudi Riyal
+            </li>
+            <li class="cur-item" role="menuitem" data-value="USD">
+              USD — US Dollar
+            </li>
+            <li class="cur-item" role="menuitem" data-value="EUR">
+              EUR — Euro
+            </li>
+            <li class="cur-item" role="menuitem" data-value="AED">
+              AED — UAE Dirham
+            </li>
+            <li class="cur-item" role="menuitem" data-value="GBP">
+              GBP — British Pound
+            </li>
+          </ul>
+        </li>
+        <li><a class="small" href="#" id="supportLink">Support</a></li>
+
+        <!-- Authentication Buttons -->
+        <li>
+          <a
+            href="../../Login/signin.html"
+            class="btn"
+            id="signupBtn"
+            aria-label="Sign up"
+          >
+            Sign up
+          </a>
+        </li>
+        <li>
+          <a
+            href="../../Login/login.html"
+            class="btn"
+            id="loginBtn"
+            aria-label="Login"
+          >
+            Login
+          </a>
+        </li>
+        <li>
+          <span
+            class="user-welcome"
+            id="userNameDisplay"
+            style="display: none"
+          ></span>
+        </li>
+        <li>
+          <a
+            href="../../User/dashboard.html"
+            class="btn my-trips-btn"
+            id="myTripsBtn"
+            style="display: none"
+          >
+            My Trips
+          </a>
+        </li>
+        <li>
+          <button
+            class="btn logout-btn"
+            id="logoutBtn"
+            onclick="logoutWithConfirmation()"
+            style="display: none"
+          >
+            Logout
+          </button>
         </li>
       </ul>
     </nav>
@@ -345,113 +437,61 @@
       </aside>
     </div>
   </div>
+
+  <!-- ====== Footer ====== -->
   <footer class="site-footer">
-    <div class="footer-content">
-      <div class="footer-grid">
-        <div class="f-col">
-          <div class="f-brand">
-            <img src="../../HomePage/Photos/logo.jpg" alt="GoTrip Logo" class="footer-logo">
-            <span>GoTrip</span>
-          </div>
-          <p class="muted">Your trusted travel partner for flights, hotels, and bus bookings across Saudi Arabia.</p>
-          <div class="social-links">
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-          </div>
-        </div>
-        <div class="f-col">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="../../HomePage/HomePage.html"><i class="fas fa-plane"></i> Flights</a></li>
-            <li><a href="../../HomePage/HomePageHotels.html"><i class="fas fa-hotel"></i> Hotels</a></li>
-            <li><a href="../../HomePage/HomePageBuses.html"><i class="fas fa-bus"></i> Buses</a></li>
-          </ul>
-        </div>
-        <div class="f-col">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
-            <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
-            <li><a href="#"><i class="fas fa-briefcase"></i> Careers</a></li>
-            <li><a href="#"><i class="fas fa-newspaper"></i> Press</a></li>
-          </ul>
-        </div>
-        <div class="f-col">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
-            <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
-            <li><a href="#"><i class="fas fa-cookie-bite"></i> Cookie Policy</a></li>
-            <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
-          </ul>
-        </div>
+    <div class="footer-grid">
+      <div class="f-col">
+        <div class="f-brand">GoTrip</div>
+        <p class="muted">
+          Your trusted travel partner for flights, hotels, and buses
+          worldwide.
+        </p>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 GoTrip. All rights reserved.</p>
-        <div class="payment-methods-footer">
-          <i class="fab fa-cc-visa"></i>
-          <i class="fab fa-cc-mastercard"></i>
-          <i class="fab fa-cc-amex"></i>
-          <i class="fab fa-apple-pay"></i>
-        </div>
+
+      <div class="f-col">
+        <h4>About GoTrip</h4>
+        <ul class="f-links">
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Partnerships</a></li>
+        </ul>
+      </div>
+
+      <div class="f-col">
+        <h4>Support</h4>
+        <ul class="f-links">
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+
+      <div class="f-col">
+        <h4>Connect</h4>
+        <ul class="f-links">
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Travel Guides</a></li>
+          <li><a href="#">Help Center</a></li>
+        </ul>
       </div>
     </div>
-  </
-    <div class="footer-content">
-      <div class="footer-grid">
-        <div class="f-col">
-          <div class="f-brand">
-            <img src="../../HomePage/Photos/logo.jpg" alt="GoTrip Logo" class="footer-logo">
-            <span>GoTrip</span>
-          </div>
-          <p class="muted">Your trusted travel partner for flights, hotels, and bus bookings across Saudi Arabia.</p>
-          <div class="social-links">
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-          </div>
-        </div>
-        <div class="f-col">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="../../HomePage/HomePage.html"><i class="fas fa-plane"></i> Flights</a></li>
-            <li><a href="../../HomePage/HomePageHotels.html"><i class="fas fa-hotel"></i> Hotels</a></li>
-            <li><a href="../../HomePage/HomePageBuses.html"><i class="fas fa-bus"></i> Buses</a></li>
-          </ul>
-        </div>
-        <div class="f-col">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
-            <li><a href="#"><i class="fas fa-phone"></i> Contact</a></li>
-            <li><a href="#"><i class="fas fa-briefcase"></i> Careers</a></li>
-            <li><a href="#"><i class="fas fa-newspaper"></i> Press</a></li>
-          </ul>
-        </div>
-        <div class="f-col">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
-            <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
-            <li><a href="#"><i class="fas fa-cookie-bite"></i> Cookie Policy</a></li>
-            <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 GoTrip. All rights reserved.</p>
-        <div class="payment-methods-footer">
-          <i class="fab fa-cc-visa"></i>
-          <i class="fab fa-cc-mastercard"></i>
-          <i class="fab fa-cc-amex"></i>
-          <i class="fab fa-apple-pay"></i>
-        </div>
+
+    <div class="footer-bottom">
+      <div class="copy">© 2025 GoTrip. All rights reserved.</div>
+      <div class="social">
+        <a href="#" aria-label="Facebook">f</a>
+        <a href="#" aria-label="Instagram">◎</a>
+        <a href="#" aria-label="X">𝕏</a>
+        <a href="#" aria-label="LinkedIn">in</a>
       </div>
     </div>
   </footer>
+
+  <script src="../../auth-helper.js"></script>
   <script src="HotelBooking.js"></script>
 </body>
 </html>

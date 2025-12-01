@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test Users API</title>
+  </head>
+  <body>
+    <h1>Testing /api/auth/users endpoint</h1>
+    <pre id="output">Loading...</pre>
+
+    <script>
+      fetch("http://localhost:3000/api/auth/users")
+        .then((response) => {
+          console.log("Response status:", response.status);
+          console.log("Response headers:", response.headers);
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Response data:", data);
+          document.getElementById("output").textContent = JSON.stringify(
+            data,
+            null,
+            2
+          );
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          document.getElementById("output").textContent =
+            "Error: " + error.message;
+        });
+    </script>
+  </body>
+</html>

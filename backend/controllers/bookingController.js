@@ -760,17 +760,19 @@ const createFlightBooking = async (req, res) => {
             from_city,
             to_city,
             departure_date,
-            departure_time || '00:00:00',
-            arrival_time || '00:00:00',
+            departure_time || "00:00:00",
+            arrival_time || "00:00:00",
             number_of_passengers,
-            class_type || 'Economy',
+            class_type || "Economy",
             total_price,
-            passengers && Array.isArray(passengers) ? JSON.stringify(passengers) : null,
+            passengers && Array.isArray(passengers)
+              ? JSON.stringify(passengers)
+              : null,
           ]
         );
       } catch (insertError) {
         // If extended schema doesn't exist, use basic schema
-        console.log('Using basic flight_bookings schema');
+        console.log("Using basic flight_bookings schema");
         await connection.execute(
           `INSERT INTO flight_bookings 
           (booking_id, user_id, flight_id, number_of_passengers, total_price, 
@@ -816,6 +818,74 @@ const createFlightBooking = async (req, res) => {
   }
 };
 
+/**
+ * Get all hotel bookings (for admin dashboard)
+ * Returns all bookings across all users
+ */
+const getAdminHotelBookings = async (req, res) => {
+  try {
+    const [bookings] = await db.execute(`
+      SELECT 
+        hb.booking_id,
+        hb.hotel_id,
+        hb.user_id,
+        hb.check_in_date,
+        hb.check_out_date,
+        hb.number_of_rooms,
+        hb.number_of_guests,
+        hb.total_price,
+        hb.booking_status,
+        hb.payment_status,
+        hb.created_at,
+        h.hotel_name,
+        h.location,
+        h.city,
+        h.country,
+        h.rating,
+        h.price_per_night,
+        u.email as user_email,
+        u.user_id as customer_id
+      FROM hotel_bookings hb
+      LEFT JOIN hotels h ON hb.hotel_id = h.hotel_id
+      LEFT JOIN users u ON hb.user_id = u.user_id
+      ORDER BY hb.created_at DESC
+    `);
+
+    // Count by status
+    const totalBookings = bookings.length;
+    const pendingBookings = bookings.filter(
+      (b) => b.booking_status === "Pending"
+    ).length;
+    const confirmedBookings = bookings.filter(
+      (b) => b.booking_status === "Confirmed"
+    ).length;
+    const cancelledBookings = bookings.filter(
+      (b) => b.booking_status === "Cancelled"
+    ).length;
+
+    res.status(200).json({
+      success: true,
+      message: "Admin hotel bookings retrieved successfully",
+      data: {
+        bookings: bookings,
+        statistics: {
+          totalBookings,
+          pendingBookings,
+          confirmedBookings,
+          cancelledBookings,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Get Admin Hotel Bookings Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error retrieving bookings",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getUserBookings,
   getActiveBookings,
@@ -828,4 +898,5 @@ module.exports = {
   getAllBookings,
   createHotelBooking,
   createFlightBooking,
+  getAdminHotelBookings,
 };

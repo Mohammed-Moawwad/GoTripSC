@@ -3,7 +3,18 @@ const router = express.Router();
 const bookingController = require("../controllers/bookingController");
 const { authenticate } = require("../middleware/auth");
 
-// All routes require authentication
+// ========================================
+// PUBLIC ROUTES (No authentication required)
+// ========================================
+
+// Get all hotel bookings (for admin dashboard)
+router.get("/admin/hotels", bookingController.getAdminHotelBookings);
+
+// ========================================
+// PROTECTED ROUTES (Authentication required)
+// ========================================
+
+// All other routes require authentication
 router.use(authenticate);
 
 // Get booking statistics
