@@ -83,6 +83,292 @@ async function loadDashboardStats() {
 }
 
 /**
+ * Load dashboard overview with statistics
+ */
+async function loadDashboardOverview() {
+  try {
+    const token = getAuthToken();
+
+    // Fetch all bookings to calculate overview statistics
+    const response = await fetch(`${API_BASE_URL}/bookings`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      const bookings = result.data.bookings || [];
+      
+      // Calculate statistics
+      const now = new Date();
+      let totalSpent = 0;
+      let upcomingCount = 0;
+      let completedCount = 0;
+
+      bookings.forEach((booking) => {
+        // Add price to total
+        if (booking.total_price) {
+          totalSpent += parseFloat(booking.total_price);
+        }
+
+        // Check booking status using check_in_date
+        if (booking.check_in_date) {
+          const bookingDate = new Date(booking.check_in_date);
+          if (bookingDate > now) {
+            upcomingCount++;
+          } else {
+            completedCount++;
+          }
+        }
+      });
+
+      // Update dashboard stat cards
+      document.getElementById("dashTotalBookings").textContent = bookings.length;
+      document.getElementById("dashUpcomingBookings").textContent = upcomingCount;
+      document.getElementById("dashCompletedBookings").textContent = completedCount;
+      document.getElementById("dashTotalSpent").textContent = `$${totalSpent.toFixed(2)}`;
+
+      // Display recent bookings
+      const recentBookings = bookings.slice(0, 5); // Get last 5 bookings
+      displayDashboardRecentBookings(recentBookings);
+
+      // Render charts
+      renderBookingTypesChart(bookings);
+      renderMonthlySpendingChart(bookings);
+    } else {
+      console.error("Error loading dashboard overview:", result.message);
+    }
+  } catch (error) {
+    console.error("Error loading dashboard overview:", error);
+  }
+}
+
+/**
+ * Display recent bookings in dashboard
+ */
+function displayDashboardRecentBookings(bookings) {
+  const container = document.getElementById("dashRecentBookings");
+  
+  if (!container) {
+    console.error("Dashboard recent bookings container not found");
+    return;
+  }
+
+  if (bookings.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h3>No bookings yet</h3>
+        <p>Start planning your trip by making your first booking!</p>
+      </div>
+    `;
+    return;
+  }
+
+  const bookingsHTML = bookings
+    .map((booking) => {
+      // Use check_in_date for hotel bookings
+      let bookingDate = new Date(booking.check_in_date || booking.created_at);
+      let formattedDate = "Unknown Date";
+      
+      if (bookingDate && !isNaN(bookingDate.getTime())) {
+        formattedDate = bookingDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+      }
+
+      // Hotel bookings - use hotel_name and location
+      const displayName = booking.hotel_name || booking.destination || "Booking";
+      const displayLocation = booking.city || booking.location || "Unknown";
+
+      return `
+        <div class="recent-booking-item">
+          <div class="booking-icon">
+            <i class="bi bi-building"></i>
+          </div>
+          <div class="booking-details">
+            <h4>${displayName}</h4>
+            <p>${displayLocation} • ${formattedDate}</p>
+          </div>
+          <div class="booking-status">
+            ${booking.booking_status || "Active"}
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+
+  container.innerHTML = `
+    <div class="recent-bookings-header">
+      <h3><i class="bi bi-clock-history"></i> Recent Bookings</h3>
+    </div>
+    ${bookingsHTML}
+  `;
+}
+
+/**
+ * Initialize and render booking type pie chart
+ */
+function renderBookingTypesChart(bookings) {
+  const ctx = document.getElementById("bookingTypesChart");
+  if (!ctx) return;
+
+  // Count bookings by type
+  const typeCounts = {
+    hotels: 0,
+    flights: 0,
+    buses: 0,
+  };
+
+  bookings.forEach((booking) => {
+    if (booking.type === "flight") typeCounts.flights++;
+    else if (booking.type === "bus") typeCounts.buses++;
+    else typeCounts.hotels++;
+  });
+
+  // Destroy existing chart if it exists
+  if (window.bookingTypesChartInstance) {
+    window.bookingTypesChartInstance.destroy();
+  }
+
+  window.bookingTypesChartInstance = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+      labels: ["Hotels", "Flights", "Buses"],
+      datasets: [
+        {
+          data: [typeCounts.hotels, typeCounts.flights, typeCounts.buses],
+          backgroundColor: ["#667eea", "#764ba2", "#f093fb"],
+          borderColor: "#fff",
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            font: { size: 13, weight: "500" },
+            color: "#6b7280",
+            padding: 20,
+          },
+        },
+      },
+    },
+  });
+}
+
+/**
+ * Initialize and render monthly spending bar chart
+ */
+function renderMonthlySpendingChart(bookings) {
+  const ctx = document.getElementById("monthlySpendingChart");
+  if (!ctx) return;
+
+  // Calculate monthly spending
+  const monthlyData = {};
+  const months = [];
+
+  // Initialize last 6 months
+  for (let i = 5; i >= 0; i--) {
+    const date = new Date();
+    date.setMonth(date.getMonth() - i);
+    const monthKey = date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+    });
+    monthlyData[monthKey] = 0;
+    months.push(date.toLocaleDateString("en-US", { month: "short", year: "2-digit" }));
+  }
+
+  // Add booking amounts to appropriate months
+  bookings.forEach((booking) => {
+    // Use check_in_date or created_at for hotel bookings
+    const dateToUse = booking.check_in_date || booking.created_at;
+    if (dateToUse && booking.total_price) {
+      const bookingDate = new Date(dateToUse);
+      if (!isNaN(bookingDate.getTime())) {
+        const monthKey = bookingDate.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+        });
+        if (monthlyData.hasOwnProperty(monthKey)) {
+          monthlyData[monthKey] += parseFloat(booking.total_price);
+        }
+      }
+    }
+  });
+
+  const amounts = Object.values(monthlyData);
+
+  // Destroy existing chart if it exists
+  if (window.monthlySpendingChartInstance) {
+    window.monthlySpendingChartInstance.destroy();
+  }
+
+  window.monthlySpendingChartInstance = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: months,
+      datasets: [
+        {
+          label: "Spending ($)",
+          data: amounts,
+          backgroundColor: "#667eea",
+          borderRadius: 6,
+          borderSkipped: false,
+        },
+      ],
+    },
+    options: {
+      indexAxis: undefined,
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            font: { size: 13, weight: "500" },
+            color: "#6b7280",
+            padding: 15,
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function (value) {
+              return "$" + value.toFixed(0);
+            },
+            font: { size: 12 },
+            color: "#9ca3af",
+          },
+          grid: {
+            color: "#f0f0f0",
+          },
+        },
+        x: {
+          ticks: {
+            font: { size: 12 },
+            color: "#9ca3af",
+          },
+          grid: {
+            display: false,
+          },
+        },
+      },
+    },
+  });
+}
+
+/**
  * Load active bookings
  */
 async function loadActiveBookings() {
@@ -440,6 +726,11 @@ function switchView(viewName) {
       viewId = "profileView";
       navIndex = 5;
       loadProfileData();
+      break;
+    case "dashboard":
+      viewId = "dashboardView";
+      navIndex = 6;
+      loadDashboardOverview();
       break;
     default:
       viewId = "allBookingsView";

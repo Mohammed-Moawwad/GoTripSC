@@ -562,47 +562,52 @@ header {
 /* Action Buttons */
 .action-buttons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .action-btn {
-  padding: 8px 16px;
+  padding: 8px 14px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  white-space: nowrap;
+}
+
+.action-btn:active {
+  transform: scale(0.98);
 }
 
 .edit-btn {
   background: #e8f0fe;
   color: #1a73e8;
-  border: 1px solid #e8f0fe;
+  border: 1.5px solid #1a73e8;
 }
 
 .edit-btn:hover {
   background: #d2e3fc;
   border-color: #1a73e8;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(26, 115, 232, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(26, 115, 232, 0.2);
 }
 
 .delete-btn {
   background: #fce8e6;
   color: #d93025;
-  border: 1px solid #fce8e6;
+  border: 1.5px solid #d93025;
 }
 
 .delete-btn:hover {
   background: #fad1cf;
   border-color: #d93025;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(217, 48, 37, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(217, 48, 37, 0.2);
 }
 
 .suspend-btn {

@@ -673,6 +673,104 @@
         color: #111827;
       }
 
+      /* Recent bookings styles */
+      .recent-bookings-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        margin-top: 2em;
+        margin-bottom: 1.5em;
+      }
+
+      .recent-bookings-header h3 {
+        font-size: 1.3em;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+      }
+
+      .recent-booking-item {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        padding: 1.2em;
+        background: #f9fafb;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        margin-bottom: 1em;
+        transition: background 0.2s, border-color 0.2s;
+      }
+
+      .recent-booking-item:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+      }
+
+      .booking-icon {
+        width: 3em;
+        height: 3em;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.3em;
+        flex-shrink: 0;
+      }
+
+      .booking-details {
+        flex: 1;
+      }
+
+      .booking-details h4 {
+        font-size: 1em;
+        font-weight: 700;
+        color: #111827;
+        margin: 0 0 0.3em 0;
+      }
+
+      .booking-details p {
+        font-size: 0.85em;
+        color: #6b7280;
+        margin: 0;
+      }
+
+      .booking-status {
+        padding: 0.5em 1em;
+        background: #dbeafe;
+        color: #1e40af;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3em 1.5em;
+        color: #6b7280;
+      }
+
+      .empty-state i {
+        font-size: 3em;
+        color: #d1d5db;
+        display: block;
+        margin-bottom: 1em;
+      }
+
+      .empty-state h3 {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #111827;
+        margin: 0.5em 0;
+      }
+
+      .empty-state p {
+        font-size: 0.95em;
+        margin: 0;
+      }
+
       /* Tabs system */
       .tabs-container {
         margin-top: 2em;
@@ -1240,6 +1338,12 @@
             onclick="switchView('profile'); return false;"
             ><i class="bi bi-person"></i><span class="label">Profile</span></a
           >
+          <a
+            href="#"
+            class="nav-item"
+            onclick="switchView('dashboard'); return false;"
+            ><i class="bi bi-speedometer2"></i><span class="label">Dashboard</span></a
+          >
           <a href="#support" class="nav-item"
             ><i class="bi bi-question-circle"></i
             ><span class="label">Help & Support</span></a
@@ -1578,6 +1682,80 @@
               </div>
             </div>
           </div>
+
+          <!-- Dashboard View -->
+          <div id="dashboardView" class="service-view">
+            <div class="view-header">
+              <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="stat-label">Total Bookings</div>
+                <div class="stat-value" id="dashTotalBookings">0</div>
+              </div>
+
+              <div class="stat-card" style="border-left-color: #10b981">
+                <div class="stat-icon" style="color: #10b981">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="stat-label">Upcoming Trips</div>
+                <div class="stat-value" id="dashUpcomingBookings">0</div>
+              </div>
+
+              <div class="stat-card" style="border-left-color: #8b5cf6">
+                <div class="stat-icon" style="color: #8b5cf6">
+                  <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="stat-label">Completed Trips</div>
+                <div class="stat-value" id="dashCompletedBookings">0</div>
+              </div>
+
+              <div class="stat-card" style="border-left-color: #f59e0b">
+                <div class="stat-icon" style="color: #f59e0b">
+                  <i class="bi bi-cash-coin"></i>
+                </div>
+                <div class="stat-label">Total Spent</div>
+                <div class="stat-value" id="dashTotalSpent">$0.00</div>
+              </div>
+            </div>
+
+            <!-- Recent Bookings Section -->
+            <div style="margin-top: 2em">
+              <h3 style="color: #2563eb; margin-bottom: 1em">Recent Bookings</h3>
+              <div id="dashRecentBookings" style="display: flex; flex-direction: column; gap: 1em">
+                <div style="text-align: center; color: #6b7280; padding: 2em">
+                  Loading bookings...
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div style="margin-top: 3em">
+              <h3 style="color: #2563eb; margin-bottom: 1.5em"><i class="bi bi-bar-chart"></i> Analytics</h3>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2em; margin-top: 1.5em">
+                <!-- Booking Types Pie Chart -->
+                <div style="background: #fff; border-radius: 12px; padding: 1.5em; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #e5e7eb">
+                  <h4 style="margin-top: 0; color: #111827; margin-bottom: 1em">Bookings by Type</h4>
+                  <div style="position: relative; height: 300px">
+                    <canvas id="bookingTypesChart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Monthly Spending Bar Chart -->
+                <div style="background: #fff; border-radius: 12px; padding: 1.5em; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #e5e7eb">
+                  <h4 style="margin-top: 0; color: #111827; margin-bottom: 1em">Monthly Spending</h4>
+                  <div style="position: relative; height: 300px">
+                    <canvas id="monthlySpendingChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1690,6 +1868,7 @@
     </footer>
 
     <!-- Load our dashboard JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="dashboard.js"></script>
     <script src="../auth-helper.js"></script>
   </body>

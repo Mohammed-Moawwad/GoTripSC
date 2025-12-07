@@ -115,11 +115,11 @@ class UserManagement {
                 <td><span class="status-badge ${statusClass}">${user.status}</span></td>
                 <td>
                     <div class="action-buttons">
-                        <button class="action-btn edit-btn" data-id="${user.id}" title="Edit" style="background: #1a73e8;">
-                            <i class="fas fa-edit"></i>
+                        <button class="action-btn edit-btn" data-id="${user.id}" title="Edit User">
+                            <i class="fas fa-edit"></i> Edit
                         </button>
-                        <button class="action-btn delete-btn" data-id="${user.id}" title="Delete" style="background: #1a73e8;">
-                            <i class="fas fa-trash"></i>
+                        <button class="action-btn delete-btn" data-id="${user.id}" title="Delete User">
+                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </div>
                 </td>
@@ -433,11 +433,11 @@ class UserManagement {
                 <td><span class="status-badge ${statusClass}">${user.status}</span></td>
                 <td>
                     <div class="action-buttons">
-                        <button class="action-btn edit-btn" data-id="${user.id}" title="Edit" style="background: #1a73e8;">
-                            <i class="fas fa-edit"></i>
+                        <button class="action-btn edit-btn" data-id="${user.id}" title="Edit User">
+                            <i class="fas fa-edit"></i> Edit
                         </button>
-                        <button class="action-btn delete-btn" data-id="${user.id}" title="Delete" style="background: #1a73e8;">
-                            <i class="fas fa-trash"></i>
+                        <button class="action-btn delete-btn" data-id="${user.id}" title="Delete User">
+                            <i class="fas fa-trash"></i> Delete
                         </button>
                     </div>
                 </td>
