@@ -516,28 +516,14 @@ class UserManagement {
   }
 
   handleAddUser() {
-    this.showNotification("Opening form to add a new user...", "info");
+    // Clear form and set mode to "add"
+    document.getElementById("modalTitle").textContent = "Add New User";
+    document.getElementById("userForm").reset();
+    document.getElementById("userModal").setAttribute("data-mode", "add");
+    document.getElementById("userModal").removeAttribute("data-user-id");
 
-    // In a real application, you would open a modal or redirect to a form page
-    setTimeout(() => {
-      const newUser = {
-        id: "USR00" + (this.users.length + 1),
-        username: "new_user",
-        email: "newuser@email.com",
-        phone: "+966 55 999 8888",
-        registered: new Date().toISOString().split("T")[0],
-        lastLogin: "Never",
-        status: "Pending",
-      };
-
-      this.users.push(newUser);
-      this.renderUserTable();
-      this.updateLastUpdated();
-      this.showNotification(
-        `User ${newUser.id} added successfully!`,
-        "success"
-      );
-    }, 1000);
+    // Show modal
+    document.getElementById("userModal").style.display = "flex";
   }
 
   handleEditUser(userId) {
@@ -621,6 +607,52 @@ class UserManagement {
 }
 
 // Initialize the user management system when the page loads
+// Modal Functions for User Form
+function closeUserModal() {
+  document.getElementById("userModal").style.display = "none";
+}
+
+// Handle user form submission
 document.addEventListener("DOMContentLoaded", () => {
+  const userForm = document.getElementById("userForm");
+  if (userForm) {
+    userForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstName").value;
+      const lastName = document.getElementById("lastName").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const birthDate = document.getElementById("birthDate").value;
+      const status = document.getElementById("status").value;
+
+      const newUser = {
+        id: "USR00" + (window.userManagement.users.length + 1),
+        username: (firstName + lastName).toLowerCase(),
+        email: email,
+        phone: phone,
+        registered: new Date().toISOString().split("T")[0],
+        lastLogin: "Never",
+        status: status,
+        birthDate: birthDate,
+        firstName: firstName,
+        lastName: lastName,
+      };
+
+      // Add to users array
+      window.userManagement.users.push(newUser);
+      window.userManagement.renderUserTable();
+      window.userManagement.updateLastUpdated();
+      window.userManagement.showNotification(
+        `User ${newUser.id} added successfully!`,
+        "success"
+      );
+
+      // Close modal and reset form
+      closeUserModal();
+      userForm.reset();
+    });
+  }
+
   window.userManagement = new UserManagement();
 });

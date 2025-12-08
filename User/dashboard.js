@@ -47,6 +47,342 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Load all bookings view by default
   await loadAllBookings();
 });
+/**
+ * Load dashboard with all data
+ */
+async function loadDashboard() {
+  try {
+    const token = getAuthToken();
+    
+    // Fetch all bookings
+    const response = await fetch(`${API_BASE_URL}/bookings/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      const bookings = result.data.bookings || [];
+      
+      // Display dashboard statistics
+      displayDashboardStats(bookings);
+      
+      // Display recent bookings
+      displayRecentBookings(bookings);
+      
+      // Initialize charts with real data
+      initializeDashboardCharts(bookings);
+    } else {
+      console.error("Error loading bookings:", result.message);
+    }
+  } catch (error) {
+    console.error("Error loading dashboard:", error);
+  }
+}
+
+/**
+ * Display dashboard statistics cards
+ */
+function displayDashboardStats(bookings) {
+  if (!bookings || bookings.length === 0) return;
+
+  let totalBookings = bookings.length;
+  let upcomingBookings = 0;
+  let completedBookings = 0;
+  let totalSpent = 0;
+  let hotelCount = 0;
+  let flightCount = 0;
+  let busCount = 0;
+
+  bookings.forEach((booking) => {
+    // Count by status
+    if (["Pending", "Confirmed"].includes(booking.booking_status)) {
+      upcomingBookings++;
+    } else if (["Completed"].includes(booking.booking_status)) {
+      completedBookings++;
+    }
+
+    // Count by type
+    const type = (booking.booking_type || booking.type || "").toLowerCase();
+    if (type.includes("flight")) flightCount++;
+    else if (type.includes("bus")) busCount++;
+    else hotelCount++;
+
+    // Sum total spent
+    if (booking.total_price) {
+      totalSpent += parseFloat(booking.total_price);
+    } else if (booking.price) {
+      totalSpent += parseFloat(booking.price);
+    }
+  });
+
+  // Update stats cards if they exist
+  const dashTotalBookings = document.getElementById("dashTotalBookings");
+  const dashUpcomingBookings = document.getElementById("dashUpcomingBookings");
+  const dashCompletedBookings = document.getElementById("dashCompletedBookings");
+  const dashTotalSpent = document.getElementById("dashTotalSpent");
+  const dashHotels = document.getElementById("dashHotels");
+  const dashFlights = document.getElementById("dashFlights");
+  const dashBuses = document.getElementById("dashBuses");
+
+  if (dashTotalBookings) dashTotalBookings.textContent = totalBookings;
+  if (dashUpcomingBookings) dashUpcomingBookings.textContent = upcomingBookings;
+  if (dashCompletedBookings) dashCompletedBookings.textContent = completedBookings;
+  if (dashTotalSpent) dashTotalSpent.textContent = `$${totalSpent.toFixed(2)}`;
+  
+  // Update booking type cards
+  if (dashHotels) dashHotels.textContent = hotelCount;
+  if (dashFlights) dashFlights.textContent = flightCount;
+  if (dashBuses) dashBuses.textContent = busCount;
+}
+
+/**
+ * Display recent bookings in dashboard with more details
+ */
+function displayRecentBookings(bookings) {
+  const container = document.getElementById("dashRecentBookings");
+  if (!container) return;
+
+  if (!bookings || bookings.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; color: #6b7280; padding: 2em">
+        <i class="bi bi-inbox" style="font-size: 2.5em; margin-bottom: 1em; display: block; opacity: 0.5"></i>
+        <p>No bookings yet</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Get recent bookings (up to 5)
+  const recentBookings = bookings.slice(0, 5);
+
+  container.innerHTML = recentBookings
+    .map((booking) => {
+      const bookingType = (booking.booking_type || booking.type || "").toLowerCase();
+      const icon = bookingType.includes("flight")
+        ? "airplane"
+        : bookingType.includes("bus")
+        ? "bus-front"
+        : "building";
+      
+      const hotelName = booking.hotel_name || booking.flight_no || booking.bus_no || "Booking";
+      const location = booking.city || booking.from || "Location";
+      const destination = booking.to ? ` → ${booking.to}` : "";
+      const date = booking.check_in_date || booking.departure || booking.booking_date || "N/A";
+      const status = booking.booking_status || "Pending";
+      const price = booking.total_price || booking.price || "0";
+      
+      const statusColor =
+        status === "Confirmed"
+          ? "#3b82f6"
+          : status === "Pending"
+          ? "#f59e0b"
+          : status === "Completed"
+          ? "#10b981"
+          : "#6b7280";
+
+      const statusBgColor =
+        status === "Confirmed"
+          ? "#dbeafe"
+          : status === "Pending"
+          ? "#fef3c7"
+          : status === "Completed"
+          ? "#dcfce7"
+          : "#f3f4f6";
+
+      return `
+        <div style="background: #fff; padding: 1.5em; border-radius: 12px; border-left: 4px solid ${statusColor}; margin-bottom: 1em; box-shadow: 0 1px 3px rgba(0,0,0,0.05)">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1em">
+            <div style="display: flex; align-items: start; gap: 1em; flex: 1">
+              <div style="width: 50px; height: 50px; border-radius: 10px; background: #f0f4ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+                <i class="bi bi-${icon}" style="font-size: 1.75em; color: #667eea"></i>
+              </div>
+              <div style="flex: 1">
+                <h4 style="margin: 0 0 0.3em 0; color: #111827; font-size: 1em; font-weight: 600">${hotelName}</h4>
+                <p style="margin: 0 0 0.5em 0; color: #6b7280; font-size: 0.9em">
+                  <i class="bi bi-geo-alt" style="margin-right: 0.3em"></i>${location}${destination}
+                </p>
+                <p style="margin: 0; color: #9ca3af; font-size: 0.85em">
+                  <i class="bi bi-calendar-event" style="margin-right: 0.3em"></i>${date}
+                </p>
+              </div>
+            </div>
+            <div style="text-align: right; flex-shrink: 0">
+              <span style="background: ${statusBgColor}; color: ${statusColor}; padding: 0.5em 0.9em; border-radius: 6px; font-size: 0.85em; font-weight: 600; display: inline-block; white-space: nowrap; margin-bottom: 0.5em">
+                ${status}
+              </span>
+              <p style="margin: 0.5em 0 0 0; color: #667eea; font-size: 1em; font-weight: 700">$${price}</p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 1em; padding-top: 1em; border-top: 1px solid #e5e7eb">
+            <button onclick="viewBookingDetails(${booking.booking_id})" style="flex: 1; background: #f3f4f6; border: none; padding: 0.6em; border-radius: 6px; color: #374151; cursor: pointer; font-weight: 500; transition: all 0.2s; font-size: 0.9em" onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+              <i class="bi bi-eye" style="margin-right: 0.3em"></i>View Details
+            </button>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+/**
+ * View booking details
+ */
+function viewBookingDetails(bookingId) {
+  alert(`Booking details for #${bookingId}`);
+  // TODO: Implement modal or navigation to booking details page
+}
+
+/**
+ * Initialize dashboard charts
+ */
+function initializeDashboardCharts(bookings) {
+  // Count bookings by type
+  let hotelCount = 0;
+  let flightCount = 0;
+  let busCount = 0;
+
+  bookings.forEach((booking) => {
+    const type = (booking.booking_type || booking.type || "").toLowerCase();
+    if (type.includes("flight")) flightCount++;
+    else if (type.includes("bus")) busCount++;
+    else hotelCount++;
+  });
+
+  // Initialize pie chart
+  const chartCanvas = document.getElementById("bookingTypesChart");
+  if (chartCanvas) {
+    if (window.bookingTypesChartInstance) {
+      window.bookingTypesChartInstance.destroy();
+    }
+
+    const ctx = chartCanvas.getContext("2d");
+    window.bookingTypesChartInstance = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Hotels", "Flights", "Buses"],
+        datasets: [
+          {
+            data: [hotelCount, flightCount, busCount],
+            backgroundColor: ["#667eea", "#764ba2", "#f093fb"],
+            borderColor: "#fff",
+            borderWidth: 3,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              font: { size: 13, weight: "500" },
+              color: "#6b7280",
+              padding: 20,
+            },
+          },
+        },
+      },
+    });
+  }
+
+  // Initialize bar chart with monthly spending
+  const monthlyChartCanvas = document.getElementById("monthlySpendingChart");
+  if (monthlyChartCanvas) {
+    // Calculate monthly spending
+    const monthlyData = {};
+    const months = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date();
+      date.setMonth(date.getMonth() - i);
+      const monthKey = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+      });
+      monthlyData[monthKey] = 0;
+      months.push(date.toLocaleDateString("en-US", { month: "short", year: "2-digit" }));
+    }
+
+    // Sum spending by month
+    bookings.forEach((booking) => {
+      const bookingDate = new Date(booking.booking_date || booking.created_at || new Date());
+      const monthKey = bookingDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+      });
+
+      if (monthlyData[monthKey] !== undefined) {
+        const price = parseFloat(booking.total_price || booking.price || 0);
+        monthlyData[monthKey] += price;
+      }
+    });
+
+    const spendingData = Object.values(monthlyData);
+
+    if (window.monthlySpendingChartInstance) {
+      window.monthlySpendingChartInstance.destroy();
+    }
+
+    const ctx = monthlyChartCanvas.getContext("2d");
+    window.monthlySpendingChartInstance = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: months,
+        datasets: [
+          {
+            label: "Spending ($)",
+            data: spendingData,
+            backgroundColor: "#667eea",
+            borderRadius: 8,
+            borderSkipped: false,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: "top",
+            labels: {
+              font: { size: 12, weight: "500" },
+              color: "#6b7280",
+              padding: 15,
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: "#6b7280",
+              callback: function(value) {
+                return "$" + value.toLocaleString();
+              },
+            },
+            grid: {
+              color: "#e5e7eb",
+            },
+          },
+          x: {
+            ticks: {
+              color: "#6b7280",
+            },
+            grid: {
+              display: false,
+            },
+          },
+        },
+      },
+    });
+  }
+}
+
 
 /**
  * Load booking statistics for dashboard cards
@@ -80,292 +416,6 @@ async function loadDashboardStats() {
   } catch (error) {
     console.error("Error loading dashboard stats:", error);
   }
-}
-
-/**
- * Load dashboard overview with statistics
- */
-async function loadDashboardOverview() {
-  try {
-    const token = getAuthToken();
-
-    // Fetch all bookings to calculate overview statistics
-    const response = await fetch(`${API_BASE_URL}/bookings`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      const bookings = result.data.bookings || [];
-      
-      // Calculate statistics
-      const now = new Date();
-      let totalSpent = 0;
-      let upcomingCount = 0;
-      let completedCount = 0;
-
-      bookings.forEach((booking) => {
-        // Add price to total
-        if (booking.total_price) {
-          totalSpent += parseFloat(booking.total_price);
-        }
-
-        // Check booking status using check_in_date
-        if (booking.check_in_date) {
-          const bookingDate = new Date(booking.check_in_date);
-          if (bookingDate > now) {
-            upcomingCount++;
-          } else {
-            completedCount++;
-          }
-        }
-      });
-
-      // Update dashboard stat cards
-      document.getElementById("dashTotalBookings").textContent = bookings.length;
-      document.getElementById("dashUpcomingBookings").textContent = upcomingCount;
-      document.getElementById("dashCompletedBookings").textContent = completedCount;
-      document.getElementById("dashTotalSpent").textContent = `$${totalSpent.toFixed(2)}`;
-
-      // Display recent bookings
-      const recentBookings = bookings.slice(0, 5); // Get last 5 bookings
-      displayDashboardRecentBookings(recentBookings);
-
-      // Render charts
-      renderBookingTypesChart(bookings);
-      renderMonthlySpendingChart(bookings);
-    } else {
-      console.error("Error loading dashboard overview:", result.message);
-    }
-  } catch (error) {
-    console.error("Error loading dashboard overview:", error);
-  }
-}
-
-/**
- * Display recent bookings in dashboard
- */
-function displayDashboardRecentBookings(bookings) {
-  const container = document.getElementById("dashRecentBookings");
-  
-  if (!container) {
-    console.error("Dashboard recent bookings container not found");
-    return;
-  }
-
-  if (bookings.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="bi bi-inbox"></i>
-        <h3>No bookings yet</h3>
-        <p>Start planning your trip by making your first booking!</p>
-      </div>
-    `;
-    return;
-  }
-
-  const bookingsHTML = bookings
-    .map((booking) => {
-      // Use check_in_date for hotel bookings
-      let bookingDate = new Date(booking.check_in_date || booking.created_at);
-      let formattedDate = "Unknown Date";
-      
-      if (bookingDate && !isNaN(bookingDate.getTime())) {
-        formattedDate = bookingDate.toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        });
-      }
-
-      // Hotel bookings - use hotel_name and location
-      const displayName = booking.hotel_name || booking.destination || "Booking";
-      const displayLocation = booking.city || booking.location || "Unknown";
-
-      return `
-        <div class="recent-booking-item">
-          <div class="booking-icon">
-            <i class="bi bi-building"></i>
-          </div>
-          <div class="booking-details">
-            <h4>${displayName}</h4>
-            <p>${displayLocation} • ${formattedDate}</p>
-          </div>
-          <div class="booking-status">
-            ${booking.booking_status || "Active"}
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-
-  container.innerHTML = `
-    <div class="recent-bookings-header">
-      <h3><i class="bi bi-clock-history"></i> Recent Bookings</h3>
-    </div>
-    ${bookingsHTML}
-  `;
-}
-
-/**
- * Initialize and render booking type pie chart
- */
-function renderBookingTypesChart(bookings) {
-  const ctx = document.getElementById("bookingTypesChart");
-  if (!ctx) return;
-
-  // Count bookings by type
-  const typeCounts = {
-    hotels: 0,
-    flights: 0,
-    buses: 0,
-  };
-
-  bookings.forEach((booking) => {
-    if (booking.type === "flight") typeCounts.flights++;
-    else if (booking.type === "bus") typeCounts.buses++;
-    else typeCounts.hotels++;
-  });
-
-  // Destroy existing chart if it exists
-  if (window.bookingTypesChartInstance) {
-    window.bookingTypesChartInstance.destroy();
-  }
-
-  window.bookingTypesChartInstance = new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      labels: ["Hotels", "Flights", "Buses"],
-      datasets: [
-        {
-          data: [typeCounts.hotels, typeCounts.flights, typeCounts.buses],
-          backgroundColor: ["#667eea", "#764ba2", "#f093fb"],
-          borderColor: "#fff",
-          borderWidth: 2,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: "bottom",
-          labels: {
-            font: { size: 13, weight: "500" },
-            color: "#6b7280",
-            padding: 20,
-          },
-        },
-      },
-    },
-  });
-}
-
-/**
- * Initialize and render monthly spending bar chart
- */
-function renderMonthlySpendingChart(bookings) {
-  const ctx = document.getElementById("monthlySpendingChart");
-  if (!ctx) return;
-
-  // Calculate monthly spending
-  const monthlyData = {};
-  const months = [];
-
-  // Initialize last 6 months
-  for (let i = 5; i >= 0; i--) {
-    const date = new Date();
-    date.setMonth(date.getMonth() - i);
-    const monthKey = date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "2-digit",
-    });
-    monthlyData[monthKey] = 0;
-    months.push(date.toLocaleDateString("en-US", { month: "short", year: "2-digit" }));
-  }
-
-  // Add booking amounts to appropriate months
-  bookings.forEach((booking) => {
-    // Use check_in_date or created_at for hotel bookings
-    const dateToUse = booking.check_in_date || booking.created_at;
-    if (dateToUse && booking.total_price) {
-      const bookingDate = new Date(dateToUse);
-      if (!isNaN(bookingDate.getTime())) {
-        const monthKey = bookingDate.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "2-digit",
-        });
-        if (monthlyData.hasOwnProperty(monthKey)) {
-          monthlyData[monthKey] += parseFloat(booking.total_price);
-        }
-      }
-    }
-  });
-
-  const amounts = Object.values(monthlyData);
-
-  // Destroy existing chart if it exists
-  if (window.monthlySpendingChartInstance) {
-    window.monthlySpendingChartInstance.destroy();
-  }
-
-  window.monthlySpendingChartInstance = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: months,
-      datasets: [
-        {
-          label: "Spending ($)",
-          data: amounts,
-          backgroundColor: "#667eea",
-          borderRadius: 6,
-          borderSkipped: false,
-        },
-      ],
-    },
-    options: {
-      indexAxis: undefined,
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          labels: {
-            font: { size: 13, weight: "500" },
-            color: "#6b7280",
-            padding: 15,
-          },
-        },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            callback: function (value) {
-              return "$" + value.toFixed(0);
-            },
-            font: { size: 12 },
-            color: "#9ca3af",
-          },
-          grid: {
-            color: "#f0f0f0",
-          },
-        },
-        x: {
-          ticks: {
-            font: { size: 12 },
-            color: "#9ca3af",
-          },
-          grid: {
-            display: false,
-          },
-        },
-      },
-    },
-  });
 }
 
 /**
@@ -730,7 +780,7 @@ function switchView(viewName) {
     case "dashboard":
       viewId = "dashboardView";
       navIndex = 6;
-      loadDashboardOverview();
+      loadDashboard();
       break;
     default:
       viewId = "allBookingsView";

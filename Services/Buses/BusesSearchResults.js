@@ -780,13 +780,18 @@ function showTripDetails(bus) {
         
         <div class="modal-body">
           <div class="trip-route-section">
-            <h3>Trip Details</h3>
+            <h3>Trip Journey</h3>
             <div class="route-timeline">
               <div class="route-point">
-                <div class="route-time">${departTime}</div>
+                <div class="route-time-box">
+                  <div class="route-time">${departTime}</div>
+                  <div class="route-date">${departDate}</div>
+                </div>
                 <div class="route-dot"></div>
-                <div class="route-station">${bus.from}</div>
-                <div class="route-date">${departDate}</div>
+                <div class="route-location">
+                  <div class="route-station">${bus.from}</div>
+                  <div class="route-label">Departure</div>
+                </div>
               </div>
               
               <div class="route-connector">
@@ -798,10 +803,15 @@ function showTripDetails(bus) {
               </div>
               
               <div class="route-point">
-                <div class="route-time">${arriveTime}</div>
+                <div class="route-time-box">
+                  <div class="route-time">${arriveTime}</div>
+                  <div class="route-date">${departDate}</div>
+                </div>
                 <div class="route-dot"></div>
-                <div class="route-station">${bus.to}</div>
-                <div class="route-date">${departDate}</div>
+                <div class="route-location">
+                  <div class="route-station">${bus.to}</div>
+                  <div class="route-label">Arrival</div>
+                </div>
               </div>
             </div>
           </div>

@@ -275,31 +275,14 @@ class FlightManagement {
   }
 
   handleAddFlight() {
-    this.showNotification("Opening form to add a new flight...", "info");
+    // Clear form and set mode to "add"
+    document.getElementById("modalTitle").textContent = "Add New Flight";
+    document.getElementById("flightForm").reset();
+    document.getElementById("flightModal").setAttribute("data-mode", "add");
+    document.getElementById("flightModal").removeAttribute("data-flight-id");
 
-    // In a real application, you would open a modal or redirect to a form page
-    // For demo purposes, we'll simulate adding a flight
-    setTimeout(() => {
-      const newFlight = {
-        flightNo: "GT" + (this.flights.length + 101),
-        from: "New Origin",
-        to: "New Destination",
-        departure: new Date().toLocaleString(),
-        arrival: new Date(Date.now() + 4 * 60 * 60 * 1000).toLocaleString(),
-        price: "$500.00",
-        availableSeats: 150,
-        gate: "A" + Math.floor(Math.random() * 10 + 1),
-        status: "On Time",
-      };
-
-      this.flights.push(newFlight);
-      this.renderFlightTable();
-      this.updateLastUpdated();
-      this.showNotification(
-        `Flight ${newFlight.flightNo} added successfully!`,
-        "success"
-      );
-    }, 1000);
+    // Show modal
+    document.getElementById("flightModal").style.display = "flex";
   }
 
   handleEditFlight(flightNo) {
@@ -367,6 +350,56 @@ class FlightManagement {
     console.log(`[${type.toUpperCase()}] ${message}`);
   }
 }
+
+// Modal Functions for Flight Form
+function closeFlightModal() {
+  document.getElementById("flightModal").style.display = "none";
+}
+
+// Handle flight form submission
+document.addEventListener("DOMContentLoaded", () => {
+  const flightForm = document.getElementById("flightForm");
+  if (flightForm) {
+    flightForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const flightNo = document.getElementById("flightNo").value;
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const departure = new Date(document.getElementById("departure").value).toLocaleString();
+      const arrival = new Date(document.getElementById("arrival").value).toLocaleString();
+      const price = "$" + parseFloat(document.getElementById("price").value).toFixed(2);
+      const availableSeats = parseInt(document.getElementById("availableSeats").value);
+      const gate = document.getElementById("gate").value;
+      const status = document.getElementById("status").value;
+
+      const newFlight = {
+        flightNo,
+        from,
+        to,
+        departure,
+        arrival,
+        price,
+        availableSeats,
+        gate,
+        status,
+      };
+
+      // Add to flights array
+      window.flightManagement.flights.push(newFlight);
+      window.flightManagement.renderFlightTable();
+      window.flightManagement.updateLastUpdated();
+      window.flightManagement.showNotification(
+        `Flight ${flightNo} added successfully!`,
+        "success"
+      );
+
+      // Close modal and reset form
+      closeFlightModal();
+      flightForm.reset();
+    });
+  }
+});
 
 // Initialize the flight management system when the page loads
 document.addEventListener("DOMContentLoaded", () => {

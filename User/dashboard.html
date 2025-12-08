@@ -1724,11 +1724,50 @@
               </div>
             </div>
 
+            <!-- Booking Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5em; margin-top: 2em">
+              <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 1.5em; color: white; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3)">
+                <div style="display: flex; justify-content: space-between; align-items: start">
+                  <div>
+                    <p style="margin: 0 0 0.5em 0; font-size: 0.9em; opacity: 0.9">Hotels Booked</p>
+                    <h3 style="margin: 0; font-size: 1.8em" id="dashHotels">0</h3>
+                  </div>
+                  <i class="bi bi-building" style="font-size: 2em; opacity: 0.7"></i>
+                </div>
+              </div>
+
+              <div style="background: linear-gradient(135deg, #764ba2 0%, #f093fb 100%); border-radius: 12px; padding: 1.5em; color: white; box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3)">
+                <div style="display: flex; justify-content: space-between; align-items: start">
+                  <div>
+                    <p style="margin: 0 0 0.5em 0; font-size: 0.9em; opacity: 0.9">Flights Booked</p>
+                    <h3 style="margin: 0; font-size: 1.8em" id="dashFlights">0</h3>
+                  </div>
+                  <i class="bi bi-airplane" style="font-size: 2em; opacity: 0.7"></i>
+                </div>
+              </div>
+
+              <div style="background: linear-gradient(135deg, #f093fb 0%, #ff6b9d 100%); border-radius: 12px; padding: 1.5em; color: white; box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3)">
+                <div style="display: flex; justify-content: space-between; align-items: start">
+                  <div>
+                    <p style="margin: 0 0 0.5em 0; font-size: 0.9em; opacity: 0.9">Buses Booked</p>
+                    <h3 style="margin: 0; font-size: 1.8em" id="dashBuses">0</h3>
+                  </div>
+                  <i class="bi bi-bus-front" style="font-size: 2em; opacity: 0.7"></i>
+                </div>
+              </div>
+            </div>
+
             <!-- Recent Bookings Section -->
-            <div style="margin-top: 2em">
-              <h3 style="color: #2563eb; margin-bottom: 1em">Recent Bookings</h3>
+            <div style="margin-top: 2.5em">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5em">
+                <h3 style="color: #111827; margin: 0; font-size: 1.3em; font-weight: 600">
+                  <i class="bi bi-bookmark-check" style="margin-right: 0.5em; color: #667eea"></i>Recent Bookings
+                </h3>
+                <a href="javascript:switchView('mytrips')" style="color: #667eea; text-decoration: none; font-size: 0.95em; font-weight: 500">View All →</a>
+              </div>
               <div id="dashRecentBookings" style="display: flex; flex-direction: column; gap: 1em">
                 <div style="text-align: center; color: #6b7280; padding: 2em">
+                  <i class="bi bi-hourglass-split" style="font-size: 2em; display: block; margin-bottom: 0.5em; opacity: 0.5"></i>
                   Loading bookings...
                 </div>
               </div>

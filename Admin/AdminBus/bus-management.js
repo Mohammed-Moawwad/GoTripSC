@@ -230,25 +230,14 @@ class BusManagement {
   }
 
   handleAddBus() {
-    this.showNotification("Opening form to add a new bus...", "info");
+    // Clear form and set mode to "add"
+    document.getElementById("modalTitle").textContent = "Add New Bus";
+    document.getElementById("busForm").reset();
+    document.getElementById("busModal").setAttribute("data-mode", "add");
+    document.getElementById("busModal").removeAttribute("data-bus-id");
 
-    // In a real application, you would open a modal or redirect to a form page
-    // For demo purposes, we'll simulate adding a bus
-    setTimeout(() => {
-      const newBus = {
-        id: "BUS00" + (this.buses.length + 1),
-        route: "New Route",
-        departure: new Date().toLocaleString(),
-        arrival: new Date(Date.now() + 3 * 60 * 60 * 1000).toLocaleString(),
-        price: "$150.00",
-        seats: 40,
-        status: "Active",
-      };
-
-      this.buses.push(newBus);
-      this.renderBusTable();
-      this.showNotification(`Bus ${newBus.id} added successfully!`, "success");
-    }, 1000);
+    // Show modal
+    document.getElementById("busModal").style.display = "flex";
   }
 
   handleEditBus(busId) {
@@ -418,8 +407,54 @@ class BusManagement {
   }
 }
 
-// Initialize the bus management when DOM is loaded
+// Modal Functions for Bus Form
+function closeBusModal() {
+  document.getElementById("busModal").style.display = "none";
+}
+
+// Handle bus form submission
 document.addEventListener("DOMContentLoaded", () => {
+  const busForm = document.getElementById("busForm");
+  if (busForm) {
+    busForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const busNo = document.getElementById("busNo").value;
+      const operatorName = document.getElementById("operatorName").value;
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const departure = new Date(document.getElementById("departure").value).toLocaleString();
+      const arrival = new Date(document.getElementById("arrival").value).toLocaleString();
+      const price = "$" + parseFloat(document.getElementById("price").value).toFixed(2);
+      const availableSeats = parseInt(document.getElementById("availableSeats").value);
+      const status = document.getElementById("status").value;
+
+      const newBus = {
+        id: busNo,
+        operatorName: operatorName,
+        from: from,
+        to: to,
+        departure: departure,
+        arrival: arrival,
+        price: price,
+        seats: availableSeats,
+        status: status,
+      };
+
+      // Add to buses array
+      window.busManagement.buses.push(newBus);
+      window.busManagement.renderBusTable();
+      window.busManagement.showNotification(
+        `Bus ${busNo} added successfully!`,
+        "success"
+      );
+
+      // Close modal and reset form
+      closeBusModal();
+      busForm.reset();
+    });
+  }
+
   window.busManagement = new BusManagement();
 });
 
@@ -427,3 +462,4 @@ document.addEventListener("DOMContentLoaded", () => {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = BusManagement;
 }
+
