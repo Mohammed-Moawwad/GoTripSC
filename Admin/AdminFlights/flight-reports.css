@@ -117,6 +117,8 @@
   gap: 16px;
   align-items: flex-start;
   transition: all 0.3s ease;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .summary-card:hover {
@@ -154,13 +156,17 @@
 
 .summary-content {
   flex: 1;
+  min-width: 0;
 }
 
 .summary-content h3 {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
   color: #333;
   margin: 0 0 4px;
+  word-break: break-word;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .summary-content p {
